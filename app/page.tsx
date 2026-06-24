@@ -1,9 +1,39 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import appData from './data.json'; // 외부 데이터 주입
+
+// TypeScript 에러 방지를 위한 JSON 데이터 타입 강제 정의
+interface AppDataStructure {
+  macroPool: string[];
+  infiniteMacroPool: string[];
+  subCategoryData: Record<string, string[]>;
+  extendedSubPool: string[];
+  secondaryPool: string[];
+  specificSecondaryPools: Record<string, string[]>;
+  analysisKeywordsPool: Record<string, string[]>;
+  promptTemplates: {
+    persona: string;
+    targetSituation: string;
+    requests: string[];
+  };
+}
 
 export default function Home() {
-  // --- [1. 상태 관리 정의] ---
+  // appData를 정의한 타입으로 단언(Type Assertion)하여 에러를 원천 차단합니다.
+  const data = appData as unknown as AppDataStructure;
+
+  // --- [1. 데이터 매핑 정의] ---
+  const macroPool = data.macroPool;
+  const infiniteMacroPool = data.infiniteMacroPool;
+  const subCategoryData = data.subCategoryData;
+  const extendedSubPool = data.extendedSubPool;
+  const secondaryPool = data.secondaryPool;
+  const specificSecondaryPools = data.specificSecondaryPools;
+  const analysisKeywordsPool = data.analysisKeywordsPool;
+  const promptTemplates = data.promptTemplates;
+
+  // --- [2. 상태 관리 정의] ---
   const [macroCategories, setMacroCategories] = useState(["공부", "여행", "영어", "일정", "준비물", "레시피", "맛집", "성형"]);
   const [selectedMacro, setSelectedMacro] = useState("");
   const [selectedSubs, setSelectedSubs] = useState<string[]>([]);
@@ -17,7 +47,6 @@ export default function Home() {
   const [selectedSecondaries, setSelectedSecondaries] = useState<string[]>([]);
   const [poolIdx, setPoolIdx] = useState(0);
 
-  // 인라인 입력 필드 상태 관리
   const [isAddingCustom, setIsAddingCustom] = useState(false);
   const [customInput, setCustomInput] = useState("");
   const [isAddingSecondaryCustom, setIsAddingSecondaryCustom] = useState(false);
@@ -26,58 +55,7 @@ export default function Home() {
   const subContainerRef = useRef<HTMLDivElement>(null);
   const macroContainerRef = useRef<HTMLDivElement>(null);
 
-  // --- [2. 확장형 데이터 뱅크] ---
-  const macroPool = [
-    "코딩", "재테크", "다이어트", "비즈니스", "마케팅", "인테리어", "연애", "이직", 
-    "독서", "시간관리", "글쓰기", "면접", "인간관계", "유튜브", "스피치", "건강관리"
-  ];
-
-  // 무한 더보기용 3차 백업 AI 키워드 풀
-  const infiniteMacroPool = [
-    "AI자동화", "퍼스널브랜딩", "웰니스", "NFT", "메타버스", "미니멀리즘", "자산배분", "멘탈케어",
-    "사이드프로젝트", "노코드", "협상학", "심리학", "데이터분석", "스마트스토어", "카피라이팅", "해외직구"
-  ];
-
-  const subCategoryData: Record<string, string[]> = {
-    "공부": ["스터디카페", "공부루틴", "하루 5분 20배효율", "집중력 리셋", "노트 필기법", "시험 암기법", "동기부여"],
-    "여행": ["3박 4일", "가성비 숙소", "현지인 맛집", "뚜벅이 코스", "인생샷 스팟", "힐링 가득", "최적 동선"],
-    "영어": ["비즈니스 이메일", "원어민 회화", "미드 쉐도잉", "하루 10문장", "발음 교정", "토익 스피킹", "영작문 치트키"],
-    "일정": ["시간 단위 플래너", "주간 루틴", "루즈하지 않게", "미루기 방지", "워라밸 확보", "핵심 일정 위주"],
-    "준비물": ["체크리스트", "해외여행 필수템", "캠핑 장비", "자취방 필수품", "비상약 품목", "가방 경량화"],
-    "레시피": ["초간단 10분", "자취요리", "집들이 요리", "초보자 가이드", "에어프라이어", "다이어트 식단", "냉장고 파먹기"],
-    "맛집": ["로컬 숨은맛집", "가성비 끝판왕", "데이트 코스", "부모님 동반", "분위기 깡패", "웨이팅 필수", "노포 감성"],
-    "성형": ["수술 부위", "리얼 후기", "예산 가이드", "병원 위치", "부작용 주의사항", "회복기간 단축", "자연스러운 라인"],
-    "코딩": ["버그 수정", "알고리즘 초보", "깃허브 관리", "클린코드 규칙", "포트폴리오", "AI 코딩 툴", "독학 가이드"],
-    "재테크": ["주식 초보", "부동산 임장", "소액 투자", "시드머니 모으기", "가계부 루틴", "절세 꿀팁", "ETF 추천"],
-    "다이어트": ["식단 칼로리", "정체기 탈출", "홈트 루틴", "체지방 커팅", "바디프로필", "직장인 다이어트", "치팅데이 규칙"],
-    "비즈니스": ["기획서 작성", "협상 스킬", "보고의 정석", "스타트업 입문", "성과 지표", "네트워킹", "이직 타이밍"],
-    "마케팅": ["SNS 바이럴", "퍼포먼스 광고", "콘텐츠 기획", "SEO 최적화", "브랜딩 전략", "카피라이팅", "타겟 분석"],
-    "인테리어": ["원룸 꾸미기", "가성비 가구", "조명 배치", "수납 가이드", "플랜테리어", "미니멀리즘", "컬러 매칭"],
-    "연애": ["소개팅 꿀팁", "대화 이끌기", "밀당의 기술", "기념일 선물", "연애 고민 상담", "서운함 표현법", "심리 분석"],
-    "이직": ["경력기술서", "연봉 협상", "퇴사 타이밍", "헤드헌터 접촉", "포트폴리오 튜닝", "이직 면접 질문", "기업 분석"],
-    "독서": ["다독 루틴", "독서노트 작성", "책 추천", "몰입 독서법", "전자책 활용", "독서 모임", "글귀 아카이빙"],
-    "시간관리": ["뽀모도로 기법", "우선순위 법칙", "데드라인 사수", "아침 루틴", "스케줄러 100% 활용", "자투리 시간"],
-    "글쓰기": ["블로그 글쓰기", "에세이 창작", "문장력 강화", "매일 글쓰기 습관", "소재 발굴", "퇴고 체크리스트"],
-    "면접": ["1분 자기소개", "압박질문 대처", "정장 스타일링", "시선 처리", "마지막 한마디", "역질문 기술"],
-    "인간관계": ["거절하는 법", "선 넘는 사람 대처", "직장 내 대화법", "친구 고민", "자존감 지키기", "가족과의 소통"],
-    "유튜브": ["영상 편집 초보", "썸네일 치트키", "조회수 떡상", "장비 추천", "쇼츠 알고리즘", "채널 브랜딩"],
-    "스피치": ["발성 교정", "발표 불안 극복", "청중 사로잡기", "딕션 연습", "스토리텔링", "PT 면접 합격"],
-    "건강관리": ["영양제 조합", "수면 질 개선", "거북목 교정", "스트레칭 루틴", "만성피로 해소", "수분 섭취 습관"]
-  };
-
-  const secondaryPool = [
-    "너무 빡빡한 일정 피하기", "실현 가능성 대폭 높여줘", "직장인용 맞춤형으로 변경", "비용 최소화 관점", "초보자 수준으로 쉽게",
-    "단계별 템플릿 양식 제공", "예시(Example) 포함해서 출력", "전문 용어 해설 추가", "체크리스트 형태로 요약", "핵심 위주로 분량 압축"
-  ];
-
-  const analysisKeywordsPool: Record<string, string[]> = {
-    "예산": ["초저가 가성비 지향", "예산 무제한 플렉스", "평균 시장가 기준"],
-    "기간": ["단기 속성 완성", "장기 프로젝트", "주말 집중 코스"],
-    "수준": ["왕초보 입문 레벨", "중급자 점프업", "실무자 마스터 클래스"]
-  };
-
   // --- [3. 비즈니스 로직 연산 엔진] ---
-
   const selectMacroCategory = (category: string) => {
     setSelectedMacro(category);
     setSelectedSubs([]);
@@ -85,11 +63,9 @@ export default function Home() {
     setShowSecondary(false);
     setSelectedSecondaries([]);
 
-    // 직접 추가한 것과 고정 데이터를 모두 커버하는 실시간 지능형 중분류 생성기
     if (subCategoryData[category]) {
       setSubChips(subCategoryData[category].slice(0, 7));
     } else {
-      // 1번 피드백: 직접추가 시 텍스트 맞춤형 실시간 가상 생성 기능
       setSubChips([
         `${category} 입문 가이드`, `${category} 트렌드 분석`, `초고속 ${category} 마스터`, 
         `실전 ${category} 전략`, `${category} 리스크 관리`, `가성비 ${category} 팁`
@@ -97,7 +73,6 @@ export default function Home() {
     }
   };
 
-  // 2번 피드백: 중복 절대 검사 및 새로운 대분류 실시간 AI 생성기
   const appendMacroRow = () => {
     const width = macroContainerRef.current?.offsetWidth || 500;
     const itemsInRow = Math.max(3, Math.floor(width / 95));
@@ -112,13 +87,11 @@ export default function Home() {
         candidate = macroPool[localIdx];
         localIdx++;
       } else {
-        // 기본 풀 소진 시 무한 풀에서 중복 체크하며 실시간 조립
         const infiniteIdx = (localIdx - macroPool.length) % infiniteMacroPool.length;
         candidate = infiniteMacroPool[infiniteIdx];
         localIdx++;
       }
 
-      // 이미 화면에 노출 중인 대분류가 아닐 때만 안전하게 Push
       if (!currentCategories.includes(candidate)) {
         currentCategories.push(candidate);
         itemsAdded++;
@@ -145,16 +118,19 @@ export default function Home() {
   const appendSubRow = () => {
     const width = subContainerRef.current?.offsetWidth || 500;
     const itemsInRow = Math.max(2, Math.floor(width / 90));
-    const extendedPool = ["심화 집중", "시간 절약", "A급 퀄리티", "비밀 노하우", "리스크 최소화", "연령별 케어"];
     
     let newSubs = [...subChips];
     const rawSource = subCategoryData[selectedMacro] || [];
+    const currentLength = newSubs.length;
 
     for (let i = 0; i < itemsInRow; i++) {
-      const nextText = rawSource[newSubs.length + i] || extendedPool[Math.floor(Math.random() * extendedPool.length)];
-      if (!newSubs.includes(nextText)) {
-        newSubs.push(nextText.substring(0, 10));
+      let nextText = rawSource[currentLength + i] || extendedSubPool[Math.floor(Math.random() * extendedSubPool.length)];
+      
+      if (newSubs.includes(nextText)) {
+        nextText = `${nextText}_${Math.floor(Math.random() * 100)}`;
       }
+      
+      newSubs.push(nextText.substring(0, 10));
     }
     setSubChips(newSubs);
   };
@@ -167,7 +143,6 @@ export default function Home() {
     }
   };
 
-  // 3번 피드백: 2차 고도화 구역 전용 더보기 로직
   const appendSecondaryRow = () => {
     let currentChips = [...secondaryChips];
     let added = 0;
@@ -176,10 +151,9 @@ export default function Home() {
       if (!currentChips.includes(secondaryPool[i])) {
         currentChips.push(secondaryPool[i]);
         added++;
-        if (added >= 3) break; // 한 번에 3개씩 확장
+        if (added >= 3) break;
       }
     }
-    // 풀이 모자라면 범용 접미사 AI 확장
     if (added === 0) {
       currentChips.push(`추가 제약 조건 ${currentChips.length + 1}`);
       currentChips.push(`정밀 가이드 ${currentChips.length + 2}`);
@@ -187,7 +161,6 @@ export default function Home() {
     setSecondaryChips(currentChips);
   };
 
-  // 3번 피드백: 2차 고도화 구역 전용 직접추가 로직
   const submitCustomSecondary = () => {
     if (!customSecondaryInput || customSecondaryInput.trim() === "") {
       setIsAddingSecondaryCustom(false);
@@ -204,7 +177,6 @@ export default function Home() {
     setIsAddingSecondaryCustom(false);
   };
 
-  // 실시간 문맥 검사
   useEffect(() => {
     let chips: string[] = [];
     if (userInput.includes("돈") || userInput.includes("예산") || userInput.includes("경비") || userInput.includes("비용")) {
@@ -225,19 +197,24 @@ export default function Home() {
       return;
     }
 
-    const persona = `당신은 핵심을 찌르는 10년 차 최고의 [${selectedMacro}] 전문 컨설턴트이자 멘토입니다.`;
-    let targetSituation = `사용자는 현재 [${selectedMacro}] 분야의 작업을 진행 중이며, 특히 { ${selectedSubs.length > 0 ? selectedSubs.join(", ") : "기본 맞춤 전략"} } 요소를 핵심 재료로 고려하고 있습니다.`;
+    const persona = promptTemplates.persona.replace("{macro}", selectedMacro);
+    
+    const subComponent = selectedSubs.length > 0 ? selectedSubs.join(", ") : "기본 맞춤 전략";
+    let targetSituation = promptTemplates.targetSituation
+      .replace("{macro}", selectedMacro)
+      .replace("{subs}", subComponent);
+
     if (userInput.trim()) {
       targetSituation += `\n- 사용자 추가 맥락 사양: ${userInput.trim()}`;
     }
 
     let markdown = `# 🤖 AI 페르소나 지정\n- ${persona}\n\n## 🎯 목표 및 상황\n- ${targetSituation}\n\n## 📝 요청 사항\n`;
-    markdown += `- 1. 선택한 키워드 재료들과 맥락을 깊이 분석하여 구체적이고 바로 실행 가능한 액션 플랜을 도출해 주세요.\n`;
-    markdown += `- 2. 발생 가능한 리스크를 사전 차단할 수 있는 고효율 체크리스트 가이드를 제공해 주세요.\n`;
-    markdown += `- 3. 불필요한 서론과 인사를 생략하고 두괄식 핵심 요약 정보 위주로 답변해 주세요.`;
+    promptTemplates.requests.forEach((req) => {
+      markdown += `- ${req}\n`;
+    });
 
     if (selectedSecondaries.length > 0) {
-      markdown += `\n\n## ⚠️ 제약 조건 및 피드백 (2차 재조립)\n`;
+      markdown += `\n## ⚠️ 제약 조건 및 피드백 (2차 재조립)\n`;
       selectedSecondaries.forEach((chipText, i) => {
         markdown += `- [보완사항 ${i+1}] ${chipText}\n`;
       });
@@ -250,9 +227,10 @@ export default function Home() {
 
   const triggerSecondaryTuning = () => {
     setShowSecondary(true);
-    let feedbackPool = ["너무 빡빡한 일정 피하기", "실현 가능성 대폭 높여줘", "직장인용 맞춤형으로 변경", "비용 최소화 관점", "초보자 수준으로 쉽게"];
-    if (selectedMacro === "공부") feedbackPool = ["루틴 최적화 집중", "시간대별 시간 분배형", "번아웃 방지 장치 포함", "초단기 벼락치기 모드"];
-    if (selectedMacro === "성형") feedbackPool = ["안전 최우선 보수적 관점", "회복 기간 최소화 위주", "상담 시 필수 질문 목록 위주"];
+    let feedbackPool = [...secondaryPool].slice(0, 5);
+    if (specificSecondaryPools[selectedMacro]) {
+      feedbackPool = specificSecondaryPools[selectedMacro];
+    }
     setSecondaryChips(feedbackPool);
   };
 
@@ -416,7 +394,6 @@ export default function Home() {
                   );
                 })}
 
-                {/* 3번 피드백: 2차 공간 내 인라인 직접 추가 컴포넌트 */}
                 {isAddingSecondaryCustom ? (
                   <div className="flex items-center gap-1 bg-white p-1 rounded-lg border border-orange-300 shadow-inner">
                     <input
