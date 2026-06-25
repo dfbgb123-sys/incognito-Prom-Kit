@@ -1,8 +1,8 @@
 
-머릿속 복잡한 아이디어와 고민을 AI가 즉시 알아듣는 고품질 마크다운(Markdown) 프롬프트로 자동 조립해 주는 서비스입니다. 역할 부여, 제약 조건 구조를 매번 짜기 귀찮은 직장인, 학생, 개발자를 위해 만들어졌습니다.
+머릿속 복잡한 아이디어와 고민을 AI가 즉시 알아듣는 마크다운(Markdown) 프롬프트로 자동 조립해 주는 서비스입니다. 역할 부여, 제약 조건 구조를 매번 짜기 귀찮은 직장인, 학생, 개발자를 위해 만들어졌습니다.
 
 ## 📦 Prom-Kit (프롬키트)
-개떡같이 말해도 찰떡같이 알아듣게 만드는 AI 질문 자판기  
+더 좋은 생각을 만드는 AI 질문 자판기  
 **Link:** [incognito-prom-kit.vercel.app](https://incognito-prom-kit.vercel.app)
 
   
@@ -25,9 +25,9 @@
 * **Styling:** Tailwind CSS
 * **Deployment & DevOps:** GitHub / Vercel (CI/CD 자동화 및 서버리스 환경 구축)
 
-## 🚀 로드맵 및 확장 계획 (Roadmap)**
+## 🚀 로드맵 및 확장 계획 (Roadmap)
   
 #### AI & Infra Integration (확장 예정)
-- [ ] **MCP (Model Context Protocol) 연동:** 다양한 외부 AI 모델과의 스마트 데이터 컨텍스트 결합
-- [ ] **LLM API 주입:** OpenAI / Anthropic 등의 공식 API를 통한 맞춤형 실시간 프롬프트 검증
-- [ ] **YouTube API 연동:** 유저의 개인 유튜브 시청 관심사 기반의 실시간 카테고리 추천 엔진 탑재
+- [ ] 내게 필요한 기능 위주로 개선 필요
+- [ ] 핵심 유지 " 더 좋은 생각을 하게 돕는 질문 가이드 "
+- [ ] 기술 구현 테스트 (MCP 연동, LLM API 주입, API 연동)
