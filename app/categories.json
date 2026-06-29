@@ -1,0 +1,4013 @@
+[
+  {
+    "id": "cat_l_001",
+    "name": "공부",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_002",
+    "name": "여행",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_003",
+    "name": "영어",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_004",
+    "name": "일정",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_005",
+    "name": "준비물",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_006",
+    "name": "레시피",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_007",
+    "name": "맛집",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_008",
+    "name": "성형",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_009",
+    "name": "코딩",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_010",
+    "name": "재테크",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_011",
+    "name": "다이어트",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_012",
+    "name": "비즈니스",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_013",
+    "name": "마케팅",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_014",
+    "name": "인테리어",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_015",
+    "name": "연애",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_016",
+    "name": "이직",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_017",
+    "name": "독서",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_018",
+    "name": "시간관리",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_019",
+    "name": "글쓰기",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_020",
+    "name": "면접",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_021",
+    "name": "인간관계",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_022",
+    "name": "유튜브",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_023",
+    "name": "스피치",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_024",
+    "name": "건강관리",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_025",
+    "name": "AI자동화",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_026",
+    "name": "퍼스널브랜딩",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_027",
+    "name": "웰니스",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_028",
+    "name": "NFT",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_029",
+    "name": "메타버스",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_030",
+    "name": "미니멀리즘",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_031",
+    "name": "자산배분",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_032",
+    "name": "멘탈케어",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_033",
+    "name": "사이드프로젝트",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_034",
+    "name": "노코드",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_035",
+    "name": "협상학",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_036",
+    "name": "심리학",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_037",
+    "name": "데이터분석",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_038",
+    "name": "스마트스토어",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_039",
+    "name": "카피라이팅",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_040",
+    "name": "해외직구",
+    "level": 1,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_m_041",
+    "name": "스터디카페",
+    "level": 2,
+    "parent_id": "cat_l_001",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_042",
+    "name": "공부루틴",
+    "level": 2,
+    "parent_id": "cat_l_001",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_043",
+    "name": "하루 5분 20배효율",
+    "level": 2,
+    "parent_id": "cat_l_001",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_044",
+    "name": "집중력 리셋",
+    "level": 2,
+    "parent_id": "cat_l_001",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_045",
+    "name": "노트 필기법",
+    "level": 2,
+    "parent_id": "cat_l_001",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_046",
+    "name": "시험 암기법",
+    "level": 2,
+    "parent_id": "cat_l_001",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_047",
+    "name": "동기부여",
+    "level": 2,
+    "parent_id": "cat_l_001",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_048",
+    "name": "플래너 작성",
+    "level": 2,
+    "parent_id": "cat_l_001",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_049",
+    "name": "오답노트",
+    "level": 2,
+    "parent_id": "cat_l_001",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_050",
+    "name": "인강 활용법",
+    "level": 2,
+    "parent_id": "cat_l_001",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_051",
+    "name": "새벽 공부",
+    "level": 2,
+    "parent_id": "cat_l_001",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_052",
+    "name": "백지 복습법",
+    "level": 2,
+    "parent_id": "cat_l_001",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_053",
+    "name": "마인드맵",
+    "level": 2,
+    "parent_id": "cat_l_001",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_054",
+    "name": "모의고사 분석",
+    "level": 2,
+    "parent_id": "cat_l_001",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_055",
+    "name": "슬럼프 극복",
+    "level": 2,
+    "parent_id": "cat_l_001",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_056",
+    "name": "스터디 그룹",
+    "level": 2,
+    "parent_id": "cat_l_001",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_057",
+    "name": "암기 카드",
+    "level": 2,
+    "parent_id": "cat_l_001",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_058",
+    "name": "3박 4일",
+    "level": 2,
+    "parent_id": "cat_l_002",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_059",
+    "name": "가성비 숙소",
+    "level": 2,
+    "parent_id": "cat_l_002",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_060",
+    "name": "현지인 맛집",
+    "level": 2,
+    "parent_id": "cat_l_002",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_061",
+    "name": "뚜벅이 코스",
+    "level": 2,
+    "parent_id": "cat_l_002",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_062",
+    "name": "인생샷 스팟",
+    "level": 2,
+    "parent_id": "cat_l_002",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_063",
+    "name": "힐링 가득",
+    "level": 2,
+    "parent_id": "cat_l_002",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_064",
+    "name": "최적 동선",
+    "level": 2,
+    "parent_id": "cat_l_002",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_065",
+    "name": "패킹 리스트",
+    "level": 2,
+    "parent_id": "cat_l_002",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_066",
+    "name": "여행자 보험",
+    "level": 2,
+    "parent_id": "cat_l_002",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_067",
+    "name": "렌트카 예약",
+    "level": 2,
+    "parent_id": "cat_l_002",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_068",
+    "name": "현지 에티켓",
+    "level": 2,
+    "parent_id": "cat_l_002",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_069",
+    "name": "기념품 쇼핑",
+    "level": 2,
+    "parent_id": "cat_l_002",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_070",
+    "name": "액티비티 추천",
+    "level": 2,
+    "parent_id": "cat_l_002",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_071",
+    "name": "야경 명소",
+    "level": 2,
+    "parent_id": "cat_l_002",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_072",
+    "name": "우기 피하기",
+    "level": 2,
+    "parent_id": "cat_l_002",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_073",
+    "name": "맛집 웨이팅",
+    "level": 2,
+    "parent_id": "cat_l_002",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_074",
+    "name": "항공권 특가",
+    "level": 2,
+    "parent_id": "cat_l_002",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_075",
+    "name": "비즈니스 이메일",
+    "level": 2,
+    "parent_id": "cat_l_003",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_076",
+    "name": "원어민 회화",
+    "level": 2,
+    "parent_id": "cat_l_003",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_077",
+    "name": "미드 쉐도잉",
+    "level": 2,
+    "parent_id": "cat_l_003",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_078",
+    "name": "하루 10문장",
+    "level": 2,
+    "parent_id": "cat_l_003",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_079",
+    "name": "발음 교정",
+    "level": 2,
+    "parent_id": "cat_l_003",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_080",
+    "name": "토익 스피킹",
+    "level": 2,
+    "parent_id": "cat_l_003",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_081",
+    "name": "영작문 치트키",
+    "level": 2,
+    "parent_id": "cat_l_003",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_082",
+    "name": "슬랭 표현",
+    "level": 2,
+    "parent_id": "cat_l_003",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_083",
+    "name": "영작문 첨삭",
+    "level": 2,
+    "parent_id": "cat_l_003",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_084",
+    "name": "전화 영어",
+    "level": 2,
+    "parent_id": "cat_l_003",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_085",
+    "name": "영문법 기초",
+    "level": 2,
+    "parent_id": "cat_l_003",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_086",
+    "name": "원서 읽기",
+    "level": 2,
+    "parent_id": "cat_l_003",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_087",
+    "name": "팟캐스트 추천",
+    "level": 2,
+    "parent_id": "cat_l_003",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_088",
+    "name": "영어 면접",
+    "level": 2,
+    "parent_id": "cat_l_003",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_089",
+    "name": "오픽 대비",
+    "level": 2,
+    "parent_id": "cat_l_003",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_090",
+    "name": "영한 번역",
+    "level": 2,
+    "parent_id": "cat_l_003",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_091",
+    "name": "영어 필사",
+    "level": 2,
+    "parent_id": "cat_l_003",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_092",
+    "name": "시간 단위 플래너",
+    "level": 2,
+    "parent_id": "cat_l_004",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_093",
+    "name": "주간 루틴",
+    "level": 2,
+    "parent_id": "cat_l_004",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_094",
+    "name": "루즈하지 않게",
+    "level": 2,
+    "parent_id": "cat_l_004",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_095",
+    "name": "미루기 방지",
+    "level": 2,
+    "parent_id": "cat_l_004",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_096",
+    "name": "워라밸 확보",
+    "level": 2,
+    "parent_id": "cat_l_004",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_097",
+    "name": "핵심 일정 위주",
+    "level": 2,
+    "parent_id": "cat_l_004",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_098",
+    "name": "월간 캘린더",
+    "level": 2,
+    "parent_id": "cat_l_004",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_099",
+    "name": "구글 캘린더",
+    "level": 2,
+    "parent_id": "cat_l_004",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_100",
+    "name": "투두리스트",
+    "level": 2,
+    "parent_id": "cat_l_004",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_101",
+    "name": "우선순위 설정",
+    "level": 2,
+    "parent_id": "cat_l_004",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_102",
+    "name": "노션 템플릿",
+    "level": 2,
+    "parent_id": "cat_l_004",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_103",
+    "name": "뽀모도로 기법",
+    "level": 2,
+    "parent_id": "cat_l_004",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_104",
+    "name": "타임 블로킹",
+    "level": 2,
+    "parent_id": "cat_l_004",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_105",
+    "name": "리마인더 설정",
+    "level": 2,
+    "parent_id": "cat_l_004",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_106",
+    "name": "연간 계획",
+    "level": 2,
+    "parent_id": "cat_l_004",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_107",
+    "name": "휴식 시간 배치",
+    "level": 2,
+    "parent_id": "cat_l_004",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_108",
+    "name": "체크리스트",
+    "level": 2,
+    "parent_id": "cat_l_005",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_109",
+    "name": "해외여행 필수템",
+    "level": 2,
+    "parent_id": "cat_l_005",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_110",
+    "name": "캠핑 장비",
+    "level": 2,
+    "parent_id": "cat_l_005",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_111",
+    "name": "자취방 필수품",
+    "level": 2,
+    "parent_id": "cat_l_005",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_112",
+    "name": "비상약 품목",
+    "level": 2,
+    "parent_id": "cat_l_005",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_113",
+    "name": "가방 경량화",
+    "level": 2,
+    "parent_id": "cat_l_005",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_114",
+    "name": "물놀이 용품",
+    "level": 2,
+    "parent_id": "cat_l_005",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_115",
+    "name": "촬영 장비",
+    "level": 2,
+    "parent_id": "cat_l_005",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_116",
+    "name": "기내 반입 규정",
+    "level": 2,
+    "parent_id": "cat_l_005",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_117",
+    "name": "피크닉 용품",
+    "level": 2,
+    "parent_id": "cat_l_005",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_118",
+    "name": "전자기기 충전",
+    "level": 2,
+    "parent_id": "cat_l_005",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_119",
+    "name": "위생 용품",
+    "level": 2,
+    "parent_id": "cat_l_005",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_120",
+    "name": "계절 의류",
+    "level": 2,
+    "parent_id": "cat_l_005",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_121",
+    "name": "등산 장비",
+    "level": 2,
+    "parent_id": "cat_l_005",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_122",
+    "name": "반려동물 용품",
+    "level": 2,
+    "parent_id": "cat_l_005",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_123",
+    "name": "세면도구",
+    "level": 2,
+    "parent_id": "cat_l_005",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_124",
+    "name": "초간단 10분",
+    "level": 2,
+    "parent_id": "cat_l_006",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_125",
+    "name": "자취요리",
+    "level": 2,
+    "parent_id": "cat_l_006",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_126",
+    "name": "집들이 요리",
+    "level": 2,
+    "parent_id": "cat_l_006",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_127",
+    "name": "초보자 가이드",
+    "level": 2,
+    "parent_id": "cat_l_006",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_128",
+    "name": "에어프라이어",
+    "level": 2,
+    "parent_id": "cat_l_006",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_129",
+    "name": "다이어트 식단",
+    "level": 2,
+    "parent_id": "cat_l_006",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_130",
+    "name": "냉장고 파먹기",
+    "level": 2,
+    "parent_id": "cat_l_006",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_131",
+    "name": "원팬 요리",
+    "level": 2,
+    "parent_id": "cat_l_006",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_132",
+    "name": "베이킹 입문",
+    "level": 2,
+    "parent_id": "cat_l_006",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_133",
+    "name": "파티 핑거푸드",
+    "level": 2,
+    "parent_id": "cat_l_006",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_134",
+    "name": "밀키트 활용",
+    "level": 2,
+    "parent_id": "cat_l_006",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_135",
+    "name": "전통 한식",
+    "level": 2,
+    "parent_id": "cat_l_006",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_136",
+    "name": "이색 파스타",
+    "level": 2,
+    "parent_id": "cat_l_006",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_137",
+    "name": "해장 레시피",
+    "level": 2,
+    "parent_id": "cat_l_006",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_138",
+    "name": "디저트 만들기",
+    "level": 2,
+    "parent_id": "cat_l_006",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_139",
+    "name": "소스 레시피",
+    "level": 2,
+    "parent_id": "cat_l_006",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_140",
+    "name": "캠핑 요리",
+    "level": 2,
+    "parent_id": "cat_l_006",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_141",
+    "name": "로컬 숨은맛집",
+    "level": 2,
+    "parent_id": "cat_l_007",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_142",
+    "name": "가성비 끝판왕",
+    "level": 2,
+    "parent_id": "cat_l_007",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_143",
+    "name": "데이트 코스",
+    "level": 2,
+    "parent_id": "cat_l_007",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_144",
+    "name": "부모님 동반",
+    "level": 2,
+    "parent_id": "cat_l_007",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_145",
+    "name": "분위기 깡패",
+    "level": 2,
+    "parent_id": "cat_l_007",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_146",
+    "name": "웨이팅 필수",
+    "level": 2,
+    "parent_id": "cat_l_007",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_147",
+    "name": "노포 감성",
+    "level": 2,
+    "parent_id": "cat_l_007",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_148",
+    "name": "오마카세 추천",
+    "level": 2,
+    "parent_id": "cat_l_007",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_149",
+    "name": "미쉐린 가이드",
+    "level": 2,
+    "parent_id": "cat_l_007",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_150",
+    "name": "야외 테라스",
+    "level": 2,
+    "parent_id": "cat_l_007",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_151",
+    "name": "애견 동반 식당",
+    "level": 2,
+    "parent_id": "cat_l_007",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_152",
+    "name": "프라이빗 룸",
+    "level": 2,
+    "parent_id": "cat_l_007",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_153",
+    "name": "디저트 핫플",
+    "level": 2,
+    "parent_id": "cat_l_007",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_154",
+    "name": "가족 모임",
+    "level": 2,
+    "parent_id": "cat_l_007",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_155",
+    "name": "콜키지 프리",
+    "level": 2,
+    "parent_id": "cat_l_007",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_156",
+    "name": "계절 메뉴",
+    "level": 2,
+    "parent_id": "cat_l_007",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_157",
+    "name": "인스타 감성",
+    "level": 2,
+    "parent_id": "cat_l_007",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_158",
+    "name": "수술 부위",
+    "level": 2,
+    "parent_id": "cat_l_008",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_159",
+    "name": "리얼 후기",
+    "level": 2,
+    "parent_id": "cat_l_008",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_160",
+    "name": "예산 가이드",
+    "level": 2,
+    "parent_id": "cat_l_008",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_161",
+    "name": "병원 위치",
+    "level": 2,
+    "parent_id": "cat_l_008",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_162",
+    "name": "부작용 주의사항",
+    "level": 2,
+    "parent_id": "cat_l_008",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_163",
+    "name": "회복기간 단축",
+    "level": 2,
+    "parent_id": "cat_l_008",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_164",
+    "name": "자연스러운 라인",
+    "level": 2,
+    "parent_id": "cat_l_008",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_165",
+    "name": "전문의 확인",
+    "level": 2,
+    "parent_id": "cat_l_008",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_166",
+    "name": "cctv 보유 병원",
+    "level": 2,
+    "parent_id": "cat_l_008",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_167",
+    "name": "상담 질문지",
+    "level": 2,
+    "parent_id": "cat_l_008",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_168",
+    "name": "사후 관리 서비스",
+    "level": 2,
+    "parent_id": "cat_l_008",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_169",
+    "name": "붓기 차 추천",
+    "level": 2,
+    "parent_id": "cat_l_008",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_170",
+    "name": "재수술 방지",
+    "level": 2,
+    "parent_id": "cat_l_008",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_171",
+    "name": "마취 전문의",
+    "level": 2,
+    "parent_id": "cat_l_008",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_172",
+    "name": "어플 이벤트",
+    "level": 2,
+    "parent_id": "cat_l_008",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_173",
+    "name": "실리콘 종류",
+    "level": 2,
+    "parent_id": "cat_l_008",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_174",
+    "name": "비절개 방법",
+    "level": 2,
+    "parent_id": "cat_l_008",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_175",
+    "name": "버그 수정",
+    "level": 2,
+    "parent_id": "cat_l_009",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_176",
+    "name": "알고리즘 초보",
+    "level": 2,
+    "parent_id": "cat_l_009",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_177",
+    "name": "깃허브 관리",
+    "level": 2,
+    "parent_id": "cat_l_009",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_178",
+    "name": "클린코드 규칙",
+    "level": 2,
+    "parent_id": "cat_l_009",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_179",
+    "name": "포트폴리오",
+    "level": 2,
+    "parent_id": "cat_l_009",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_180",
+    "name": "AI 코딩 툴",
+    "level": 2,
+    "parent_id": "cat_l_009",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_181",
+    "name": "독학 가이드",
+    "level": 2,
+    "parent_id": "cat_l_009",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_182",
+    "name": "오픈소스 기여",
+    "level": 2,
+    "parent_id": "cat_l_009",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_183",
+    "name": "데이터베이스 설계",
+    "level": 2,
+    "parent_id": "cat_l_009",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_184",
+    "name": "디버깅 팁",
+    "level": 2,
+    "parent_id": "cat_l_009",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_185",
+    "name": "프레임워크 비교",
+    "level": 2,
+    "parent_id": "cat_l_009",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_186",
+    "name": "REST API 구현",
+    "level": 2,
+    "parent_id": "cat_l_009",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_187",
+    "name": "배포 가이드",
+    "level": 2,
+    "parent_id": "cat_l_009",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_188",
+    "name": "도커 기초",
+    "level": 2,
+    "parent_id": "cat_l_009",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_189",
+    "name": "코딩 테스트",
+    "level": 2,
+    "parent_id": "cat_l_009",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_190",
+    "name": "코드 리뷰",
+    "level": 2,
+    "parent_id": "cat_l_009",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_191",
+    "name": "디자인 패턴",
+    "level": 2,
+    "parent_id": "cat_l_009",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_192",
+    "name": "주식 초보",
+    "level": 2,
+    "parent_id": "cat_l_010",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_193",
+    "name": "부동산 임장",
+    "level": 2,
+    "parent_id": "cat_l_010",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_194",
+    "name": "소액 투자",
+    "level": 2,
+    "parent_id": "cat_l_010",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_195",
+    "name": "시드머니 모으기",
+    "level": 2,
+    "parent_id": "cat_l_010",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_196",
+    "name": "가계부 루틴",
+    "level": 2,
+    "parent_id": "cat_l_010",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_197",
+    "name": "절세 꿀팁",
+    "level": 2,
+    "parent_id": "cat_l_010",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_198",
+    "name": "ETF 추천",
+    "level": 2,
+    "parent_id": "cat_l_010",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_199",
+    "name": "공모주 청약",
+    "level": 2,
+    "parent_id": "cat_l_010",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_200",
+    "name": "채권 투자 기초",
+    "level": 2,
+    "parent_id": "cat_l_010",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_201",
+    "name": "연금저축 펀드",
+    "level": 2,
+    "parent_id": "cat_l_010",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_202",
+    "name": "미국 주식 배당",
+    "level": 2,
+    "parent_id": "cat_l_010",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_203",
+    "name": "자산 배분",
+    "level": 2,
+    "parent_id": "cat_l_010",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_204",
+    "name": "신용등급 관리",
+    "level": 2,
+    "parent_id": "cat_l_010",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_205",
+    "name": "부수입 파이프라인",
+    "level": 2,
+    "parent_id": "cat_l_010",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_206",
+    "name": "가상자산 가이드",
+    "level": 2,
+    "parent_id": "cat_l_010",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_207",
+    "name": "청약 통장",
+    "level": 2,
+    "parent_id": "cat_l_010",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_208",
+    "name": "적금 풍차돌리기",
+    "level": 2,
+    "parent_id": "cat_l_010",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_209",
+    "name": "식단 칼로리",
+    "level": 2,
+    "parent_id": "cat_l_011",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_210",
+    "name": "정체기 탈출",
+    "level": 2,
+    "parent_id": "cat_l_011",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_211",
+    "name": "홈트 루틴",
+    "level": 2,
+    "parent_id": "cat_l_011",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_212",
+    "name": "체지방 커팅",
+    "level": 2,
+    "parent_id": "cat_l_011",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_213",
+    "name": "바디프로필",
+    "level": 2,
+    "parent_id": "cat_l_011",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_214",
+    "name": "직장인 다이어트",
+    "level": 2,
+    "parent_id": "cat_l_011",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_215",
+    "name": "치팅데이 규칙",
+    "level": 2,
+    "parent_id": "cat_l_011",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_216",
+    "name": "간헐적 단식",
+    "level": 2,
+    "parent_id": "cat_l_011",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_217",
+    "name": "눈바디 측정",
+    "level": 2,
+    "parent_id": "cat_l_011",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_218",
+    "name": "스트레칭 루틴",
+    "level": 2,
+    "parent_id": "cat_l_011",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_219",
+    "name": "수분 섭취량",
+    "level": 2,
+    "parent_id": "cat_l_011",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_220",
+    "name": "치팅데이 메뉴",
+    "level": 2,
+    "parent_id": "cat_l_011",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_221",
+    "name": "유산소 운동",
+    "level": 2,
+    "parent_id": "cat_l_011",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_222",
+    "name": "근력 운동 비율",
+    "level": 2,
+    "parent_id": "cat_l_011",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_223",
+    "name": "닭가슴살 레시피",
+    "level": 2,
+    "parent_id": "cat_l_011",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_224",
+    "name": "다이어트 보조제",
+    "level": 2,
+    "parent_id": "cat_l_011",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_225",
+    "name": "건강한 야식",
+    "level": 2,
+    "parent_id": "cat_l_011",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_226",
+    "name": "기획서 작성",
+    "level": 2,
+    "parent_id": "cat_l_012",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_227",
+    "name": "협상 스킬",
+    "level": 2,
+    "parent_id": "cat_l_012",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_228",
+    "name": "보고의 정석",
+    "level": 2,
+    "parent_id": "cat_l_012",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_229",
+    "name": "스타트업 입문",
+    "level": 2,
+    "parent_id": "cat_l_012",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_230",
+    "name": "성과 지표",
+    "level": 2,
+    "parent_id": "cat_l_012",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_231",
+    "name": "네트워킹",
+    "level": 2,
+    "parent_id": "cat_l_012",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_232",
+    "name": "이직 타이밍",
+    "level": 2,
+    "parent_id": "cat_l_012",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_233",
+    "name": "이메일 작성법",
+    "level": 2,
+    "parent_id": "cat_l_012",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_234",
+    "name": "회의록 템플릿",
+    "level": 2,
+    "parent_id": "cat_l_012",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_235",
+    "name": "피칭 덱 제작",
+    "level": 2,
+    "parent_id": "cat_l_012",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_236",
+    "name": "시장 분석 방법",
+    "level": 2,
+    "parent_id": "cat_l_012",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_237",
+    "name": "리스크 매니지먼트",
+    "level": 2,
+    "parent_id": "cat_l_012",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_238",
+    "name": "업무 자동화",
+    "level": 2,
+    "parent_id": "cat_l_012",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_239",
+    "name": "시간 관리 팁",
+    "level": 2,
+    "parent_id": "cat_l_012",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_240",
+    "name": "조직문화 분석",
+    "level": 2,
+    "parent_id": "cat_l_012",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_241",
+    "name": "커리어 로드맵",
+    "level": 2,
+    "parent_id": "cat_l_012",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_242",
+    "name": "프리랜서 가이드",
+    "level": 2,
+    "parent_id": "cat_l_012",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_243",
+    "name": "SNS 바이럴",
+    "level": 2,
+    "parent_id": "cat_l_013",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_244",
+    "name": "퍼포먼스 광고",
+    "level": 2,
+    "parent_id": "cat_l_013",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_245",
+    "name": "콘텐츠 기획",
+    "level": 2,
+    "parent_id": "cat_l_013",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_246",
+    "name": "SEO 최적화",
+    "level": 2,
+    "parent_id": "cat_l_013",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_247",
+    "name": "브랜딩 전략",
+    "level": 2,
+    "parent_id": "cat_l_013",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_248",
+    "name": "카피라이팅",
+    "level": 2,
+    "parent_id": "cat_l_013",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_249",
+    "name": "타겟 분석",
+    "level": 2,
+    "parent_id": "cat_l_013",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_250",
+    "name": "구글 애널리틱스",
+    "level": 2,
+    "parent_id": "cat_l_013",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_251",
+    "name": "뉴스레터 발행",
+    "level": 2,
+    "parent_id": "cat_l_013",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_252",
+    "name": "인플루언서 섭외",
+    "level": 2,
+    "parent_id": "cat_l_013",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_253",
+    "name": "A/B 테스트",
+    "level": 2,
+    "parent_id": "cat_l_013",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_254",
+    "name": "유튜브 채널 성장",
+    "level": 2,
+    "parent_id": "cat_l_013",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_255",
+    "name": "커뮤니티 빌딩",
+    "level": 2,
+    "parent_id": "cat_l_013",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_256",
+    "name": "이벤트 기획",
+    "level": 2,
+    "parent_id": "cat_l_013",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_257",
+    "name": "광고 집행 예산",
+    "level": 2,
+    "parent_id": "cat_l_013",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_258",
+    "name": "데이터 시각화",
+    "level": 2,
+    "parent_id": "cat_l_013",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_259",
+    "name": "마케팅 트렌드",
+    "level": 2,
+    "parent_id": "cat_l_013",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_260",
+    "name": "원룸 꾸미기",
+    "level": 2,
+    "parent_id": "cat_l_014",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_261",
+    "name": "가성비 가구",
+    "level": 2,
+    "parent_id": "cat_l_014",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_262",
+    "name": "조명 배치",
+    "level": 2,
+    "parent_id": "cat_l_014",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_263",
+    "name": "수납 가이드",
+    "level": 2,
+    "parent_id": "cat_l_014",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_264",
+    "name": "플랜테리어",
+    "level": 2,
+    "parent_id": "cat_l_014",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_265",
+    "name": "미니멀리즘",
+    "level": 2,
+    "parent_id": "cat_l_014",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_266",
+    "name": "컬러 매칭",
+    "level": 2,
+    "parent_id": "cat_l_014",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_267",
+    "name": "이케아 해킹",
+    "level": 2,
+    "parent_id": "cat_l_014",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_268",
+    "name": "셀프 페인팅",
+    "level": 2,
+    "parent_id": "cat_l_014",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_269",
+    "name": "패브릭 소품",
+    "level": 2,
+    "parent_id": "cat_l_014",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_270",
+    "name": "벽지 선택법",
+    "level": 2,
+    "parent_id": "cat_l_014",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_271",
+    "name": "스마트홈 구축",
+    "level": 2,
+    "parent_id": "cat_l_014",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_272",
+    "name": "수납 가구 추천",
+    "level": 2,
+    "parent_id": "cat_l_014",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_273",
+    "name": "빈티지 가구",
+    "level": 2,
+    "parent_id": "cat_l_014",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_274",
+    "name": "공간 분리 방법",
+    "level": 2,
+    "parent_id": "cat_l_014",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_275",
+    "name": "러그 매칭",
+    "level": 2,
+    "parent_id": "cat_l_014",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_276",
+    "name": "계절별 스타일링",
+    "level": 2,
+    "parent_id": "cat_l_014",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_277",
+    "name": "소개팅 꿀팁",
+    "level": 2,
+    "parent_id": "cat_l_015",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_278",
+    "name": "대화 이끌기",
+    "level": 2,
+    "parent_id": "cat_l_015",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_279",
+    "name": "밀당의 기술",
+    "level": 2,
+    "parent_id": "cat_l_015",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_280",
+    "name": "기념일 선물",
+    "level": 2,
+    "parent_id": "cat_l_015",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_281",
+    "name": "연애 고민 상담",
+    "level": 2,
+    "parent_id": "cat_l_015",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_282",
+    "name": "서운함 표현법",
+    "level": 2,
+    "parent_id": "cat_l_015",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_283",
+    "name": "심리 분석",
+    "level": 2,
+    "parent_id": "cat_l_015",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_284",
+    "name": "첫 데이트 장소",
+    "level": 2,
+    "parent_id": "cat_l_015",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_285",
+    "name": "고백 타이밍",
+    "level": 2,
+    "parent_id": "cat_l_015",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_286",
+    "name": "권태기 극복",
+    "level": 2,
+    "parent_id": "cat_l_015",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_287",
+    "name": "연락 빈도 조절",
+    "level": 2,
+    "parent_id": "cat_l_015",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_288",
+    "name": "서로 선 지키기",
+    "level": 2,
+    "parent_id": "cat_l_015",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_289",
+    "name": "질투심 대처",
+    "level": 2,
+    "parent_id": "cat_l_015",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_290",
+    "name": "화해하는 방법",
+    "level": 2,
+    "parent_id": "cat_l_015",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_291",
+    "name": "장거리 연애",
+    "level": 2,
+    "parent_id": "cat_l_015",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_292",
+    "name": "커플 통장",
+    "level": 2,
+    "parent_id": "cat_l_015",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_293",
+    "name": "가치관 맞추기",
+    "level": 2,
+    "parent_id": "cat_l_015",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_294",
+    "name": "경력기술서",
+    "level": 2,
+    "parent_id": "cat_l_016",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_295",
+    "name": "연봉 협상",
+    "level": 2,
+    "parent_id": "cat_l_016",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_296",
+    "name": "퇴사 타이밍",
+    "level": 2,
+    "parent_id": "cat_l_016",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_297",
+    "name": "헤드헌터 접촉",
+    "level": 2,
+    "parent_id": "cat_l_016",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_298",
+    "name": "포트폴리오 튜닝",
+    "level": 2,
+    "parent_id": "cat_l_016",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_299",
+    "name": "이직 면접 질문",
+    "level": 2,
+    "parent_id": "cat_l_016",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_300",
+    "name": "기업 분석",
+    "level": 2,
+    "parent_id": "cat_l_016",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_301",
+    "name": "레퍼런스 체크",
+    "level": 2,
+    "parent_id": "cat_l_016",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_302",
+    "name": "링크드인 활용",
+    "level": 2,
+    "parent_id": "cat_l_016",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_303",
+    "name": "잡플래닛 후기",
+    "level": 2,
+    "parent_id": "cat_l_016",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_304",
+    "name": "이직 동기 준비",
+    "level": 2,
+    "parent_id": "cat_l_016",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_305",
+    "name": "퇴사 인수인계",
+    "level": 2,
+    "parent_id": "cat_l_016",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_306",
+    "name": "연차 수당 계산",
+    "level": 2,
+    "parent_id": "cat_l_016",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_307",
+    "name": "실업급여 요건",
+    "level": 2,
+    "parent_id": "cat_l_016",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_308",
+    "name": "합격 후 처우협의",
+    "level": 2,
+    "parent_id": "cat_l_016",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_309",
+    "name": "직무 기술서 분석",
+    "level": 2,
+    "parent_id": "cat_l_016",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_310",
+    "name": "수습 기간 조건",
+    "level": 2,
+    "parent_id": "cat_l_016",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_311",
+    "name": "다독 루틴",
+    "level": 2,
+    "parent_id": "cat_l_017",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_312",
+    "name": "독서노트 작성",
+    "level": 2,
+    "parent_id": "cat_l_017",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_313",
+    "name": "책 추천",
+    "level": 2,
+    "parent_id": "cat_l_017",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_314",
+    "name": "몰입 독서법",
+    "level": 2,
+    "parent_id": "cat_l_017",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_315",
+    "name": "전자책 활용",
+    "level": 2,
+    "parent_id": "cat_l_017",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_316",
+    "name": "독서 모임",
+    "level": 2,
+    "parent_id": "cat_l_017",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_317",
+    "name": "글귀 아카이빙",
+    "level": 2,
+    "parent_id": "cat_l_017",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_318",
+    "name": "밀리의 서재",
+    "level": 2,
+    "parent_id": "cat_l_017",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_319",
+    "name": "오디오북 추천",
+    "level": 2,
+    "parent_id": "cat_l_017",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_320",
+    "name": "도서관 대출 팁",
+    "level": 2,
+    "parent_id": "cat_l_017",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_321",
+    "name": "서평 쓰는 법",
+    "level": 2,
+    "parent_id": "cat_l_017",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_322",
+    "name": "분야별 추천 도서",
+    "level": 2,
+    "parent_id": "cat_l_017",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_323",
+    "name": "책갈피 제작",
+    "level": 2,
+    "parent_id": "cat_l_017",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_324",
+    "name": "벽돌책 격파",
+    "level": 2,
+    "parent_id": "cat_l_017",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_325",
+    "name": "아침 독서 10분",
+    "level": 2,
+    "parent_id": "cat_l_017",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_326",
+    "name": "독서 메이트",
+    "level": 2,
+    "parent_id": "cat_l_017",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_327",
+    "name": "나만의 서재 꾸미기",
+    "level": 2,
+    "parent_id": "cat_l_017",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_328",
+    "name": "뽀모도로 기법",
+    "level": 2,
+    "parent_id": "cat_l_018",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_329",
+    "name": "우선순위 법칙",
+    "level": 2,
+    "parent_id": "cat_l_018",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_330",
+    "name": "데드라인 사수",
+    "level": 2,
+    "parent_id": "cat_l_018",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_331",
+    "name": "아침 루틴",
+    "level": 2,
+    "parent_id": "cat_l_018",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_332",
+    "name": "스케줄러 100% 활용",
+    "level": 2,
+    "parent_id": "cat_l_018",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_333",
+    "name": "자투리 시간",
+    "level": 2,
+    "parent_id": "cat_l_018",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_334",
+    "name": "타임 트래커",
+    "level": 2,
+    "parent_id": "cat_l_018",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_335",
+    "name": "미루기 극복 팁",
+    "level": 2,
+    "parent_id": "cat_l_018",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_336",
+    "name": "에너지 레벨 체크",
+    "level": 2,
+    "parent_id": "cat_l_018",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_337",
+    "name": "주간 피드백",
+    "level": 2,
+    "parent_id": "cat_l_018",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_338",
+    "name": "멀티태스킹 방지",
+    "level": 2,
+    "parent_id": "cat_l_018",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_339",
+    "name": "집중력 향상 앱",
+    "level": 2,
+    "parent_id": "cat_l_018",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_340",
+    "name": "아이젠하워 매트릭스",
+    "level": 2,
+    "parent_id": "cat_l_018",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_341",
+    "name": "노티피케이션 차단",
+    "level": 2,
+    "parent_id": "cat_l_018",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_342",
+    "name": "저녁 루틴",
+    "level": 2,
+    "parent_id": "cat_l_018",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_343",
+    "name": "수면 골든타임",
+    "level": 2,
+    "parent_id": "cat_l_018",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_344",
+    "name": "블로그 글쓰기",
+    "level": 2,
+    "parent_id": "cat_l_019",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_345",
+    "name": "에세이 창작",
+    "level": 2,
+    "parent_id": "cat_l_019",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_346",
+    "name": "문장력 강화",
+    "level": 2,
+    "parent_id": "cat_l_019",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_347",
+    "name": "매일 글쓰기 습관",
+    "level": 2,
+    "parent_id": "cat_l_019",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_348",
+    "name": "소재 발굴",
+    "level": 2,
+    "parent_id": "cat_l_019",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_349",
+    "name": "퇴고 체크리스트",
+    "level": 2,
+    "parent_id": "cat_l_019",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_350",
+    "name": "브런치 작가 신청",
+    "level": 2,
+    "parent_id": "cat_l_019",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_351",
+    "name": "책 출판 프로세스",
+    "level": 2,
+    "parent_id": "cat_l_019",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_352",
+    "name": "카피라이팅 기초",
+    "level": 2,
+    "parent_id": "cat_l_019",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_353",
+    "name": "필사 노트",
+    "level": 2,
+    "parent_id": "cat_l_019",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_354",
+    "name": "제목 짓기 팁",
+    "level": 2,
+    "parent_id": "cat_l_019",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_355",
+    "name": "단어 사전 활용",
+    "level": 2,
+    "parent_id": "cat_l_019",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_356",
+    "name": "피드백 반영하기",
+    "level": 2,
+    "parent_id": "cat_l_019",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_357",
+    "name": "문맥 다듬기",
+    "level": 2,
+    "parent_id": "cat_l_019",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_358",
+    "name": "스토리 구조 짜기",
+    "level": 2,
+    "parent_id": "cat_l_019",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_359",
+    "name": "웹소설 입문",
+    "level": 2,
+    "parent_id": "cat_l_019",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_360",
+    "name": "1분 자기소개",
+    "level": 2,
+    "parent_id": "cat_l_020",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_361",
+    "name": "압박질문 대처",
+    "level": 2,
+    "parent_id": "cat_l_020",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_362",
+    "name": "정장 스타일링",
+    "level": 2,
+    "parent_id": "cat_l_020",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_363",
+    "name": "시선 처리",
+    "level": 2,
+    "parent_id": "cat_l_020",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_364",
+    "name": "마지막 한마디",
+    "level": 2,
+    "parent_id": "cat_l_020",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_365",
+    "name": "역질문 기술",
+    "level": 2,
+    "parent_id": "cat_l_020",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_366",
+    "name": "스타(STAR) 기법",
+    "level": 2,
+    "parent_id": "cat_l_020",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_367",
+    "name": "모의면접 연습",
+    "level": 2,
+    "parent_id": "cat_l_020",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_368",
+    "name": "비언어적 태도",
+    "level": 2,
+    "parent_id": "cat_l_020",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_369",
+    "name": "면접 10분 전 대비",
+    "level": 2,
+    "parent_id": "cat_l_020",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_370",
+    "name": "회사 최신 뉴스",
+    "level": 2,
+    "parent_id": "cat_l_020",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_371",
+    "name": "AI 면접 팁",
+    "level": 2,
+    "parent_id": "cat_l_020",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_372",
+    "name": "직무 역량 어필",
+    "level": 2,
+    "parent_id": "cat_l_020",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_373",
+    "name": "예상 꼬리 질문",
+    "level": 2,
+    "parent_id": "cat_l_020",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_374",
+    "name": "면접 피드백 정리",
+    "level": 2,
+    "parent_id": "cat_l_020",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_375",
+    "name": "대기실 태도",
+    "level": 2,
+    "parent_id": "cat_l_020",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_376",
+    "name": "거절하는 법",
+    "level": 2,
+    "parent_id": "cat_l_021",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_377",
+    "name": "선 넘는 사람 대처",
+    "level": 2,
+    "parent_id": "cat_l_021",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_378",
+    "name": "직장 내 대화법",
+    "level": 2,
+    "parent_id": "cat_l_021",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_379",
+    "name": "친구 고민",
+    "level": 2,
+    "parent_id": "cat_l_021",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_380",
+    "name": "자존감 지키기",
+    "level": 2,
+    "parent_id": "cat_l_021",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_381",
+    "name": "가족과의 소통",
+    "level": 2,
+    "parent_id": "cat_l_021",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_382",
+    "name": "공감적 경청",
+    "level": 2,
+    "parent_id": "cat_l_021",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_383",
+    "name": "나 전달법(I-Message)",
+    "level": 2,
+    "parent_id": "cat_l_021",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_384",
+    "name": "감정 쓰레기통 피하기",
+    "level": 2,
+    "parent_id": "cat_l_021",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_385",
+    "name": "인맥 다이어트",
+    "level": 2,
+    "parent_id": "cat_l_021",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_386",
+    "name": "적당한 거리 두기",
+    "level": 2,
+    "parent_id": "cat_l_021",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_387",
+    "name": "사과하는 타이밍",
+    "level": 2,
+    "parent_id": "cat_l_021",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_388",
+    "name": "험담 대처법",
+    "level": 2,
+    "parent_id": "cat_l_021",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_389",
+    "name": "뒷담화 차단",
+    "level": 2,
+    "parent_id": "cat_l_021",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_390",
+    "name": "모임 조율 방법",
+    "level": 2,
+    "parent_id": "cat_l_021",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_391",
+    "name": "가스라이팅 구별법",
+    "level": 2,
+    "parent_id": "cat_l_021",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_392",
+    "name": "영상 편집 초보",
+    "level": 2,
+    "parent_id": "cat_l_022",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_393",
+    "name": "썸네일 치트키",
+    "level": 2,
+    "parent_id": "cat_l_022",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_394",
+    "name": "조회수 떡상",
+    "level": 2,
+    "parent_id": "cat_l_022",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_395",
+    "name": "장비 추천",
+    "level": 2,
+    "parent_id": "cat_l_022",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_396",
+    "name": "쇼츠 알고리즘",
+    "level": 2,
+    "parent_id": "cat_l_022",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_397",
+    "name": "채널 브랜딩",
+    "level": 2,
+    "parent_id": "cat_l_022",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_398",
+    "name": "무료 음원 사이트",
+    "level": 2,
+    "parent_id": "cat_l_022",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_399",
+    "name": "시청 지속 시간",
+    "level": 2,
+    "parent_id": "cat_l_022",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_400",
+    "name": "자막 템플릿",
+    "level": 2,
+    "parent_id": "cat_l_022",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_401",
+    "name": "촬영 조명 배치",
+    "level": 2,
+    "parent_id": "cat_l_022",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_402",
+    "name": "유튜브 스튜디오 분석",
+    "level": 2,
+    "parent_id": "cat_l_022",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_403",
+    "name": "시청자 소통 피드",
+    "level": 2,
+    "parent_id": "cat_l_022",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_404",
+    "name": "채널 아트 디자인",
+    "level": 2,
+    "parent_id": "cat_l_022",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_405",
+    "name": "태그 최적화",
+    "level": 2,
+    "parent_id": "cat_l_022",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_406",
+    "name": "협찬 및 광고 단가",
+    "level": 2,
+    "parent_id": "cat_l_022",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_407",
+    "name": "콘텐츠 카테고리 설정",
+    "level": 2,
+    "parent_id": "cat_l_022",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_408",
+    "name": "발성 교정",
+    "level": 2,
+    "parent_id": "cat_l_023",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_409",
+    "name": "발표 불안 극복",
+    "level": 2,
+    "parent_id": "cat_l_023",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_410",
+    "name": "청중 사로잡기",
+    "level": 2,
+    "parent_id": "cat_l_023",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_411",
+    "name": "딕션 연습",
+    "level": 2,
+    "parent_id": "cat_l_023",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_412",
+    "name": "스토리텔링",
+    "level": 2,
+    "parent_id": "cat_l_023",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_413",
+    "name": "PT 면접 합격",
+    "level": 2,
+    "parent_id": "cat_l_023",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_414",
+    "name": "보이스 트레이닝",
+    "level": 2,
+    "parent_id": "cat_l_023",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_415",
+    "name": "오프닝 아이스브레이킹",
+    "level": 2,
+    "parent_id": "cat_l_023",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_416",
+    "name": "제스처 활용법",
+    "level": 2,
+    "parent_id": "cat_l_023",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_417",
+    "name": "말 빠르기 조절",
+    "level": 2,
+    "parent_id": "cat_l_023",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_418",
+    "name": "대본 없이 말하기",
+    "level": 2,
+    "parent_id": "cat_l_023",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_419",
+    "name": "마이크 잡는 법",
+    "level": 2,
+    "parent_id": "cat_l_023",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_420",
+    "name": "강약 조절 스킬",
+    "level": 2,
+    "parent_id": "cat_l_023",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_421",
+    "name": "중요 단어 강조",
+    "level": 2,
+    "parent_id": "cat_l_023",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_422",
+    "name": "Q&A 대처 요령",
+    "level": 2,
+    "parent_id": "cat_l_023",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_423",
+    "name": "청중 눈맞춤",
+    "level": 2,
+    "parent_id": "cat_l_023",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_424",
+    "name": "영양제 조합",
+    "level": 2,
+    "parent_id": "cat_l_024",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_425",
+    "name": "수면 질 개선",
+    "level": 2,
+    "parent_id": "cat_l_024",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_426",
+    "name": "거북목 교정",
+    "level": 2,
+    "parent_id": "cat_l_024",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_427",
+    "name": "스트레칭 루틴",
+    "level": 2,
+    "parent_id": "cat_l_024",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_428",
+    "name": "만성피로 해소",
+    "level": 2,
+    "parent_id": "cat_l_024",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_429",
+    "name": "수분 섭취 습관",
+    "level": 2,
+    "parent_id": "cat_l_024",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_430",
+    "name": "바른 자세 유지",
+    "level": 2,
+    "parent_id": "cat_l_024",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_431",
+    "name": "스트레스 해소법",
+    "level": 2,
+    "parent_id": "cat_l_024",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_432",
+    "name": "유산소 운동 추천",
+    "level": 2,
+    "parent_id": "cat_l_024",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_433",
+    "name": "눈 피로 완화",
+    "level": 2,
+    "parent_id": "cat_l_024",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_434",
+    "name": "금연 성공 비법",
+    "level": 2,
+    "parent_id": "cat_l_024",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_435",
+    "name": "하루 만보 걷기",
+    "level": 2,
+    "parent_id": "cat_l_024",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_436",
+    "name": "인바디 분석",
+    "level": 2,
+    "parent_id": "cat_l_024",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_437",
+    "name": "숙면 온도 조절",
+    "level": 2,
+    "parent_id": "cat_l_024",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_438",
+    "name": "마인드풀니스 명상",
+    "level": 2,
+    "parent_id": "cat_l_024",
+    "type": "system"
+  },
+  {
+    "id": "cat_m_439",
+    "name": "정기 건강검진",
+    "level": 2,
+    "parent_id": "cat_l_024",
+    "type": "system"
+  },
+  {
+    "id": "cat_s_440",
+    "name": "너무 빡빡한 일정 피하기",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_441",
+    "name": "실현 가능성 대폭 높여줘",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_442",
+    "name": "직장인용 맞춤형으로 변경",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_443",
+    "name": "비용 최소화 관점",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_444",
+    "name": "초보자 수준으로 쉽게",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_445",
+    "name": "단계별 템플릿 양식 제공",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_446",
+    "name": "예시(Example) 포함해서 출력",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_447",
+    "name": "전문 용어 해설 추가",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_448",
+    "name": "체크리스트 형태로 요약",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_449",
+    "name": "핵심 위주로 분량 압축",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_450",
+    "name": "루틴 최적화 집중",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_451",
+    "name": "시간대별 분배형",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_452",
+    "name": "번아웃 방지 포함",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_453",
+    "name": "초단기 벼락치기 모드",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_454",
+    "name": "약점 과목 집중형",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_455",
+    "name": "예산 절약 극한형",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_456",
+    "name": "럭셔리 여행 버전",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_457",
+    "name": "혼행 안전 특화",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_458",
+    "name": "가족 동반 최적화",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_459",
+    "name": "현지인 추천 위주",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_460",
+    "name": "원어민 표현 위주",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_461",
+    "name": "시험 실전형으로",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_462",
+    "name": "비즈니스 한정으로",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_463",
+    "name": "회화 중심 재구성",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_464",
+    "name": "한국인 실수 패턴 교정",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_465",
+    "name": "직장인 맞춤형",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_466",
+    "name": "주말 활용 극대화",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_467",
+    "name": "마감 압박 상황용",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_468",
+    "name": "멀티태스킹 최소화",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_469",
+    "name": "에너지 레벨 고려",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_470",
+    "name": "초경량 미니멀형",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_471",
+    "name": "만약을 대비한 완전체",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_472",
+    "name": "예산 1만원 이하",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_473",
+    "name": "당일치기 특화",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_474",
+    "name": "장거리 이동 최적화",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_475",
+    "name": "10분 이내 완성",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_476",
+    "name": "냉장고 재료만으로",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_477",
+    "name": "칼로리 500 이하",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_478",
+    "name": "초보도 실패 없는",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_479",
+    "name": "손님 초대용 플레이팅",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_480",
+    "name": "웨이팅 없는 곳만",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_481",
+    "name": "주차 가능한 곳만",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_482",
+    "name": "아이 동반 가능",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_483",
+    "name": "혼밥 가능 분위기",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_484",
+    "name": "예약 필수 프리미엄",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_485",
+    "name": "안전 최우선 보수적",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_486",
+    "name": "회복 기간 최소화",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_487",
+    "name": "상담 필수 질문 위주",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_488",
+    "name": "비용 대비 효과 분석",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_489",
+    "name": "자연스러운 결과 위주",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_490",
+    "name": "주석 상세히 포함",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_491",
+    "name": "초보자도 이해 가능하게",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_492",
+    "name": "실무 바로 적용형",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_493",
+    "name": "성능 최적화 관점",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_494",
+    "name": "보안 취약점 체크",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_495",
+    "name": "리스크 최소화 안전형",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_496",
+    "name": "공격적 수익 극대화",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_497",
+    "name": "절세 관점 추가",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_498",
+    "name": "월급쟁이 맞춤형",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_499",
+    "name": "단기 3개월 목표",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_500",
+    "name": "칼로리 수치 포함",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_501",
+    "name": "운동 없이 식단만",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_502",
+    "name": "근손실 방지 관점",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_503",
+    "name": "단기 2주 집중형",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_504",
+    "name": "유지어터 맞춤형",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_505",
+    "name": "신입 직장인 버전",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_506",
+    "name": "프리랜서 특화",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_507",
+    "name": "스타트업 환경 기준",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_508",
+    "name": "대기업 문화 반영",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_509",
+    "name": "실전 템플릿 포함",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_510",
+    "name": "예산 0원 무료 채널만",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_511",
+    "name": "데이터 기반 분석형",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_512",
+    "name": "바이럴 속도 극대화",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_513",
+    "name": "B2B 타겟 특화",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_514",
+    "name": "SNS 플랫폼별 분리",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_515",
+    "name": "10만원 이하 셀프",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_516",
+    "name": "임차인 원상복구 가능",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_517",
+    "name": "좁은 공간 극대화",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_518",
+    "name": "반려동물 친화형",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_519",
+    "name": "미니멀 화이트 톤",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_520",
+    "name": "소극적 성격 맞춤형",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_521",
+    "name": "장거리 연애 특화",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_522",
+    "name": "권태기 극복 집중",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_523",
+    "name": "첫 만남 인상 관리",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_524",
+    "name": "감정 표현 서툰 경우",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_525",
+    "name": "연봉 협상 집중형",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_526",
+    "name": "경력 공백 설명 전략",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_527",
+    "name": "동종업계 이직 특화",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_528",
+    "name": "업종 전환 케이스",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_529",
+    "name": "급하게 이직해야 할 때",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_530",
+    "name": "바쁜 직장인 맞춤",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_531",
+    "name": "비문학 독해 강화",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_532",
+    "name": "한 권 깊이 읽기형",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_533",
+    "name": "빠른 다독 스피드형",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_534",
+    "name": "독서 기록 시스템화",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_535",
+    "name": "ADHD 성향 맞춤",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_536",
+    "name": "집중력 30분 이하용",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_537",
+    "name": "갑작스러운 일정 대응",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_538",
+    "name": "완벽주의 성향 교정",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_539",
+    "name": "번아웃 직전 응급처치",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_540",
+    "name": "초안 빠르게 뽑기형",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_541",
+    "name": "퇴고 집중 개선형",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_542",
+    "name": "독자 반응 극대화",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_543",
+    "name": "SEO 최적화 글쓰기",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_544",
+    "name": "감성 에세이 특화",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_545",
+    "name": "긴장 극복 집중형",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_546",
+    "name": "비대면 화상 면접",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_547",
+    "name": "경력직 어필 전략",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_548",
+    "name": "신입 공백 기간 대처",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_549",
+    "name": "최종 면접 임원형",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_550",
+    "name": "직장 내 갈등 특화",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_551",
+    "name": "가족 관계 개선형",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_552",
+    "name": "거절 못하는 성격 교정",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_553",
+    "name": "감정 소모 최소화",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_554",
+    "name": "경계선 세우기 집중",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_555",
+    "name": "쇼츠 알고리즘 특화",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_556",
+    "name": "구독자 0명 시작형",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_557",
+    "name": "얼굴 없이 운영 가능",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_558",
+    "name": "주 1회 업로드 페이스",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_559",
+    "name": "수익화 최단 루트",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_560",
+    "name": "극심한 무대공포 극복",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_561",
+    "name": "즉흥 스피치 대응",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_562",
+    "name": "온라인 발표 특화",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_563",
+    "name": "설득력 극대화형",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_564",
+    "name": "유머 활용 스피치",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_565",
+    "name": "직장인 점심시간 활용",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_566",
+    "name": "운동 기피자 입문형",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_567",
+    "name": "수면 개선 집중형",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_568",
+    "name": "만성질환 주의사항 포함",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_s_569",
+    "name": "멘탈 건강 병행 관리",
+    "level": 3,
+    "parent_id": null,
+    "type": "system"
+  },
+  {
+    "id": "cat_l_usr_1782716715746",
+    "name": "ㄹㄹ",
+    "level": 1,
+    "parent_id": null,
+    "type": "user"
+  },
+  {
+    "id": "cat_m_usr_1782716715746",
+    "name": "실전 ㄹㄹ 전략",
+    "level": 2,
+    "parent_id": "cat_l_usr_1782716715746",
+    "type": "user"
+  },
+  {
+    "id": "cat_l_usr_1782717586198",
+    "name": "한남동",
+    "level": 1,
+    "parent_id": null,
+    "type": "user"
+  },
+  {
+    "id": "cat_m_usr_1782717603446",
+    "name": "QA자동화",
+    "level": 2,
+    "parent_id": "cat_l_025",
+    "type": "user"
+  }
+]

@@ -1,35 +1,47 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import appData from './data.json';
-
+import categoriesData from './categories.json';
+import analysisData from './analysis.json';
 import MacroSection from './components/MacroSection';
 import SubSection from './components/SubSection';
 import TuningSection from './components/TuningSection';
 
-interface AppDataStructure {
-  macroPool: string[];
-  infiniteMacroPool: string[];
-  subCategoryData: Record<string, string[]>;
-  extendedSubPool: string[];
-  secondaryPool: string[];
-  specificSecondaryPools: Record<string, string[]>;
-  analysisKeywordsPool: Record<string, string[]>;
-  promptTemplates: {
-    persona: string;
-    targetSituation: string;
-    requests: string[];
-  };
+interface CategoryItem {
+  id: string;
+  name: string;
+  level: number;
+  parent_id: string | null;
+  type: string;
 }
 
 export default function Home() {
-  const data = appData as unknown as AppDataStructure;
+  const categories = categoriesData as unknown as CategoryItem[];
+  const analysisKeywordsPool = analysisData.analysisKeywordsPool;
 
-  const subCategoryData = data.subCategoryData;
-  const secondaryPool = data.secondaryPool;
-  const specificSecondaryPools = data.specificSecondaryPools;
-  const analysisKeywordsPool = data.analysisKeywordsPool;
-  const promptTemplates = data.promptTemplates;
+  const promptTemplates = {
+    persona: "당신은 핵심을 찌르는 10년 차 최고의 [{macro}] 전문 컨설턴트이자 멘토입니다.",
+    targetSituation: "사용자는 현재 [{macro}] 분야의 작업을 진행 중이며, 특히 [{subs}] 요소를 핵심 재료로 고려하고 있습니다.",
+    requests: [
+      "1. 선택한 키워드 재료들과 맥락을 깊이 분석하여 구체적이고 실질적인 단계별 액션 플랜을 도출해 주세요.",
+      "2. 발생 가능한 리스크를 사전 차단할 수 있는 고효율 체크리스트 가이드를 제공해 주세요.",
+      "3. 불필요한 서론, 인사말, 뻔한 덕담은 전면 생략하고 두괄식 핵심 요약 정보 위주로 답변해 주세요.",
+      "4. \"상황에 따라 다를 수 있다\"와 같은 추상적인 조언이나 이론적 설명은 일절 배제하고, 오늘 당장 실행할 수 있는 행동(동사) 단위로만 답변을 구성해 주세요."
+    ]
+  };
+
+  const subCategoryData: Record<string, string[]> = {};
+  const level1Cats = categories.filter(c => c.level === 1);
+  const level2Cats = categories.filter(c => c.level === 2);
+  level1Cats.forEach(l1 => {
+    subCategoryData[l1.name] = level2Cats.filter(c => c.parent_id === l1.id).map(c => c.name);
+  });
+
+  const secondaryPool = categories.filter(c => c.level === 3).map(c => c.name);
+  const specificSecondaryPools: Record<string, string[]> = {
+    "공부": ["루틴 최적화 집중", "시간대별 시간 분배형", "번아웃 방지 장치 포함", "초단기 벼락치기 모드"],
+    "성형": ["안전 최우선 보수적 관점", "회복 기간 최소화 위주", "상담 시 필수 질문 목록 위주"]
+  };
 
   const [macroCategories, setMacroCategories] = useState(["공부", "여행", "영어", "일정", "준비물", "레시피", "맛집", "성형"]);
   const [selectedMacro, setSelectedMacro] = useState("");
@@ -46,8 +58,8 @@ export default function Home() {
 
   const [macroBulkStorage, setMacroBulkStorage] = useState<string[]>(() => {
     const initialCategories = ["공부", "여행", "영어", "일정", "준비물", "레시피", "맛집", "성형"];
-    const pool = [...(appData.macroPool || []), ...(appData.infiniteMacroPool || [])];
-    return pool.filter(item => !initialCategories.includes(item));
+    const level1Names = (categoriesData as unknown as CategoryItem[]).filter(c => c.level === 1).map(c => c.name);
+    return level1Names.filter(name => !initialCategories.includes(name));
   });
   const [subBulkStorage, setSubBulkStorage] = useState<string[]>([]);
 
@@ -62,6 +74,22 @@ export default function Home() {
   const APPEND_LIMIT = 3;
 
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const [showWarningModal, setShowWarningModal] = useState(false);
+  const [warningMessage, setWarningMessage] = useState("");
+
+  const triggerWarning = useCallback((msg: string) => {
+    setWarningMessage(msg);
+    setShowWarningModal(true);
+  }, []);
+
+  const handleUserInputChange = (val: string) => {
+    if (val.length > 500) {
+      setUserInput(val.slice(0, 500));
+      triggerWarning("최대 500자까지만 입력 가능합니다.");
+    } else {
+      setUserInput(val);
+    }
+  };
 
   const [activeRequests, setActiveRequests] = useState<string[]>(promptTemplates.requests);
 
@@ -93,49 +121,6 @@ export default function Home() {
 
 
 
-  // 1번 수정: 요청 시점의 macro를 캡처해서 응답 시점에 현재 선택과 비교
-  const topUpSubStorage = async (macro: string, currentList: string[]) => {
-    if (!macro) return;
-    const requestedMacro = macro; // 요청 시점 캡처
-    try {
-      const response = await fetch('/api/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'sub', currentItems: currentList, selectedMacro: macro }),
-      });
-      const res = await response.json();
-      if (res.success && res.data) {
-        // 응답이 돌아왔을 때 현재 선택된 대분류와 다르면 버림
-        if (selectedMacroRef.current !== requestedMacro) return;
-        const newItems = (res.data as string[]).filter(item => !currentList.includes(item));
-        setSubBulkStorage((prev) => [...new Set([...prev, ...newItems])]);
-      }
-    } catch (error) {
-      console.error("중분류 벌크 수급 실패:", error);
-    }
-  };
-
-  const fetchDynamicRequests = async (macro: string) => {
-    if (!macro) return;
-    const requestedMacro = macro;
-    try {
-      const response = await fetch('/api/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'requests', selectedMacro: macro }),
-      });
-      const res = await response.json();
-      if (res.success && res.data && res.data.length >= 4) {
-        if (selectedMacroRef.current !== requestedMacro) return;
-        setActiveRequests(res.data.slice(0, 4));
-      }
-    } catch (error) {
-      console.error("동적 요청사항 수급 실패:", error);
-    }
-  };
-
-
-
   const handleSelectMacro = (category: string) => {
     setSelectedMacro(category);
     selectedMacroRef.current = category; // ref 즉시 동기화
@@ -147,17 +132,18 @@ export default function Home() {
     setAppendSubCount(0);
 
     let initialSubs: string[] = [];
+    let bulkSubs: string[] = [];
     if (subCategoryData[category]) {
       initialSubs = subCategoryData[category].slice(0, 7);
+      bulkSubs = subCategoryData[category].slice(7);
     } else {
       initialSubs = [`${category} 입문 가이드`, `${category} 트렌드 분석`, `실전 ${category} 전략`];
     }
     setSubChips(initialSubs);
-    topUpSubStorage(category, initialSubs);
+    setSubBulkStorage(bulkSubs);
 
-    // 로딩 중에는 기존 고정 requests를 fallback으로 지정
+    // 100% 로컬 기본 requests 지정
     setActiveRequests(promptTemplates.requests);
-    fetchDynamicRequests(category);
   };
 
   const handleAppendMacro = async () => {
@@ -188,7 +174,7 @@ export default function Home() {
     if (!selectedMacro) return;
 
     if (appendSubCount >= APPEND_LIMIT) {
-      setLimitPopupMessage("원하는 키워드가 없다면 아래 텍스트 창에 직접 입력해보세요.");
+      setLimitPopupMessage("더 이상 추천 키워드가 없어요. 직접 입력해서 추가해보세요!");
       setShowLimitPopup(true);
       return;
     }
@@ -197,30 +183,8 @@ export default function Home() {
     const cleanBulkStorage = subBulkStorage.filter(item => !subChips.includes(item));
 
     if (cleanBulkStorage.length === 0) {
-      try {
-        const response = await fetch('/api/generate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ type: 'sub', currentItems: subChips, selectedMacro }),
-        });
-        const res = await response.json();
-        if (res.success && res.data) {
-          if (selectedMacroRef.current !== selectedMacro) return;
-          const newItems = (res.data as string[]).filter((item: string) => !subChips.includes(item));
-          const toAdd = newItems.slice(0, chipsPerAppend);
-          const toStore = newItems.slice(chipsPerAppend);
-
-          if (toAdd.length > 0) {
-            setSubChips((prev) => [...prev, ...toAdd]);
-            setSubBulkStorage(toStore);
-            setAppendSubCount((prev) => prev + 1);
-          } else {
-            showToast("새로운 키워드를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.");
-          }
-        }
-      } catch (error) {
-        console.error("중분류 직접 호출 실패:", error);
-      }
+      setLimitPopupMessage("더 이상 추천 키워드가 없어요. 직접 입력해서 추가해보세요!");
+      setShowLimitPopup(true);
       return;
     }
 
@@ -229,40 +193,139 @@ export default function Home() {
 
     setSubChips((prev) => [...prev, ...nextChips]);
     setSubBulkStorage(remaining);
-    setAppendSubCount((prev) => prev + 1);
+    const nextCount = appendSubCount + 1;
+    setAppendSubCount(nextCount);
 
-    if (remaining.length < 3) topUpSubStorage(selectedMacro, [...subChips, ...nextChips]);
+    if (nextCount >= APPEND_LIMIT || remaining.length === 0) {
+      setLimitPopupMessage("더 이상 추천 키워드가 없어요. 직접 입력해서 추가해보세요!");
+      setShowLimitPopup(true);
+    }
   };
 
-  const handleAddCustomMacro = (sanitized: string) => {
-    if (!macroCategories.includes(sanitized)) {
-      setMacroCategories([...macroCategories, sanitized]);
+  const handleAddCustomMacro = async (sanitized: string) => {
+    if (sanitized.length > 500) {
+      triggerWarning("최대 500자까지만 입력 가능합니다.");
+      return;
     }
-    handleSelectMacro(sanitized);
+    try {
+      const response = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'addCategory', name: sanitized, level: 1 })
+      });
+      const res = await response.json();
+      if (res.success && res.category) {
+        const newCat = res.category as CategoryItem;
+        if (!categories.some(c => c.id === newCat.id)) {
+          categories.push(newCat);
+        }
+        if (!macroCategories.includes(sanitized)) {
+          setMacroCategories([...macroCategories, sanitized]);
+        }
+        handleSelectMacro(sanitized);
+      }
+    } catch (e) {
+      console.error("대분류 추가 실패:", e);
+    }
+  };
+
+  const handleAddCustomSub = async (sanitized: string) => {
+    if (!selectedMacro) return;
+    if (sanitized.length > 500) {
+      triggerWarning("최대 500자까지만 입력 가능합니다.");
+      return;
+    }
+    try {
+      const response = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'addCategory', name: sanitized, level: 2, parent_name: selectedMacro })
+      });
+      const res = await response.json();
+      if (res.success && res.category) {
+        const newCat = res.category as CategoryItem;
+        if (!categories.some(c => c.id === newCat.id)) {
+          categories.push(newCat);
+        }
+        if (!subChips.includes(sanitized)) {
+          setSubChips(prev => [...prev, sanitized]);
+        }
+        if (!selectedSubs.includes(sanitized)) {
+          setSelectedSubs(prev => [...prev, sanitized]);
+        }
+      }
+    } catch (e) {
+      console.error("중분류 추가 실패:", e);
+    }
   };
 
   const handleToggleSub = (text: string) => {
     setSelectedSubs(prev => prev.includes(text) ? prev.filter(item => item !== text) : [...prev, text]);
   };
 
+  const handleTuningExhausted = useCallback(() => {
+    setLimitPopupMessage("더 이상 추천 키워드가 없어요. 직접 입력해서 추가해보세요!");
+    setShowLimitPopup(true);
+  }, []);
+
+  const handleReset = useCallback(() => {
+    setSelectedMacro("");
+    setSelectedSubs([]);
+    setUserInput("");
+    setSelectedSecondaries([]);
+    setShowResult(false);
+    setShowSecondary(false);
+    setSubChips([]);
+    setSubBulkStorage([]);
+    setAppendSubCount(0);
+
+    const initialCategories = ["공부", "여행", "영어", "일정", "준비물", "레시피", "맛집", "성형"];
+    setMacroCategories(initialCategories);
+
+    const level1Names = categories.filter(c => c.level === 1).map(c => c.name);
+    const filteredPool = level1Names.filter(item => !initialCategories.includes(item));
+    setMacroBulkStorage(filteredPool);
+    setAppendMacroCount(0);
+    
+    showToast("선택 정보가 초기화되었습니다.", "success");
+  }, [showToast, categories]);
+
   // 3번 수정: useCallback으로 감싸서 exhaustive-deps 경고 해소
-  const generatePrompt = useCallback(() => {
-    if (!selectedMacro) return;
-    const persona = promptTemplates.persona.replace("{macro}", selectedMacro);
-    const subComponent = selectedSubs.length > 0 ? selectedSubs.join(", ") : "기본 맞춤 전략";
-    let targetSituation = promptTemplates.targetSituation.replace("{macro}", selectedMacro).replace("{subs}", subComponent);
-
-    if (userInput.trim()) targetSituation += `\n- 사용자 추가 맥락 사양: ${userInput.trim()}`;
-    let markdown = `# 🤖 AI 페르소나 지정\n- ${persona}\n\n## 🎯 목표 및 상황\n- ${targetSituation}\n\n## 📝 요청 사항\n`;
-    activeRequests.forEach((req) => { markdown += `- ${req}\n`; });
-
-    if (selectedSecondaries.length > 0) {
-      markdown += `\n## ⚠️ 제약 조건 및 피드백\n`;
-      selectedSecondaries.forEach((chipText, i) => { markdown += `- [보완사항 ${i + 1}] ${chipText}\n`; });
+  const generatePrompt = useCallback(async () => {
+    if (!selectedMacro) {
+      showToast("대분류 주제를 먼저 선택해 주세요.");
+      return;
     }
-    setGeneratedMarkdown(markdown);
-    setShowResult(true);
-  }, [selectedMacro, selectedSubs, userInput, selectedSecondaries, promptTemplates, activeRequests]);
+    if (selectedSubs.length === 0) {
+      showToast("세부 키워드를 최소 1개 이상 선택해 주세요.");
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'prompt',
+          large_name: selectedMacro,
+          medium_names: selectedSubs,
+          small_names: selectedSecondaries,
+          userInput,
+          activeRequests
+        })
+      });
+      const res = await response.json();
+      if (res.success && res.prompt) {
+        setGeneratedMarkdown(res.prompt);
+        setShowResult(true);
+      } else {
+        showToast(res.error || "프롬프트 생성에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("프롬프트 생성 통신 실패:", error);
+      showToast("네트워크 통신 오류가 발생했습니다.");
+    }
+  }, [selectedMacro, selectedSubs, userInput, selectedSecondaries, activeRequests, showToast]);
 
   // 2번 수정: analysisChips 중복 제거
   useEffect(() => {
@@ -288,6 +351,16 @@ export default function Home() {
 
         <div className="p-6 space-y-8">
 
+          <div className="flex justify-between items-center pb-2 border-b border-gray-100">
+            <span className="text-xs text-gray-400 font-medium">재료를 선택하여 나만의 프롬프트를 조립하세요.</span>
+            <button
+              onClick={handleReset}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold text-gray-500 hover:text-red-600 hover:bg-red-50 hover:border-red-200 bg-gray-50 border border-gray-200 rounded-lg transition-all shadow-sm active:scale-95"
+            >
+              🔄 선택 초기화
+            </button>
+          </div>
+
           <MacroSection
             macroCategories={macroCategories}
             selectedMacro={selectedMacro}
@@ -295,6 +368,7 @@ export default function Home() {
             onAppendMacro={handleAppendMacro}
             onAddCustomMacro={handleAddCustomMacro}
             isExhausted={macroBulkStorage.length === 0}
+            onWarning={triggerWarning}
           />
 
           <SubSection
@@ -303,19 +377,21 @@ export default function Home() {
             selectedSubs={selectedSubs}
             onToggleSub={handleToggleSub}
             onAppendSub={handleAppendSub}
-            isExhausted={subBulkStorage.length === 0}
+            isExhausted={appendSubCount >= APPEND_LIMIT || subBulkStorage.filter(item => !subChips.includes(item)).length === 0}
+            onAddCustomSub={handleAddCustomSub}
+            onWarning={triggerWarning}
           />
 
           <div>
             <textarea
               value={userInput}
-              onChange={(e) => setUserInput(e.target.value)}
+              onChange={(e) => handleUserInputChange(e.target.value)}
               className="w-full h-32 p-4 border border-gray-300 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all text-base placeholder-gray-400 resize-none shadow-inner"
               placeholder="선택한 재료 외에 구체적인 요구사항을 자유롭게 적어주세요..."
             />
             <div className="mt-2 flex flex-wrap gap-2">
               {analysisChips.map((text) => (
-                <button key={text} onClick={() => setUserInput(userInput.trim() + " " + text + ", ")} className="px-2.5 py-1 bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 rounded-md text-xs font-medium transition-all shadow-sm">
+                <button key={text} onClick={() => handleUserInputChange(userInput.trim() + " " + text + ", ")} className="px-2.5 py-1 bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 rounded-md text-xs font-medium transition-all shadow-sm">
                   💡 추천 추가: {text}
                 </button>
               ))}
@@ -350,6 +426,8 @@ export default function Home() {
             secondaryPool={secondaryPool}
             selectedSecondaries={selectedSecondaries}
             setSelectedSecondaries={setSelectedSecondaries}
+            onExhausted={handleTuningExhausted}
+            onWarning={triggerWarning}
           />
 
         </div>
@@ -371,9 +449,30 @@ export default function Home() {
       )}
 
       {toast && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-5 py-3.5 bg-red-600/90 backdrop-blur-md text-white text-sm font-semibold rounded-2xl shadow-2xl border border-white/10 transition-all duration-300">
-          <span className="flex items-center justify-center w-5 h-5 bg-white/20 rounded-full text-xs">⚠️</span>
+        <div className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-5 py-3.5 backdrop-blur-md text-white text-sm font-semibold rounded-2xl shadow-2xl border border-white/10 transition-all duration-300 ${
+          toast.type === 'success' ? 'bg-emerald-600/90 border-emerald-500/20' : 'bg-red-600/90 border-red-500/20'
+        }`}>
+          <span className="flex items-center justify-center w-5 h-5 bg-white/20 rounded-full text-xs">
+            {toast.type === 'success' ? '✓' : '⚠️'}
+          </span>
           <span>{toast.message}</span>
+        </div>
+      )}
+
+      {showWarningModal && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 animate-fade-in">
+          <div className="bg-white rounded-2xl shadow-2xl p-6 mx-4 max-w-sm w-full space-y-4 border border-red-100 transition-all">
+            <div className="flex items-center gap-2 text-red-600 font-bold text-sm">
+              <span>⚠️</span> 입력 제한 경고
+            </div>
+            <p className="text-sm text-gray-600 font-medium">{warningMessage}</p>
+            <button
+              onClick={() => setShowWarningModal(false)}
+              className="w-full py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl text-sm transition-all active:scale-98"
+            >
+              확인
+            </button>
+          </div>
         </div>
       )}
     </main>

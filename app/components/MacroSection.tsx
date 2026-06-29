@@ -9,18 +9,33 @@ interface MacroProps {
   onAppendMacro: () => void;
   onAddCustomMacro: (value: string) => void;
   isExhausted: boolean;
+  onWarning: (msg: string) => void;
 }
 
-export default function MacroSection({ macroCategories, selectedMacro, onSelectCategory, onAppendMacro, onAddCustomMacro, isExhausted }: MacroProps) {
+export default function MacroSection({ macroCategories, selectedMacro, onSelectCategory, onAppendMacro, onAddCustomMacro, isExhausted, onWarning }: MacroProps) {
   const [isAdding, setIsAdding] = useState(false);
   const [inputValue, setInputValue] = useState("");
 
   const handleSubmit = () => {
     const sanitized = inputValue.trim();
     if (!sanitized) { setIsAdding(false); return; }
+    if (sanitized.length > 500) {
+      onWarning("최대 500자까지만 입력 가능합니다.");
+      setInputValue(sanitized.slice(0, 500));
+      return;
+    }
     onAddCustomMacro(sanitized);
     setInputValue("");
     setIsAdding(false);
+  };
+
+  const handleChange = (val: string) => {
+    if (val.length > 500) {
+      setInputValue(val.slice(0, 500));
+      onWarning("최대 500자까지만 입력 가능합니다.");
+    } else {
+      setInputValue(val);
+    }
   };
 
   return (
@@ -46,7 +61,7 @@ export default function MacroSection({ macroCategories, selectedMacro, onSelectC
             <input
               type="text"
               value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
+              onChange={(e) => handleChange(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
               placeholder="주제 입력"
               className="px-3 py-1 bg-transparent text-sm w-24 focus:outline-none"

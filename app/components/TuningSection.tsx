@@ -8,9 +8,11 @@ interface TuningProps {
   secondaryPool: string[];
   selectedSecondaries: string[];
   setSelectedSecondaries: React.Dispatch<React.SetStateAction<string[]>>;
+  onExhausted: () => void;
+  onWarning: (msg: string) => void;
 }
 
-export default function TuningSection({ showSecondary, secondaryChips, setSecondaryChips, secondaryPool, selectedSecondaries, setSelectedSecondaries }: TuningProps) {
+export default function TuningSection({ showSecondary, secondaryChips, setSecondaryChips, secondaryPool, selectedSecondaries, setSelectedSecondaries, onExhausted, onWarning }: TuningProps) {
   const [isAddingCustom, setIsAddingCustom] = useState(false);
   const [customInput, setCustomInput] = useState("");
 
@@ -31,16 +33,36 @@ export default function TuningSection({ showSecondary, secondaryChips, setSecond
     }
     if (added > 0) {
       setSecondaryChips(current);
+      const nowExhausted = secondaryPool.every(item => current.includes(item));
+      if (nowExhausted) {
+        onExhausted();
+      }
+    } else {
+      onExhausted();
     }
   };
 
   const submitCustom = () => {
-    if (!customInput.trim()) { setIsAddingCustom(false); return; }
     const sanitized = customInput.trim();
+    if (!sanitized) { setIsAddingCustom(false); return; }
+    if (sanitized.length > 500) {
+      onWarning("최대 500자까지만 입력 가능합니다.");
+      setCustomInput(sanitized.slice(0, 500));
+      return;
+    }
     if (!secondaryChips.includes(sanitized)) setSecondaryChips([...secondaryChips, sanitized]);
     if (!selectedSecondaries.includes(sanitized)) setSelectedSecondaries([...selectedSecondaries, sanitized]);
     setCustomInput("");
     setIsAddingCustom(false);
+  };
+
+  const handleChange = (val: string) => {
+    if (val.length > 500) {
+      setCustomInput(val.slice(0, 500));
+      onWarning("최대 500자까지만 입력 가능합니다.");
+    } else {
+      setCustomInput(val);
+    }
   };
 
   const isExhausted = secondaryPool.every(item => secondaryChips.includes(item));
@@ -60,7 +82,7 @@ export default function TuningSection({ showSecondary, secondaryChips, setSecond
         })}
         {isAddingCustom ? (
           <div className="flex items-center gap-1 bg-white p-1 rounded-lg border border-orange-300 shadow-inner">
-            <input type="text" value={customInput} onChange={(e) => setCustomInput(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && submitCustom()} placeholder="제약조건 입력" className="px-2 py-1 bg-transparent text-xs w-32 focus:outline-none" autoFocus />
+            <input type="text" value={customInput} onChange={(e) => handleChange(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && submitCustom()} placeholder="제약조건 입력" className="px-2 py-1 bg-transparent text-xs w-32 focus:outline-none" autoFocus />
             <button onClick={submitCustom} className="px-2 py-1 bg-orange-500 text-white text-xs font-bold rounded-md">확인</button>
             <button onClick={() => setIsAddingCustom(false)} className="px-1 py-1 text-gray-400 text-xs">취소</button>
           </div>
