@@ -294,6 +294,7 @@ export default function Home() {
             onSelectCategory={handleSelectMacro}
             onAppendMacro={handleAppendMacro}
             onAddCustomMacro={handleAddCustomMacro}
+            isExhausted={macroBulkStorage.length === 0}
           />
 
           <SubSection
@@ -302,6 +303,7 @@ export default function Home() {
             selectedSubs={selectedSubs}
             onToggleSub={handleToggleSub}
             onAppendSub={handleAppendSub}
+            isExhausted={subBulkStorage.length === 0}
           />
 
           <div>
