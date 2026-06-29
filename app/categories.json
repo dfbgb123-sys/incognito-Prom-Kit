@@ -4009,5 +4009,19 @@
     "level": 2,
     "parent_id": "cat_l_025",
     "type": "user"
+  },
+  {
+    "id": "cat_l_usr_1782717956444",
+    "name": "추가",
+    "level": 1,
+    "parent_id": null,
+    "type": "user"
+  },
+  {
+    "id": "cat_m_usr_1782718568864",
+    "name": "ㄹㄹㄹ",
+    "level": 2,
+    "parent_id": "cat_l_013",
+    "type": "user"
   }
 ]

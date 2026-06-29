@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import categoriesData from './categories.json';
+import promptTemplatesData from './prompt_templates.json';
+import combinationMapsData from './combination_maps.json';
 import analysisData from './analysis.json';
 import MacroSection from './components/MacroSection';
 import SubSection from './components/SubSection';
@@ -15,8 +17,60 @@ interface CategoryItem {
   type: string;
 }
 
+function formatPrompt(template: string, data: { large_name: string, medium_name: string, small_name: string, userInput: string, activeRequests: string[] }) {
+  let content = template
+    .replace(/\[?\{large_name\}\]?/g, data.large_name)
+    .replace(/\[?\{large_category\}\]?/g, data.large_name)
+    .replace(/\[?\{medium_name\}\]?/g, data.medium_name)
+    .replace(/\[?\{medium_category\}\]?/g, data.medium_name)
+    .replace(/\[?\{small_name\}\]?/g, data.small_name)
+    .replace(/\[?\{small_category\}\]?/g, data.small_name);
+
+  const contextStr = data.userInput.trim() 
+    ? `\n- 사용자 추가 맥락 사양: ${data.userInput.trim()}` 
+    : '';
+  content = content.replace(/\{user_context\}/g, contextStr);
+
+  const requestsStr = data.activeRequests.map(req => `- ${req}`).join('\n');
+  content = content.replace(/\{requests\}/g, requestsStr);
+
+  let constraintsStr = '';
+  if (data.small_name.trim()) {
+    constraintsStr = data.small_name.split(',').map((name, i) => `- [보완사항 ${i + 1}] ${name.trim()}`).join('\n');
+  }
+
+  if (!data.small_name.trim()) {
+    content = content.replace(/\n## ⚠️ 제약 조건 및 피드백\n\{constraints\}/g, '');
+    content = content.replace(/\{constraints\}/g, '');
+  } else {
+    content = content.replace(/\{constraints\}/g, constraintsStr);
+  }
+
+  return content;
+}
+
 export default function Home() {
-  const categories = categoriesData as unknown as CategoryItem[];
+  const [categories, setCategories] = useState<CategoryItem[]>([]);
+  const [combinationMaps, setCombinationMaps] = useState<any[]>([]);
+
+  useEffect(() => {
+    // 1. Load custom categories
+    const storedCats = localStorage.getItem('custom_categories');
+    const customCats = storedCats ? JSON.parse(storedCats) : [];
+    const mergedCats = [...(categoriesData as unknown as CategoryItem[]), ...customCats];
+    setCategories(mergedCats);
+
+    // 2. Load custom combinations
+    const storedCombos = localStorage.getItem('custom_combinations');
+    const customCombos = storedCombos ? JSON.parse(storedCombos) : [];
+    setCombinationMaps([...combinationMapsData, ...customCombos]);
+
+    // 3. Populate macro categories & bulk storage
+    const initialCategories = ["공부", "여행", "영어", "일정", "준비물", "레시피", "맛집", "성형"];
+    const level1Names = mergedCats.filter(c => c.level === 1).map(c => c.name);
+    setMacroBulkStorage(level1Names.filter(name => !initialCategories.includes(name)));
+  }, []);
+
   const analysisKeywordsPool = analysisData.analysisKeywordsPool;
 
   const promptTemplates = {
@@ -56,11 +110,7 @@ export default function Home() {
   const [secondaryChips, setSecondaryChips] = useState<string[]>([]);
   const [selectedSecondaries, setSelectedSecondaries] = useState<string[]>([]);
 
-  const [macroBulkStorage, setMacroBulkStorage] = useState<string[]>(() => {
-    const initialCategories = ["공부", "여행", "영어", "일정", "준비물", "레시피", "맛집", "성형"];
-    const level1Names = (categoriesData as unknown as CategoryItem[]).filter(c => c.level === 1).map(c => c.name);
-    return level1Names.filter(name => !initialCategories.includes(name));
-  });
+  const [macroBulkStorage, setMacroBulkStorage] = useState<string[]>([]);
   const [subBulkStorage, setSubBulkStorage] = useState<string[]>([]);
 
   const [appendMacroCount, setAppendMacroCount] = useState(0);
@@ -202,60 +252,62 @@ export default function Home() {
     }
   };
 
-  const handleAddCustomMacro = async (sanitized: string) => {
+  const handleAddCustomMacro = (sanitized: string) => {
     if (sanitized.length > 500) {
       triggerWarning("최대 500자까지만 입력 가능합니다.");
       return;
     }
-    try {
-      const response = await fetch('/api/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'addCategory', name: sanitized, level: 1 })
-      });
-      const res = await response.json();
-      if (res.success && res.category) {
-        const newCat = res.category as CategoryItem;
-        if (!categories.some(c => c.id === newCat.id)) {
-          categories.push(newCat);
-        }
-        if (!macroCategories.includes(sanitized)) {
-          setMacroCategories([...macroCategories, sanitized]);
-        }
-        handleSelectMacro(sanitized);
-      }
-    } catch (e) {
-      console.error("대분류 추가 실패:", e);
+    const newCat: CategoryItem = {
+      id: 'cat_l_usr_' + Date.now(),
+      name: sanitized,
+      level: 1,
+      parent_id: null,
+      type: 'user'
+    };
+
+    const storedCats = localStorage.getItem('custom_categories');
+    const customCats = storedCats ? JSON.parse(storedCats) : [];
+    customCats.push(newCat);
+    localStorage.setItem('custom_categories', JSON.stringify(customCats));
+
+    setCategories(prev => [...prev, newCat]);
+
+    if (!macroCategories.includes(sanitized)) {
+      setMacroCategories([...macroCategories, sanitized]);
     }
+    handleSelectMacro(sanitized);
   };
 
-  const handleAddCustomSub = async (sanitized: string) => {
+  const handleAddCustomSub = (sanitized: string) => {
     if (!selectedMacro) return;
     if (sanitized.length > 500) {
       triggerWarning("최대 500자까지만 입력 가능합니다.");
       return;
     }
-    try {
-      const response = await fetch('/api/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'addCategory', name: sanitized, level: 2, parent_name: selectedMacro })
-      });
-      const res = await response.json();
-      if (res.success && res.category) {
-        const newCat = res.category as CategoryItem;
-        if (!categories.some(c => c.id === newCat.id)) {
-          categories.push(newCat);
-        }
-        if (!subChips.includes(sanitized)) {
-          setSubChips(prev => [...prev, sanitized]);
-        }
-        if (!selectedSubs.includes(sanitized)) {
-          setSelectedSubs(prev => [...prev, sanitized]);
-        }
-      }
-    } catch (e) {
-      console.error("중분류 추가 실패:", e);
+
+    const parentCat = categories.find(c => c.level === 1 && c.name === selectedMacro);
+    const parentId = parentCat ? parentCat.id : null;
+
+    const newCat: CategoryItem = {
+      id: 'cat_m_usr_' + Date.now(),
+      name: sanitized,
+      level: 2,
+      parent_id: parentId,
+      type: 'user'
+    };
+
+    const storedCats = localStorage.getItem('custom_categories');
+    const customCats = storedCats ? JSON.parse(storedCats) : [];
+    customCats.push(newCat);
+    localStorage.setItem('custom_categories', JSON.stringify(customCats));
+
+    setCategories(prev => [...prev, newCat]);
+
+    if (!subChips.includes(sanitized)) {
+      setSubChips(prev => [...prev, sanitized]);
+    }
+    if (!selectedSubs.includes(sanitized)) {
+      setSelectedSubs(prev => [...prev, sanitized]);
     }
   };
 
@@ -291,7 +343,7 @@ export default function Home() {
   }, [showToast, categories]);
 
   // 3번 수정: useCallback으로 감싸서 exhaustive-deps 경고 해소
-  const generatePrompt = useCallback(async () => {
+  const generatePrompt = useCallback(() => {
     if (!selectedMacro) {
       showToast("대분류 주제를 먼저 선택해 주세요.");
       return;
@@ -301,31 +353,60 @@ export default function Home() {
       return;
     }
 
-    try {
-      const response = await fetch('/api/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          type: 'prompt',
-          large_name: selectedMacro,
-          medium_names: selectedSubs,
-          small_names: selectedSecondaries,
-          userInput,
-          activeRequests
-        })
-      });
-      const res = await response.json();
-      if (res.success && res.prompt) {
-        setGeneratedMarkdown(res.prompt);
-        setShowResult(true);
-      } else {
-        showToast(res.error || "프롬프트 생성에 실패했습니다.");
-      }
-    } catch (error) {
-      console.error("프롬프트 생성 통신 실패:", error);
-      showToast("네트워크 통신 오류가 발생했습니다.");
+    // 1. Resolve IDs
+    const largeCat = categories.find(c => c.level === 1 && c.name === selectedMacro);
+    const mediumCat = categories.find(c => c.level === 2 && c.parent_id === largeCat?.id && selectedSubs.includes(c.name));
+    const smallCat = categories.find(c => c.level === 3 && selectedSecondaries.includes(c.name));
+
+    const large_id = largeCat?.id || null;
+    const medium_id = mediumCat?.id || null;
+    const small_id = smallCat?.id || null;
+
+    // 2. Lookup Combination
+    const foundMap = combinationMaps.find((map: any) => 
+      map.large_id === large_id && 
+      map.medium_id === medium_id && 
+      map.small_id === small_id
+    );
+
+    let templateId = 'tpl_default';
+
+    if (foundMap) {
+      templateId = foundMap.template_id;
+    } else {
+      // Create and save new combination map entry
+      const newCombId = 'comb_user_' + Date.now();
+      const newCombo = {
+        id: newCombId,
+        large_id,
+        medium_id,
+        small_id,
+        template_id: 'tpl_default'
+      };
+
+      const storedCombos = localStorage.getItem('custom_combinations');
+      const customCombos = storedCombos ? JSON.parse(storedCombos) : [];
+      customCombos.push(newCombo);
+      localStorage.setItem('custom_combinations', JSON.stringify(customCombos));
+
+      setCombinationMaps(prev => [...prev, newCombo]);
     }
-  }, [selectedMacro, selectedSubs, userInput, selectedSecondaries, activeRequests, showToast]);
+
+    // 3. Format Template
+    const targetTemplate = promptTemplatesData.find((t: any) => t.id === templateId) || promptTemplatesData.find((t: any) => t.id === 'tpl_default');
+    const templateContent = targetTemplate ? targetTemplate.template_content : "";
+
+    const formattedPrompt = formatPrompt(templateContent, {
+      large_name: selectedMacro,
+      medium_name: selectedSubs.join(', ') || '기본 맞춤 전략',
+      small_name: selectedSecondaries.join(', '),
+      userInput,
+      activeRequests
+    });
+
+    setGeneratedMarkdown(formattedPrompt);
+    setShowResult(true);
+  }, [selectedMacro, selectedSubs, userInput, selectedSecondaries, activeRequests, showToast, categories, combinationMaps]);
 
   // 2번 수정: analysisChips 중복 제거
   useEffect(() => {
