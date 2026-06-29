@@ -6,9 +6,10 @@ interface SubProps {
   selectedSubs: string[];
   onToggleSub: (text: string) => void;
   onAppendSub: () => void;
+  isExhausted: boolean;
 }
 
-export default function SubSection({ selectedMacro, subChips, selectedSubs, onToggleSub, onAppendSub }: SubProps) {
+export default function SubSection({ selectedMacro, subChips, selectedSubs, onToggleSub, onAppendSub, isExhausted }: SubProps) {
   return (
     <div className="bg-gray-50 p-5 rounded-xl border border-gray-200">
       <div className="mb-3 text-sm font-semibold text-gray-500 uppercase tracking-wide">세부 키워드</div>
@@ -16,9 +17,9 @@ export default function SubSection({ selectedMacro, subChips, selectedSubs, onTo
         {subChips.length === 0 ? (
           <p className="text-sm text-gray-400">주제를 선택하면 세부 키워드가 나타납니다.</p>
         ) : (
-          subChips.map((text) => (
+          subChips.map((text, index) => (
             <button
-              key={text}
+              key={`${index}-${text}`}
               onClick={() => onToggleSub(text)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border shadow-sm ${
                 selectedSubs.includes(text)
@@ -31,8 +32,16 @@ export default function SubSection({ selectedMacro, subChips, selectedSubs, onTo
           ))
         )}
         {selectedMacro && (
-          <button onClick={onAppendSub} className="px-3 py-1.5 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-lg text-xs shadow-sm">
-            더보기
+          <button
+            onClick={onAppendSub}
+            disabled={isExhausted}
+            className={`px-3 py-1.5 font-medium rounded-lg text-xs shadow-sm transition-all ${
+              isExhausted
+                ? 'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200 shadow-none'
+                : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+            }`}
+          >
+            {isExhausted ? '더 이상 추가할 항목이 없습니다' : '더보기'}
           </button>
         )}
       </div>

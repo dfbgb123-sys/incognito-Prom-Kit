@@ -29,8 +29,9 @@ export default function TuningSection({ showSecondary, secondaryChips, setSecond
         added++; if (added >= 3) break;
       }
     }
-    if (added === 0) current.push(`추가 가이드 ${current.length + 1}`);
-    setSecondaryChips(current);
+    if (added > 0) {
+      setSecondaryChips(current);
+    }
   };
 
   const submitCustom = () => {
@@ -41,6 +42,8 @@ export default function TuningSection({ showSecondary, secondaryChips, setSecond
     setCustomInput("");
     setIsAddingCustom(false);
   };
+
+  const isExhausted = secondaryPool.every(item => secondaryChips.includes(item));
 
   return (
     <div className="bg-gradient-to-br from-amber-50 to-orange-50 p-5 rounded-xl border border-amber-200 space-y-3 shadow-sm">
@@ -64,7 +67,17 @@ export default function TuningSection({ showSecondary, secondaryChips, setSecond
         ) : (
           <button onClick={() => setIsAddingCustom(true)} className="px-3 py-1.5 bg-orange-400 text-white font-semibold rounded-lg text-xs">✎ 직접 추가</button>
         )}
-        <button onClick={appendRow} className="px-3 py-1.5 bg-gray-200 text-gray-700 font-semibold rounded-lg text-xs">＋ 더보기</button>
+        <button
+          onClick={appendRow}
+          disabled={isExhausted}
+          className={`px-3 py-1.5 font-semibold rounded-lg text-xs transition-all ${
+            isExhausted
+              ? 'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200 shadow-none'
+              : 'bg-gray-200 text-gray-700 hover:bg-gray-300 shadow-sm'
+          }`}
+        >
+          {isExhausted ? '더 이상 추가할 항목이 없습니다' : '＋ 더보기'}
+        </button>
       </div>
     </div>
   );

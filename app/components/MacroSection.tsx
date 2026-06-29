@@ -8,9 +8,10 @@ interface MacroProps {
   onSelectCategory: (cat: string) => void;
   onAppendMacro: () => void;
   onAddCustomMacro: (value: string) => void;
+  isExhausted: boolean;
 }
 
-export default function MacroSection({ macroCategories, selectedMacro, onSelectCategory, onAppendMacro, onAddCustomMacro }: MacroProps) {
+export default function MacroSection({ macroCategories, selectedMacro, onSelectCategory, onAppendMacro, onAddCustomMacro, isExhausted }: MacroProps) {
   const [isAdding, setIsAdding] = useState(false);
   const [inputValue, setInputValue] = useState("");
 
@@ -60,8 +61,16 @@ export default function MacroSection({ macroCategories, selectedMacro, onSelectC
           </button>
         )}
 
-        <button onClick={onAppendMacro} className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-full text-sm shadow-sm">
-          더보기
+        <button
+          onClick={onAppendMacro}
+          disabled={isExhausted}
+          className={`px-4 py-2 font-medium rounded-full text-sm shadow-sm transition-all ${
+            isExhausted
+              ? 'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200 shadow-none'
+              : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+          }`}
+        >
+          {isExhausted ? '더 이상 추가할 항목이 없습니다' : '더보기'}
         </button>
       </div>
     </div>

@@ -44,7 +44,11 @@ export default function Home() {
   const [secondaryChips, setSecondaryChips] = useState<string[]>([]);
   const [selectedSecondaries, setSelectedSecondaries] = useState<string[]>([]);
 
-  const [macroBulkStorage, setMacroBulkStorage] = useState<string[]>([]);
+  const [macroBulkStorage, setMacroBulkStorage] = useState<string[]>(() => {
+    const initialCategories = ["공부", "여행", "영어", "일정", "준비물", "레시피", "맛집", "성형"];
+    const pool = [...(appData.macroPool || []), ...(appData.infiniteMacroPool || [])];
+    return pool.filter(item => !initialCategories.includes(item));
+  });
   const [subBulkStorage, setSubBulkStorage] = useState<string[]>([]);
 
   const [appendMacroCount, setAppendMacroCount] = useState(0);
@@ -56,6 +60,21 @@ export default function Home() {
   const [chipsPerAppend, setChipsPerAppend] = useState(5);
 
   const APPEND_LIMIT = 3;
+
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+  const [activeRequests, setActiveRequests] = useState<string[]>(promptTemplates.requests);
+
+  const showToast = useCallback((message: string, type: 'success' | 'error' = 'error') => {
+    setToast({ message, type });
+  }, []);
+
+  useEffect(() => {
+    if (toast) {
+      const timer = setTimeout(() => setToast(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [toast]);
 
   // 현재 선택된 대분류를 ref로 추적 — 비동기 응답 오염 방지용
   const selectedMacroRef = useRef(selectedMacro);
@@ -72,21 +91,7 @@ export default function Home() {
     return () => window.removeEventListener('resize', updateChipsPerAppend);
   }, []);
 
-  const topUpMacroStorage = async (currentList: string[]) => {
-    try {
-      const response = await fetch('/api/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'macro', currentItems: currentList }),
-      });
-      const res = await response.json();
-      if (res.success && res.data) {
-        setMacroBulkStorage((prev) => [...new Set([...prev, ...res.data])]);
-      }
-    } catch (error) {
-      console.error("대분류 벌크 수급 실패:", error);
-    }
-  };
+
 
   // 1번 수정: 요청 시점의 macro를 캡처해서 응답 시점에 현재 선택과 비교
   const topUpSubStorage = async (macro: string, currentList: string[]) => {
@@ -102,16 +107,34 @@ export default function Home() {
       if (res.success && res.data) {
         // 응답이 돌아왔을 때 현재 선택된 대분류와 다르면 버림
         if (selectedMacroRef.current !== requestedMacro) return;
-        setSubBulkStorage((prev) => [...new Set([...prev, ...res.data])]);
+        const newItems = (res.data as string[]).filter(item => !currentList.includes(item));
+        setSubBulkStorage((prev) => [...new Set([...prev, ...newItems])]);
       }
     } catch (error) {
       console.error("중분류 벌크 수급 실패:", error);
     }
   };
 
-  useEffect(() => {
-    topUpMacroStorage(macroCategories);
-  }, []);
+  const fetchDynamicRequests = async (macro: string) => {
+    if (!macro) return;
+    const requestedMacro = macro;
+    try {
+      const response = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'requests', selectedMacro: macro }),
+      });
+      const res = await response.json();
+      if (res.success && res.data && res.data.length >= 4) {
+        if (selectedMacroRef.current !== requestedMacro) return;
+        setActiveRequests(res.data.slice(0, 4));
+      }
+    } catch (error) {
+      console.error("동적 요청사항 수급 실패:", error);
+    }
+  };
+
+
 
   const handleSelectMacro = (category: string) => {
     setSelectedMacro(category);
@@ -131,57 +154,33 @@ export default function Home() {
     }
     setSubChips(initialSubs);
     topUpSubStorage(category, initialSubs);
+
+    // 로딩 중에는 기존 고정 requests를 fallback으로 지정
+    setActiveRequests(promptTemplates.requests);
+    fetchDynamicRequests(category);
   };
 
   const handleAppendMacro = async () => {
-    if (appendMacroCount >= APPEND_LIMIT) {
-      setLimitPopupMessage("원하는 주제가 없다면 '직접 추가' 버튼으로 입력해보세요.");
-      setShowLimitPopup(true);
-      return;
-    }
-
     if (macroBulkStorage.length === 0) {
-      try {
-        const response = await fetch('/api/generate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ type: 'macro', currentItems: macroCategories }),
-        });
-        const res = await response.json();
-        if (res.success && res.data) {
-          const newItems = (res.data as string[]).filter((item: string) => !macroCategories.includes(item));
-          const toAdd = newItems.slice(0, chipsPerAppend);
-          const toStore = newItems.slice(chipsPerAppend);
-
-          setMacroCategories((prev) => [...prev, ...toAdd]);
-          setMacroBulkStorage(toStore);
-          setAppendMacroCount((prev) => prev + 1);
-
-          if (!selectedMacro && toAdd.length > 0) {
-            handleSelectMacro(toAdd[toAdd.length - 1]);
-          }
-        }
-      } catch (error) {
-        console.error("대분류 직접 호출 실패:", error);
-      }
+      setLimitPopupMessage("더 이상 추천 키워드가 없어요. 직접 입력해서 추가해보세요!");
+      setShowLimitPopup(true);
       return;
     }
 
     const nextChips = macroBulkStorage.slice(0, chipsPerAppend);
     const remaining = macroBulkStorage.slice(chipsPerAppend);
 
-    setMacroCategories((prev) => {
-      const newItems = nextChips.filter(item => !prev.includes(item));
-      return [...prev, ...newItems];
-    });
-    setMacroBulkStorage(remaining);
-    setAppendMacroCount((prev) => prev + 1);
+    const newItemsToAppend = nextChips.filter(item => !macroCategories.includes(item));
+    if (newItemsToAppend.length > 0) {
+      setMacroCategories((prev) => [...prev, ...newItemsToAppend]);
+      setMacroBulkStorage(remaining);
+      setAppendMacroCount((prev) => prev + 1);
 
-    if (remaining.length < 3) topUpMacroStorage([...macroCategories, ...nextChips]);
-
-    // B안: 선택된 대분류 없을 때만 마지막 칩 자동 선택
-    if (!selectedMacro && nextChips.length > 0) {
-      handleSelectMacro(nextChips[nextChips.length - 1]);
+      if (!selectedMacro) {
+        handleSelectMacro(newItemsToAppend[newItemsToAppend.length - 1]);
+      }
+    } else {
+      setMacroBulkStorage(remaining);
     }
   };
 
@@ -194,7 +193,10 @@ export default function Home() {
       return;
     }
 
-    if (subBulkStorage.length === 0) {
+    // 이미 화면에 있는 칩과 중복된 항목은 필터링
+    const cleanBulkStorage = subBulkStorage.filter(item => !subChips.includes(item));
+
+    if (cleanBulkStorage.length === 0) {
       try {
         const response = await fetch('/api/generate', {
           method: 'POST',
@@ -208,9 +210,13 @@ export default function Home() {
           const toAdd = newItems.slice(0, chipsPerAppend);
           const toStore = newItems.slice(chipsPerAppend);
 
-          setSubChips((prev) => [...prev, ...toAdd]);
-          setSubBulkStorage(toStore);
-          setAppendSubCount((prev) => prev + 1);
+          if (toAdd.length > 0) {
+            setSubChips((prev) => [...prev, ...toAdd]);
+            setSubBulkStorage(toStore);
+            setAppendSubCount((prev) => prev + 1);
+          } else {
+            showToast("새로운 키워드를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.");
+          }
         }
       } catch (error) {
         console.error("중분류 직접 호출 실패:", error);
@@ -218,13 +224,10 @@ export default function Home() {
       return;
     }
 
-    const nextChips = subBulkStorage.slice(0, chipsPerAppend);
-    const remaining = subBulkStorage.slice(chipsPerAppend);
+    const nextChips = cleanBulkStorage.slice(0, chipsPerAppend);
+    const remaining = cleanBulkStorage.slice(chipsPerAppend);
 
-    setSubChips((prev) => {
-      const newItems = nextChips.filter(item => !prev.includes(item));
-      return [...prev, ...newItems];
-    });
+    setSubChips((prev) => [...prev, ...nextChips]);
     setSubBulkStorage(remaining);
     setAppendSubCount((prev) => prev + 1);
 
@@ -251,7 +254,7 @@ export default function Home() {
 
     if (userInput.trim()) targetSituation += `\n- 사용자 추가 맥락 사양: ${userInput.trim()}`;
     let markdown = `# 🤖 AI 페르소나 지정\n- ${persona}\n\n## 🎯 목표 및 상황\n- ${targetSituation}\n\n## 📝 요청 사항\n`;
-    promptTemplates.requests.forEach((req) => { markdown += `- ${req}\n`; });
+    activeRequests.forEach((req) => { markdown += `- ${req}\n`; });
 
     if (selectedSecondaries.length > 0) {
       markdown += `\n## ⚠️ 제약 조건 및 피드백\n`;
@@ -259,7 +262,7 @@ export default function Home() {
     }
     setGeneratedMarkdown(markdown);
     setShowResult(true);
-  }, [selectedMacro, selectedSubs, userInput, selectedSecondaries, promptTemplates]);
+  }, [selectedMacro, selectedSubs, userInput, selectedSecondaries, promptTemplates, activeRequests]);
 
   // 2번 수정: analysisChips 중복 제거
   useEffect(() => {
@@ -319,7 +322,7 @@ export default function Home() {
 
           <div className="pt-2">
             <button onClick={generatePrompt} className="w-full py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold rounded-xl text-lg transition-all shadow-md flex items-center justify-center gap-2">
-              🍳 요리 시작! (프롬프트 조립)
+              ✨ 프롬프트 생성하기
             </button>
           </div>
 
@@ -362,6 +365,13 @@ export default function Home() {
               확인
             </button>
           </div>
+        </div>
+      )}
+
+      {toast && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-5 py-3.5 bg-red-600/90 backdrop-blur-md text-white text-sm font-semibold rounded-2xl shadow-2xl border border-white/10 transition-all duration-300">
+          <span className="flex items-center justify-center w-5 h-5 bg-white/20 rounded-full text-xs">⚠️</span>
+          <span>{toast.message}</span>
         </div>
       )}
     </main>
