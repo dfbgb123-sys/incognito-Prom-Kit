@@ -1,10 +1,10 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import categoriesData from './categories.json';
-import promptTemplatesData from './prompt_templates.json';
-import combinationMapsData from './combination_maps.json';
-import analysisData from './analysis.json';
+import categoriesData from '../data/categories.json';
+import promptTemplatesData from '../data/prompt_templates.json';
+import combinationMapsData from '../data/combination_maps.json';
+import analysisData from '../data/analysis_keywords.json';
 import MacroSection from './components/MacroSection';
 import SubSection from './components/SubSection';
 import TuningSection from './components/TuningSection';
