@@ -1,0 +1,35 @@
+name: Test Harness
+
+on:
+  push:
+    branches: [ "master", "main" ]
+  pull_request:
+    branches: [ "master", "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. 소스코드를 실험대로 가져옵니다.
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # 2. 개발 환경(Node.js)을 셋팅합니다.
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    # 3. 프로젝트 의존성을 설치합니다.
+    - name: Install dependencies
+      run: npm ci
+
+    # 4. 린트(Lint): 코드를 실행하기 전 오타나 스타일을 검사합니다.
+    - name: Run Linter
+      run: npm run lint --if-present
+
+    # 5. 빌드 테스트: Next.js 컴파일 오류 및 TypeScript 타입 체크를 수행합니다.
+    - name: Next.js Build Check (Harness)
+      run: npm run build
