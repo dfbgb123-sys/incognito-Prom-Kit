@@ -408,6 +408,24 @@ export default function Home() {
     setShowResult(true);
   }, [selectedMacro, selectedSubs, userInput, selectedSecondaries, activeRequests, showToast, categories, combinationMaps]);
 
+  const handleCopy = useCallback(() => {
+    navigator.clipboard.writeText(generatedMarkdown).then(() => {
+      showToast("🎨 프롬프트가 클립보드에 복사되었습니다.", "success");
+      // Send logging to Notion
+      fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          large_name: selectedMacro,
+          medium_names: selectedSubs,
+          small_names: selectedSecondaries,
+          userInput,
+          length: generatedMarkdown.length
+        })
+      }).catch(e => console.error("Notion 로깅 실패:", e));
+    });
+  }, [generatedMarkdown, selectedMacro, selectedSubs, selectedSecondaries, userInput, showToast]);
+
   // 2번 수정: analysisChips 중복 제거
   useEffect(() => {
     let chips: string[] = [];
@@ -489,7 +507,7 @@ export default function Home() {
             <div className="space-y-3 transition-all">
               <div className="flex items-center justify-between">
                 <span className="text-md font-bold text-gray-900">📋 조립 완료된 프롬프트 (Markdown)</span>
-                <button onClick={() => navigator.clipboard.writeText(generatedMarkdown).then(() => alert("🎨 복사 완료!"))} className="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs rounded transition-all shadow-sm">📋 원클릭 복사</button>
+                <button onClick={handleCopy} className="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs rounded transition-all shadow-sm">📋 원클릭 복사</button>
               </div>
               <textarea readOnly value={generatedMarkdown} className="w-full h-64 p-4 bg-gray-900 text-emerald-400 font-mono text-sm rounded-xl border border-gray-800 resize-none shadow-2xl" />
               <div className="flex justify-end">
