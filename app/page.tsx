@@ -382,16 +382,22 @@ export default function Home() {
     const targetTemplate = promptTemplatesList.find(t => t.id === templateId) || promptTemplatesList.find(t => t.id === 'tpl_default');
     const templateContent = targetTemplate ? targetTemplate.template_content : "";
 
-    const formattedPrompt = formatPrompt(templateContent, {
-      large_name: selectedMacro,
-      medium_name: selectedSubs.join(', ') || '기본 맞춤 전략',
-      small_name: selectedSecondaries.join(', '),
-      userInput,
-      activeRequests
-    });
+    try {
+      const formattedPrompt = formatPrompt(templateContent, {
+        large_name: selectedMacro,
+        medium_name: selectedSubs.join(', ') || '기본 맞춤 전략',
+        small_name: selectedSecondaries.join(', '),
+        userInput,
+        activeRequests
+      });
 
-    setGeneratedMarkdown(formattedPrompt);
-    setShowResult(true);
+      setGeneratedMarkdown(formattedPrompt);
+      setShowResult(true);
+    } catch (e: unknown) {
+      console.error("프롬프트 포맷팅 실패:", e);
+      const errorMessage = e instanceof Error ? e.message : String(e);
+      showToast(errorMessage, "error");
+    }
   }, [selectedMacro, selectedSubs, userInput, selectedSecondaries, activeRequests, showToast, categories, combinationMaps]);
 
   const handleCopy = useCallback(() => {

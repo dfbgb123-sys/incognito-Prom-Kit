@@ -33,3 +33,48 @@ jobs:
     # 5. 빌드 테스트: Next.js 컴파일 오류 및 TypeScript 타입 체크를 수행합니다.
     - name: Next.js Build Check (Harness)
       run: npm run build
+
+    # 6. 테스트 수행 및 GitHub Job Summary 보고서 생성
+    - name: Run Tests and Generate Job Summary
+      run: |
+        # Jest 테스트 결과를 JSON 파일로 출력하며 실행 (실패 시 바로 뻗지 않고 후속 마크다운 작성을 위해 || true 처리)
+        npm run test -- --json --outputFile=test-results.json || true
+        
+        # JSON 결과 파싱
+        PASSED_SUITES=$(jq '.numPassedTestSuites' test-results.json)
+        FAILED_SUITES=$(jq '.numFailedTestSuites' test-results.json)
+        TOTAL_SUITES=$(jq '.numTotalTestSuites' test-results.json)
+        
+        PASSED_TESTS=$(jq '.numPassedTests' test-results.json)
+        FAILED_TESTS=$(jq '.numFailedTests' test-results.json)
+        TOTAL_TESTS=$(jq '.numTotalTests' test-results.json)
+        
+        SUCCESS=$(jq '.success' test-results.json)
+        
+        # 깃허브 액션스 요약보드에 마크다운 기록
+        echo "### 🧪 Jest 단위 테스트 요약 보고서" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "| 구분 | 총 개수 | 통과 (Pass) | 실패 (Fail) | 최종 결과 |" >> $GITHUB_STEP_SUMMARY
+        echo "| :--- | :---: | :---: | :---: | :---: |" >> $GITHUB_STEP_SUMMARY
+        
+        if [ "$SUCCESS" = "true" ]; then
+          RESULT_EMOJI="✅ PASS"
+        else
+          RESULT_EMOJI="❌ FAIL"
+        fi
+        
+        echo "| **테스트 수트 (Suites)** | $TOTAL_SUITES | $PASSED_SUITES | $FAILED_SUITES | $RESULT_EMOJI |" >> $GITHUB_STEP_SUMMARY
+        echo "| **개별 테스트 (Tests)** | $TOTAL_TESTS | $PASSED_TESTS | $FAILED_TESTS | $RESULT_EMOJI |" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        
+        echo "#### 📋 상세 테스트 케이스 결과" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        
+        # jq를 활용하여 각 파일별 세부 테스트 명세 마크다운화 및 기록
+        jq -r '.testResults[] | "##### 📁 \(.name | split("/") | last)\n" + (.assertionResults[] | "* " + (if .status == "passed" then "✅" else "❌" end) + " " + .title + " (\(.duration)ms)")' test-results.json >> $GITHUB_STEP_SUMMARY
+        
+        # 만약 하나라도 테스트가 실패했다면 빌드를 최종 실패 처리
+        if [ "$SUCCESS" != "true" ]; then
+          echo "테스트 케이스 중 실패 항목이 존재하여 빌드를 실패 처리합니다."
+          exit 1
+        fi
