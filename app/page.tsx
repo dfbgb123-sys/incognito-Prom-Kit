@@ -8,6 +8,7 @@ import analysisData from '../data/analysis_keywords.json';
 import MacroSection from './components/MacroSection';
 import SubSection from './components/SubSection';
 import TuningSection from './components/TuningSection';
+import { formatPrompt } from './utils/renderer';
 
 interface CategoryItem {
   id: string;
@@ -32,38 +33,6 @@ interface PromptTemplate {
 }
 
 const promptTemplatesList = promptTemplatesData as unknown as PromptTemplate[];
-
-function formatPrompt(template: string, data: { large_name: string, medium_name: string, small_name: string, userInput: string, activeRequests: string[] }) {
-  let content = template
-    .replace(/\[?\{large_name\}\]?/g, data.large_name)
-    .replace(/\[?\{large_category\}\]?/g, data.large_name)
-    .replace(/\[?\{medium_name\}\]?/g, data.medium_name)
-    .replace(/\[?\{medium_category\}\]?/g, data.medium_name)
-    .replace(/\[?\{small_name\}\]?/g, data.small_name)
-    .replace(/\[?\{small_category\}\]?/g, data.small_name);
-
-  const contextStr = data.userInput.trim() 
-    ? `\n- 사용자 추가 맥락 사양: ${data.userInput.trim()}` 
-    : '';
-  content = content.replace(/\{user_context\}/g, contextStr);
-
-  const requestsStr = data.activeRequests.map(req => `- ${req}`).join('\n');
-  content = content.replace(/\{requests\}/g, requestsStr);
-
-  let constraintsStr = '';
-  if (data.small_name.trim()) {
-    constraintsStr = data.small_name.split(',').map((name, i) => `- [보완사항 ${i + 1}] ${name.trim()}`).join('\n');
-  }
-
-  if (!data.small_name.trim()) {
-    content = content.replace(/\n## ⚠️ 제약 조건 및 피드백\n\{constraints\}/g, '');
-    content = content.replace(/\{constraints\}/g, '');
-  } else {
-    content = content.replace(/\{constraints\}/g, constraintsStr);
-  }
-
-  return content;
-}
 
 export default function Home() {
   const [categories, setCategories] = useState<CategoryItem[]>(() => {
