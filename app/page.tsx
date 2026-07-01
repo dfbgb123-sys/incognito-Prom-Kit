@@ -111,7 +111,12 @@ export default function Home() {
   const level1Cats = categories.filter(c => c.level === 1);
   const level2Cats = categories.filter(c => c.level === 2);
   level1Cats.forEach(l1 => {
-    subCategoryData[l1.name] = level2Cats.filter(c => c.parent_id === l1.id).map(c => c.name);
+    const list = level2Cats.filter(c => c.parent_id === l1.id).map(c => c.name);
+    if (subCategoryData[l1.name]) {
+      subCategoryData[l1.name] = [...new Set([...subCategoryData[l1.name], ...list])];
+    } else {
+      subCategoryData[l1.name] = list;
+    }
   });
 
   const secondaryPool = categories.filter(c => c.level === 3).map(c => c.name);
@@ -244,6 +249,19 @@ export default function Home() {
       triggerWarning("최대 500자까지만 입력 가능합니다.");
       return;
     }
+
+    // 1. Check if the category already exists in standard database or custom categories
+    const existing = categories.find(c => c.level === 1 && c.name.toLowerCase() === sanitized.toLowerCase());
+    
+    if (existing) {
+      if (!macroCategories.includes(existing.name)) {
+        setMacroCategories(prev => [...prev, existing.name]);
+      }
+      handleSelectMacro(existing.name);
+      return;
+    }
+
+    // 2. Otherwise, create a new custom macro category
     const newCat: CategoryItem = {
       id: 'cat_l_usr_' + Date.now(),
       name: sanitized,
@@ -260,7 +278,7 @@ export default function Home() {
     setCategories(prev => [...prev, newCat]);
 
     if (!macroCategories.includes(sanitized)) {
-      setMacroCategories([...macroCategories, sanitized]);
+      setMacroCategories(prev => [...prev, sanitized]);
     }
     handleSelectMacro(sanitized);
   };
