@@ -35,21 +35,8 @@ interface PromptTemplate {
 const promptTemplatesList = promptTemplatesData as unknown as PromptTemplate[];
 
 export default function Home() {
-  const [categories, setCategories] = useState<CategoryItem[]>(() => {
-    if (typeof window !== 'undefined') {
-      const storedCats = localStorage.getItem('custom_categories');
-      return storedCats ? [...(categoriesData as unknown as CategoryItem[]), ...JSON.parse(storedCats)] : (categoriesData as unknown as CategoryItem[]);
-    }
-    return categoriesData as unknown as CategoryItem[];
-  });
-
-  const [combinationMaps, setCombinationMaps] = useState<CombinationMap[]>(() => {
-    if (typeof window !== 'undefined') {
-      const storedCombos = localStorage.getItem('custom_combinations');
-      return storedCombos ? [...combinationMapsData, ...JSON.parse(storedCombos)] : combinationMapsData;
-    }
-    return combinationMapsData;
-  });
+  const [categories, setCategories] = useState<CategoryItem[]>(categoriesData as unknown as CategoryItem[]);
+  const [combinationMaps, setCombinationMaps] = useState<CombinationMap[]>(combinationMapsData);
 
   const [macroCategories, setMacroCategories] = useState(["공부", "여행", "영어", "일정", "준비물", "레시피", "맛집", "성형"]);
   const [selectedMacro, setSelectedMacro] = useState("");
@@ -63,19 +50,7 @@ export default function Home() {
   const [secondaryChips, setSecondaryChips] = useState<string[]>([]);
   const [selectedSecondaries, setSelectedSecondaries] = useState<string[]>([]);
 
-  const [macroBulkStorage, setMacroBulkStorage] = useState<string[]>(() => {
-    const initialCategories = ["공부", "여행", "영어", "일정", "준비물", "레시피", "맛집", "성형"];
-    if (typeof window !== 'undefined') {
-      const storedCats = localStorage.getItem('custom_categories');
-      const customCats = storedCats ? JSON.parse(storedCats) : [];
-      const mergedCats = [...(categoriesData as unknown as CategoryItem[]), ...customCats];
-      const level1Names = mergedCats.filter(c => c.level === 1).map(c => c.name);
-      return level1Names.filter(name => !initialCategories.includes(name));
-    }
-    const level1Names = (categoriesData as unknown as CategoryItem[]).filter(c => c.level === 1).map(c => c.name);
-    return level1Names.filter(name => !initialCategories.includes(name));
-  });
-
+  const [macroBulkStorage, setMacroBulkStorage] = useState<string[]>([]);
   const [subBulkStorage, setSubBulkStorage] = useState<string[]>([]);
   const [appendSubCount, setAppendSubCount] = useState(0);
 
@@ -92,6 +67,24 @@ export default function Home() {
   const triggerWarning = useCallback((msg: string) => {
     setWarningMessage(msg);
     setShowWarningModal(true);
+  }, []);
+
+  useEffect(() => {
+    // 1. Load custom categories
+    const storedCats = localStorage.getItem('custom_categories');
+    const customCats = storedCats ? JSON.parse(storedCats) : [];
+    const mergedCats = [...(categoriesData as unknown as CategoryItem[]), ...customCats];
+    setCategories(mergedCats);
+
+    // 2. Load custom combinations
+    const storedCombos = localStorage.getItem('custom_combinations');
+    const customCombos = storedCombos ? JSON.parse(storedCombos) : [];
+    setCombinationMaps([...combinationMapsData, ...customCombos]);
+
+    // 3. Populate macro categories & bulk storage
+    const initialCategories = ["공부", "여행", "영어", "일정", "준비물", "레시피", "맛집", "성형"];
+    const level1Names = mergedCats.filter(c => c.level === 1).map(c => c.name);
+    setMacroBulkStorage(level1Names.filter(name => !initialCategories.includes(name)));
   }, []);
 
   const analysisKeywordsPool = analysisData.analysisKeywordsPool;
