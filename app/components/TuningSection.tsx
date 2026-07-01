@@ -23,7 +23,7 @@ export default function TuningSection({ showSecondary, secondaryChips, setSecond
   };
 
   const appendRow = () => {
-    let current = [...secondaryChips];
+    const current = [...secondaryChips];
     let added = 0;
     for (let i = 0; i < secondaryPool.length; i++) {
       if (!current.includes(secondaryPool[i])) {

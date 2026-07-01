@@ -17,6 +17,22 @@ interface CategoryItem {
   type: string;
 }
 
+interface CombinationMap {
+  id: string;
+  large_id: string | null;
+  medium_id: string | null;
+  small_id: string | null;
+  template_id: string;
+}
+
+interface PromptTemplate {
+  id: string;
+  title: string;
+  template_content: string;
+}
+
+const promptTemplatesList = promptTemplatesData as unknown as PromptTemplate[];
+
 function formatPrompt(template: string, data: { large_name: string, medium_name: string, small_name: string, userInput: string, activeRequests: string[] }) {
   let content = template
     .replace(/\[?\{large_name\}\]?/g, data.large_name)
@@ -51,7 +67,7 @@ function formatPrompt(template: string, data: { large_name: string, medium_name:
 
 export default function Home() {
   const [categories, setCategories] = useState<CategoryItem[]>([]);
-  const [combinationMaps, setCombinationMaps] = useState<any[]>([]);
+  const [combinationMaps, setCombinationMaps] = useState<CombinationMap[]>([]);
 
   useEffect(() => {
     // 1. Load custom categories
@@ -113,7 +129,6 @@ export default function Home() {
   const [macroBulkStorage, setMacroBulkStorage] = useState<string[]>([]);
   const [subBulkStorage, setSubBulkStorage] = useState<string[]>([]);
 
-  const [appendMacroCount, setAppendMacroCount] = useState(0);
   const [appendSubCount, setAppendSubCount] = useState(0);
 
   const [showLimitPopup, setShowLimitPopup] = useState(false);
@@ -210,7 +225,6 @@ export default function Home() {
     if (newItemsToAppend.length > 0) {
       setMacroCategories((prev) => [...prev, ...newItemsToAppend]);
       setMacroBulkStorage(remaining);
-      setAppendMacroCount((prev) => prev + 1);
 
       if (!selectedMacro) {
         handleSelectMacro(newItemsToAppend[newItemsToAppend.length - 1]);
@@ -337,7 +351,6 @@ export default function Home() {
     const level1Names = categories.filter(c => c.level === 1).map(c => c.name);
     const filteredPool = level1Names.filter(item => !initialCategories.includes(item));
     setMacroBulkStorage(filteredPool);
-    setAppendMacroCount(0);
     
     showToast("선택 정보가 초기화되었습니다.", "success");
   }, [showToast, categories]);
@@ -363,7 +376,7 @@ export default function Home() {
     const small_id = smallCat?.id || null;
 
     // 2. Lookup Combination
-    const foundMap = combinationMaps.find((map: any) => 
+    const foundMap = combinationMaps.find((map: CombinationMap) => 
       map.large_id === large_id && 
       map.medium_id === medium_id && 
       map.small_id === small_id
@@ -393,7 +406,7 @@ export default function Home() {
     }
 
     // 3. Format Template
-    const targetTemplate = promptTemplatesData.find((t: any) => t.id === templateId) || promptTemplatesData.find((t: any) => t.id === 'tpl_default');
+    const targetTemplate = promptTemplatesList.find(t => t.id === templateId) || promptTemplatesList.find(t => t.id === 'tpl_default');
     const templateContent = targetTemplate ? targetTemplate.template_content : "";
 
     const formattedPrompt = formatPrompt(templateContent, {
