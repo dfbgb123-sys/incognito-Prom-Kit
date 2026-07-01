@@ -66,25 +66,63 @@ function formatPrompt(template: string, data: { large_name: string, medium_name:
 }
 
 export default function Home() {
-  const [categories, setCategories] = useState<CategoryItem[]>([]);
-  const [combinationMaps, setCombinationMaps] = useState<CombinationMap[]>([]);
+  const [categories, setCategories] = useState<CategoryItem[]>(() => {
+    if (typeof window !== 'undefined') {
+      const storedCats = localStorage.getItem('custom_categories');
+      return storedCats ? [...(categoriesData as unknown as CategoryItem[]), ...JSON.parse(storedCats)] : (categoriesData as unknown as CategoryItem[]);
+    }
+    return categoriesData as unknown as CategoryItem[];
+  });
 
-  useEffect(() => {
-    // 1. Load custom categories
-    const storedCats = localStorage.getItem('custom_categories');
-    const customCats = storedCats ? JSON.parse(storedCats) : [];
-    const mergedCats = [...(categoriesData as unknown as CategoryItem[]), ...customCats];
-    setCategories(mergedCats);
+  const [combinationMaps, setCombinationMaps] = useState<CombinationMap[]>(() => {
+    if (typeof window !== 'undefined') {
+      const storedCombos = localStorage.getItem('custom_combinations');
+      return storedCombos ? [...combinationMapsData, ...JSON.parse(storedCombos)] : combinationMapsData;
+    }
+    return combinationMapsData;
+  });
 
-    // 2. Load custom combinations
-    const storedCombos = localStorage.getItem('custom_combinations');
-    const customCombos = storedCombos ? JSON.parse(storedCombos) : [];
-    setCombinationMaps([...combinationMapsData, ...customCombos]);
+  const [macroCategories, setMacroCategories] = useState(["공부", "여행", "영어", "일정", "준비물", "레시피", "맛집", "성형"]);
+  const [selectedMacro, setSelectedMacro] = useState("");
+  const [selectedSubs, setSelectedSubs] = useState<string[]>([]);
+  const [subChips, setSubChips] = useState<string[]>([]);
+  const [userInput, setUserInput] = useState("");
+  const [generatedMarkdown, setGeneratedMarkdown] = useState("");
+  const [showResult, setShowResult] = useState(false);
 
-    // 3. Populate macro categories & bulk storage
+  const [showSecondary, setShowSecondary] = useState(false);
+  const [secondaryChips, setSecondaryChips] = useState<string[]>([]);
+  const [selectedSecondaries, setSelectedSecondaries] = useState<string[]>([]);
+
+  const [macroBulkStorage, setMacroBulkStorage] = useState<string[]>(() => {
     const initialCategories = ["공부", "여행", "영어", "일정", "준비물", "레시피", "맛집", "성형"];
-    const level1Names = mergedCats.filter(c => c.level === 1).map(c => c.name);
-    setMacroBulkStorage(level1Names.filter(name => !initialCategories.includes(name)));
+    if (typeof window !== 'undefined') {
+      const storedCats = localStorage.getItem('custom_categories');
+      const customCats = storedCats ? JSON.parse(storedCats) : [];
+      const mergedCats = [...(categoriesData as unknown as CategoryItem[]), ...customCats];
+      const level1Names = mergedCats.filter(c => c.level === 1).map(c => c.name);
+      return level1Names.filter(name => !initialCategories.includes(name));
+    }
+    const level1Names = (categoriesData as unknown as CategoryItem[]).filter(c => c.level === 1).map(c => c.name);
+    return level1Names.filter(name => !initialCategories.includes(name));
+  });
+
+  const [subBulkStorage, setSubBulkStorage] = useState<string[]>([]);
+  const [appendSubCount, setAppendSubCount] = useState(0);
+
+  const [showLimitPopup, setShowLimitPopup] = useState(false);
+  const [limitPopupMessage, setLimitPopupMessage] = useState("");
+
+  const [chipsPerAppend, setChipsPerAppend] = useState(5);
+  const APPEND_LIMIT = 3;
+
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const [showWarningModal, setShowWarningModal] = useState(false);
+  const [warningMessage, setWarningMessage] = useState("");
+
+  const triggerWarning = useCallback((msg: string) => {
+    setWarningMessage(msg);
+    setShowWarningModal(true);
   }, []);
 
   const analysisKeywordsPool = analysisData.analysisKeywordsPool;
@@ -112,40 +150,6 @@ export default function Home() {
     "공부": ["루틴 최적화 집중", "시간대별 시간 분배형", "번아웃 방지 장치 포함", "초단기 벼락치기 모드"],
     "성형": ["안전 최우선 보수적 관점", "회복 기간 최소화 위주", "상담 시 필수 질문 목록 위주"]
   };
-
-  const [macroCategories, setMacroCategories] = useState(["공부", "여행", "영어", "일정", "준비물", "레시피", "맛집", "성형"]);
-  const [selectedMacro, setSelectedMacro] = useState("");
-  const [selectedSubs, setSelectedSubs] = useState<string[]>([]);
-  const [subChips, setSubChips] = useState<string[]>([]);
-  const [userInput, setUserInput] = useState("");
-  const [analysisChips, setAnalysisChips] = useState<string[]>([]);
-  const [generatedMarkdown, setGeneratedMarkdown] = useState("");
-  const [showResult, setShowResult] = useState(false);
-
-  const [showSecondary, setShowSecondary] = useState(false);
-  const [secondaryChips, setSecondaryChips] = useState<string[]>([]);
-  const [selectedSecondaries, setSelectedSecondaries] = useState<string[]>([]);
-
-  const [macroBulkStorage, setMacroBulkStorage] = useState<string[]>([]);
-  const [subBulkStorage, setSubBulkStorage] = useState<string[]>([]);
-
-  const [appendSubCount, setAppendSubCount] = useState(0);
-
-  const [showLimitPopup, setShowLimitPopup] = useState(false);
-  const [limitPopupMessage, setLimitPopupMessage] = useState("");
-
-  const [chipsPerAppend, setChipsPerAppend] = useState(5);
-
-  const APPEND_LIMIT = 3;
-
-  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
-  const [showWarningModal, setShowWarningModal] = useState(false);
-  const [warningMessage, setWarningMessage] = useState("");
-
-  const triggerWarning = useCallback((msg: string) => {
-    setWarningMessage(msg);
-    setShowWarningModal(true);
-  }, []);
 
   const handleUserInputChange = (val: string) => {
     if (val.length > 500) {
@@ -334,7 +338,7 @@ export default function Home() {
     setShowLimitPopup(true);
   }, []);
 
-  const handleReset = useCallback(() => {
+  const handleReset = () => {
     setSelectedMacro("");
     setSelectedSubs([]);
     setUserInput("");
@@ -353,7 +357,7 @@ export default function Home() {
     setMacroBulkStorage(filteredPool);
     
     showToast("선택 정보가 초기화되었습니다.", "success");
-  }, [showToast, categories]);
+  };
 
   // 3번 수정: useCallback으로 감싸서 exhaustive-deps 경고 해소
   const generatePrompt = useCallback(() => {
@@ -440,16 +444,19 @@ export default function Home() {
   }, [generatedMarkdown, selectedMacro, selectedSubs, selectedSecondaries, userInput, showToast]);
 
   // 2번 수정: analysisChips 중복 제거
-  useEffect(() => {
-    let chips: string[] = [];
-    if (/돈|예산|경비|비용/.test(userInput)) chips = [...chips, ...analysisKeywordsPool["예산"]];
-    if (/기간|며칠|시간|일정/.test(userInput)) chips = [...chips, ...analysisKeywordsPool["기간"]];
-    if (/초보|수준|실력|처음/.test(userInput)) chips = [...chips, ...analysisKeywordsPool["수준"]];
-    setAnalysisChips([...new Set(chips)]);
-  }, [userInput, analysisKeywordsPool]);
+  let derivedChips: string[] = [];
+  if (/돈|예산|경비|비용/.test(userInput)) derivedChips = [...derivedChips, ...analysisKeywordsPool["예산"]];
+  if (/기간|며칠|시간|일정/.test(userInput)) derivedChips = [...derivedChips, ...analysisKeywordsPool["기간"]];
+  if (/초보|수준|실력|처음/.test(userInput)) derivedChips = [...derivedChips, ...analysisKeywordsPool["수준"]];
+  const analysisChips = [...new Set(derivedChips)];
 
   useEffect(() => {
-    if (showResult) generatePrompt();
+    if (showResult) {
+      const timer = setTimeout(() => {
+        generatePrompt();
+      }, 0);
+      return () => clearTimeout(timer);
+    }
   }, [selectedSecondaries, generatePrompt, showResult]);
 
   return (
