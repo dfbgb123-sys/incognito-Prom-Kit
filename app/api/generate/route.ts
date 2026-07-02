@@ -4,7 +4,7 @@ import { Client } from '@notionhq/client';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { large_name, medium_names, small_names, userInput, length } = body;
+    const { large_name, medium_names, small_names, userInput, length, provider } = body;
 
     const token = process.env.NOTION_API_TOKEN;
     const databaseId = process.env.NOTION_DATABASE_ID;
@@ -23,11 +23,11 @@ export async function POST(request: Request) {
       properties: {
         "이름": {
           title: [
-            { text: { content: `[최종 복사] ${large_name || '미선택'}` } }
+            { text: { content: provider === 'copy' ? `[복사] ${large_name || '미선택'}` : `[AI 실행 - ${(provider || '').toUpperCase()}] ${large_name || '미선택'}` } }
           ]
         },
         "작업 구분": {
-          select: { name: "Copy" }
+          select: { name: provider === 'copy' ? 'Copy' : `AI-${provider}` }
         },
         "빌드 상태": {
           select: { name: "Success" }

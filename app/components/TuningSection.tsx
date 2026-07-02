@@ -68,26 +68,26 @@ export default function TuningSection({ showSecondary, secondaryChips, setSecond
   const isExhausted = secondaryPool.every(item => secondaryChips.includes(item));
 
   return (
-    <div className="bg-gradient-to-br from-amber-50 to-orange-50 p-5 rounded-xl border border-amber-200 space-y-3 shadow-sm">
-      <span className="text-md font-bold text-amber-800 block">⚠️ 2차 고도화 보완재료 튜닝</span>
-      <p className="text-xs text-amber-700">추가할 피드백 제약 조건 칩을 선택하면 프롬프트가 즉시 업그레이드됩니다:</p>
+    <div className="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-3 shadow-sm">
+      <span className="text-md font-bold text-slate-700 block">프롬프트 정밀 조정</span>
+      <p className="text-xs text-slate-500">조건 칩을 추가하면 프롬프트가 즉시 업데이트됩니다</p>
       <div className="flex flex-wrap gap-2 items-center">
         {secondaryChips.map((fbText) => {
           const isSelected = selectedSecondaries.includes(fbText);
           return (
-            <button key={fbText} onClick={() => toggleChip(fbText)} className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${isSelected ? 'bg-orange-600 text-white border-orange-700 font-bold' : 'bg-white text-amber-900 border-amber-300 hover:bg-amber-100'}`}>
-              ⚠️ {fbText}
+            <button key={fbText} onClick={() => toggleChip(fbText)} className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${isSelected ? 'bg-slate-700 text-white border-slate-800' : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-100'}`}>
+              {fbText}
             </button>
           );
         })}
         {isAddingCustom ? (
-          <div className="flex items-center gap-1 bg-white p-1 rounded-lg border border-orange-300 shadow-inner">
-            <input type="text" value={customInput} onChange={(e) => handleChange(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && submitCustom()} placeholder="제약조건 입력" className="px-2 py-1 bg-transparent text-xs w-32 focus:outline-none" autoFocus />
-            <button onClick={submitCustom} className="px-2 py-1 bg-orange-500 text-white text-xs font-bold rounded-md">확인</button>
+          <div className="flex items-center gap-1 bg-white p-1 rounded-lg border border-slate-300 shadow-inner">
+            <input type="text" value={customInput} onChange={(e) => handleChange(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && submitCustom()} placeholder="조건 입력" className="px-2 py-1 bg-transparent text-xs w-32 focus:outline-none" autoFocus />
+            <button onClick={submitCustom} className="px-2 py-1 bg-slate-600 text-white text-xs font-bold rounded-md">확인</button>
             <button onClick={() => setIsAddingCustom(false)} className="px-1 py-1 text-gray-400 text-xs">취소</button>
           </div>
         ) : (
-          <button onClick={() => setIsAddingCustom(true)} className="px-3 py-1.5 bg-orange-400 text-white font-semibold rounded-lg text-xs">✎ 직접 추가</button>
+          <button onClick={() => setIsAddingCustom(true)} className="px-3 py-1.5 bg-slate-200 text-slate-600 hover:bg-slate-300 font-semibold rounded-lg text-xs transition-all">직접 추가</button>
         )}
         <button
           onClick={appendRow}
@@ -98,7 +98,7 @@ export default function TuningSection({ showSecondary, secondaryChips, setSecond
               : 'bg-gray-200 text-gray-700 hover:bg-gray-300 shadow-sm'
           }`}
         >
-          {isExhausted ? '더 이상 추가할 항목이 없습니다' : '＋ 더보기'}
+          {isExhausted ? '더 이상 추가할 항목이 없습니다' : '더보기'}
         </button>
       </div>
     </div>

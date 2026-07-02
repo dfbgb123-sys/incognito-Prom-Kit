@@ -9,6 +9,8 @@ import MacroSection from './components/MacroSection';
 import SubSection from './components/SubSection';
 import TuningSection from './components/TuningSection';
 import { formatPrompt } from './utils/renderer';
+import ReactMarkdown from 'react-markdown';
+import Image from 'next/image';
 
 interface CategoryItem {
   id: string;
@@ -60,6 +62,11 @@ export default function Home() {
   const [chipsPerAppend, setChipsPerAppend] = useState(5);
   const APPEND_LIMIT = 3;
 
+  const [isLoadingSubs, setIsLoadingSubs] = useState(false);
+  const [aiResult, setAiResult] = useState("");
+  const [isExecuting, setIsExecuting] = useState<false | 'gemini' | 'claude' | 'groq'>(false);
+  const [activeTab, setActiveTab] = useState<'builder' | 'result'>('builder');
+  const [lastProvider, setLastProvider] = useState<'gemini' | 'claude' | 'groq' | null>(null);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const [showWarningModal, setShowWarningModal] = useState(false);
   const [warningMessage, setWarningMessage] = useState("");
@@ -157,7 +164,38 @@ export default function Home() {
 
 
 
-  const handleSelectMacro = (category: string) => {
+  const fetchAndSetAISubs = async (categoryName: string, parentId: string | null) => {
+    setIsLoadingSubs(true);
+    try {
+      const res = await fetch('/api/suggest-subs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ category: categoryName }),
+      });
+      const data = await res.json();
+      if (data.subs && Array.isArray(data.subs) && selectedMacroRef.current === categoryName) {
+        const storedCats = localStorage.getItem('custom_categories');
+        const existingCustomCats = storedCats ? JSON.parse(storedCats) : [];
+        const newSubCats: CategoryItem[] = data.subs.map((name: string, i: number) => ({
+          id: `cat_m_ai_${Date.now()}_${i}`,
+          name,
+          level: 2,
+          parent_id: parentId,
+          type: 'user',
+        }));
+        localStorage.setItem('custom_categories', JSON.stringify([...existingCustomCats, ...newSubCats]));
+        setCategories(prev => [...prev, ...newSubCats]);
+        setSubChips(data.subs.slice(0, 7));
+        setSubBulkStorage(data.subs.slice(7));
+      }
+    } catch {
+      // silently fail
+    } finally {
+      setIsLoadingSubs(false);
+    }
+  };
+
+  const handleSelectMacro = (category: string, skipAI = false) => {
     setSelectedMacro(category);
     selectedMacroRef.current = category; // ref 즉시 동기화
     setSelectedSubs([]);
@@ -167,18 +205,17 @@ export default function Home() {
     setSubBulkStorage([]);
     setAppendSubCount(0);
 
-    let initialSubs: string[] = [];
-    let bulkSubs: string[] = [];
-    if (subCategoryData[category]) {
-      initialSubs = subCategoryData[category].slice(0, 7);
-      bulkSubs = subCategoryData[category].slice(7);
-    } else {
-      initialSubs = [`${category} 입문 가이드`, `${category} 트렌드 분석`, `실전 ${category} 전략`];
-    }
+    const existingSubs = subCategoryData[category] ?? [];
+    const initialSubs = existingSubs.slice(0, 7);
+    const bulkSubs = existingSubs.slice(7);
     setSubChips(initialSubs);
     setSubBulkStorage(bulkSubs);
 
-    // 100% 로컬 기본 requests 지정
+    if (initialSubs.length === 0 && !skipAI) {
+      const parentCat = categories.find(c => c.level === 1 && c.name === category);
+      void fetchAndSetAISubs(category, parentCat?.id ?? null);
+    }
+
     setActiveRequests(promptTemplates.requests);
   };
 
@@ -237,7 +274,7 @@ export default function Home() {
     }
   };
 
-  const handleAddCustomMacro = (sanitized: string) => {
+  const handleAddCustomMacro = async (sanitized: string) => {
     if (sanitized.length > 500) {
       triggerWarning("최대 500자까지만 입력 가능합니다.");
       return;
@@ -245,7 +282,7 @@ export default function Home() {
 
     // 1. Check if the category already exists in standard database or custom categories
     const existing = categories.find(c => c.level === 1 && c.name.toLowerCase() === sanitized.toLowerCase());
-    
+
     if (existing) {
       if (!macroCategories.includes(existing.name)) {
         setMacroCategories(prev => [...prev, existing.name]);
@@ -254,9 +291,10 @@ export default function Home() {
       return;
     }
 
-    // 2. Otherwise, create a new custom macro category
+    // 2. Create a new custom macro category
+    const newId = 'cat_l_usr_' + Date.now();
     const newCat: CategoryItem = {
-      id: 'cat_l_usr_' + Date.now(),
+      id: newId,
       name: sanitized,
       level: 1,
       parent_id: null,
@@ -273,7 +311,10 @@ export default function Home() {
     if (!macroCategories.includes(sanitized)) {
       setMacroCategories(prev => [...prev, sanitized]);
     }
-    handleSelectMacro(sanitized);
+
+    // skipAI=true: handleSelectMacro이 AI를 재호출하지 않도록 방지 (newId로 직접 호출)
+    handleSelectMacro(sanitized, true);
+    void fetchAndSetAISubs(sanitized, newId);
   };
 
   const handleAddCustomSub = (sanitized: string) => {
@@ -411,10 +452,24 @@ export default function Home() {
     }
   }, [selectedMacro, selectedSubs, userInput, selectedSecondaries, activeRequests, showToast, categories, combinationMaps]);
 
-  const handleCopy = useCallback(() => {
-    navigator.clipboard.writeText(generatedMarkdown).then(() => {
-      showToast("🎨 프롬프트가 클립보드에 복사되었습니다.", "success");
-      // Send logging to Notion
+  const handleExecute = useCallback(async (provider: 'gemini' | 'claude' | 'groq') => {
+    if (!generatedMarkdown) {
+      showToast("먼저 프롬프트를 생성해 주세요.");
+      return;
+    }
+    setIsExecuting(provider);
+    setAiResult("");
+    try {
+      const res = await fetch('/api/execute', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: generatedMarkdown, provider }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? '실행 실패');
+      setAiResult(data.result);
+      setLastProvider(provider);
+      setActiveTab('result');
       fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -423,7 +478,31 @@ export default function Home() {
           medium_names: selectedSubs,
           small_names: selectedSecondaries,
           userInput,
-          length: generatedMarkdown.length
+          length: generatedMarkdown.length,
+          provider,
+        })
+      }).catch(e => console.error("Notion 로깅 실패:", e));
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : String(e);
+      showToast(msg, 'error');
+    } finally {
+      setIsExecuting(false);
+    }
+  }, [generatedMarkdown, showToast, selectedMacro, selectedSubs, selectedSecondaries, userInput]);
+
+  const handleCopy = useCallback(() => {
+    navigator.clipboard.writeText(generatedMarkdown).then(() => {
+      showToast("프롬프트가 복사되었습니다.", "success");
+      fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          large_name: selectedMacro,
+          medium_names: selectedSubs,
+          small_names: selectedSecondaries,
+          userInput,
+          length: generatedMarkdown.length,
+          provider: 'copy',
         })
       }).catch(e => console.error("Notion 로깅 실패:", e));
     });
@@ -446,23 +525,50 @@ export default function Home() {
   }, [selectedSecondaries, generatePrompt, showResult]);
 
   return (
-    <main className="p-4 md:p-8 text-gray-800 bg-gradient-to-b from-blue-50 to-emerald-50 min-h-screen">
+    <main className="p-4 md:p-8 text-gray-800 bg-gray-50 min-h-screen">
       <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
 
         <div className="bg-gradient-to-r from-blue-600 to-emerald-600 text-white p-6 text-center shadow-md">
-          <h1 className="text-3xl font-extrabold tracking-wider">Prom-Kit</h1>
+          <Image src="/logo.svg" alt="Prom-Kit" width={480} height={72} className="h-16 w-auto mx-auto" />
           <p className="text-sm text-blue-100 mt-1">AI Prompt Kit Vending Machine</p>
         </div>
 
+        <div className="flex items-end gap-1 px-5 pt-4 bg-gradient-to-b from-blue-50 to-slate-50 border-b border-blue-100">
+          <button
+            onClick={() => setActiveTab('builder')}
+            className={`px-5 py-2.5 text-sm font-semibold rounded-t-xl -mb-px border transition-colors ${
+              activeTab === 'builder'
+                ? 'bg-white border-gray-200 border-b-white text-blue-600'
+                : 'bg-transparent border-transparent text-gray-400 hover:text-gray-600 hover:bg-gray-200/60'
+            }`}
+          >
+            프롬프트 조립
+          </button>
+          <button
+            onClick={() => setActiveTab('result')}
+            className={`relative px-5 py-2.5 text-sm font-semibold rounded-t-xl -mb-px border transition-colors ${
+              activeTab === 'result'
+                ? 'bg-white border-gray-200 border-b-white text-blue-600'
+                : 'bg-transparent border-transparent text-gray-400 hover:text-gray-600 hover:bg-gray-200/60'
+            }`}
+          >
+            AI 응답
+            {aiResult && activeTab !== 'result' && (
+              <span className="absolute top-2.5 right-2.5 w-1.5 h-1.5 bg-blue-500 rounded-full" />
+            )}
+          </button>
+        </div>
+
+        {activeTab === 'builder' && (
         <div className="p-6 space-y-8">
 
           <div className="flex justify-between items-center pb-2 border-b border-gray-100">
-            <span className="text-xs text-gray-400 font-medium">재료를 선택하여 나만의 프롬프트를 조립하세요.</span>
+            <span className="text-xs text-gray-400 font-medium">재료만 고르면 AI 질문이 완성됩니다.</span>
             <button
               onClick={handleReset}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold text-gray-500 hover:text-red-600 hover:bg-red-50 hover:border-red-200 bg-gray-50 border border-gray-200 rounded-lg transition-all shadow-sm active:scale-95"
+              className="text-xs text-gray-400 hover:text-gray-600 transition-all"
             >
-              🔄 선택 초기화
+              초기화
             </button>
           </div>
 
@@ -475,6 +581,13 @@ export default function Home() {
             isExhausted={macroBulkStorage.length === 0}
             onWarning={triggerWarning}
           />
+
+          {isLoadingSubs && (
+            <div className="flex items-center gap-2.5 px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl text-sm text-blue-600 font-medium">
+              <div className="w-4 h-4 border-2 border-blue-300 border-t-blue-600 rounded-full animate-spin flex-shrink-0" />
+              AI가 키워드를 추천하고 있어요...
+            </div>
+          )}
 
           <SubSection
             selectedMacro={selectedMacro}
@@ -492,35 +605,60 @@ export default function Home() {
               value={userInput}
               onChange={(e) => handleUserInputChange(e.target.value)}
               className="w-full h-32 p-4 border border-gray-300 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all text-base placeholder-gray-400 resize-none shadow-inner"
-              placeholder="선택한 재료 외에 구체적인 요구사항을 자유롭게 적어주세요..."
+              placeholder="지금 상황을 조금 더 알려주세요. (예: 예산, 기간, 목적 등)"
             />
             <div className="mt-2 flex flex-wrap gap-2">
               {analysisChips.map((text) => (
                 <button key={text} onClick={() => handleUserInputChange(userInput.trim() + " " + text + ", ")} className="px-2.5 py-1 bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 rounded-md text-xs font-medium transition-all shadow-sm">
-                  💡 추천 추가: {text}
+                  추천 추가: {text}
                 </button>
               ))}
             </div>
           </div>
 
           <div className="pt-2">
-            <button onClick={generatePrompt} className="w-full py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold rounded-xl text-lg transition-all shadow-md flex items-center justify-center gap-2">
-              ✨ 프롬프트 생성하기
+            <button onClick={generatePrompt} className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-lg transition-all shadow-sm">
+              프롬프트 생성하기
             </button>
           </div>
 
           {showResult && (
             <div className="space-y-3 transition-all">
-              <div className="flex items-center justify-between">
-                <span className="text-md font-bold text-gray-900">📋 조립 완료된 프롬프트 (Markdown)</span>
-                <button onClick={handleCopy} className="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs rounded transition-all shadow-sm">📋 원클릭 복사</button>
+              <div className="flex items-center justify-between flex-wrap gap-2">
+                <span className="text-md font-bold text-gray-900">조립된 프롬프트</span>
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <button onClick={handleCopy} className="px-3 py-1.5 bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300 font-medium text-xs rounded-lg transition-all">복사</button>
+                  <button
+                    onClick={() => handleExecute('gemini')}
+                    disabled={!!isExecuting}
+                    className={`px-3 py-1.5 font-medium text-xs rounded-lg border transition-all ${isExecuting === 'gemini' ? 'bg-gray-50 border-gray-200 text-gray-300 cursor-not-allowed' : 'bg-white border-blue-200 text-blue-600 hover:bg-blue-50'}`}
+                  >
+                    {isExecuting === 'gemini' ? '실행 중...' : 'Gemini'}
+                  </button>
+                  <button
+                    onClick={() => handleExecute('groq')}
+                    disabled={!!isExecuting}
+                    className={`px-3 py-1.5 font-medium text-xs rounded-lg border transition-all ${isExecuting === 'groq' ? 'bg-gray-50 border-gray-200 text-gray-300 cursor-not-allowed' : 'bg-white border-orange-200 text-orange-600 hover:bg-orange-50'}`}
+                  >
+                    {isExecuting === 'groq' ? '실행 중...' : 'Groq'}
+                  </button>
+                  <button
+                    onClick={() => handleExecute('claude')}
+                    disabled={!!isExecuting}
+                    className={`px-3 py-1.5 font-medium text-xs rounded-lg border transition-all ${isExecuting === 'claude' ? 'bg-gray-50 border-gray-200 text-gray-300 cursor-not-allowed' : 'bg-white border-violet-200 text-violet-600 hover:bg-violet-50'}`}
+                  >
+                    {isExecuting === 'claude' ? '실행 중...' : 'Claude'}
+                  </button>
+                </div>
               </div>
               <textarea readOnly value={generatedMarkdown} className="w-full h-64 p-4 bg-gray-900 text-emerald-400 font-mono text-sm rounded-xl border border-gray-800 resize-none shadow-2xl" />
-              <div className="flex justify-end">
-                <button onClick={() => { setShowSecondary(true); setSecondaryChips(specificSecondaryPools[selectedMacro] || secondaryPool.slice(0, 5)); }} className="text-sm font-bold text-emerald-600 hover:text-emerald-800 underline transition-all">
-                  💡 원하는 결과가 아니신가요? (프롬프트 고도화)
-                </button>
-              </div>
+              <button
+                onClick={() => { setShowSecondary(true); setSecondaryChips(specificSecondaryPools[selectedMacro] || secondaryPool.slice(0, 5)); }}
+                className="w-full p-3.5 border border-blue-200 bg-blue-50 hover:bg-blue-100 rounded-xl text-sm font-semibold text-blue-700 transition-all flex items-center justify-between"
+              >
+                <span>원하는 답이 아닌가요? 조건을 추가해 프롬프트를 다듬어보세요</span>
+                <span className="text-emerald-500">→</span>
+              </button>
             </div>
           )}
 
@@ -536,6 +674,54 @@ export default function Home() {
           />
 
         </div>
+        )}
+
+        {activeTab === 'result' && !aiResult && (
+          <div className="p-10 flex flex-col items-center justify-center text-center gap-5 min-h-64">
+            <div className="w-14 h-14 rounded-2xl bg-gray-50 border border-gray-100 flex flex-col items-center justify-center gap-1.5">
+              <div className="w-7 h-1.5 bg-gray-200 rounded-full" />
+              <div className="w-5 h-1.5 bg-gray-100 rounded-full" />
+              <div className="w-6 h-1.5 bg-gray-200 rounded-full" />
+            </div>
+            <div className="space-y-1.5">
+              <p className="text-sm font-semibold text-gray-500">아직 AI 응답이 없어요</p>
+              <p className="text-xs text-gray-400">프롬프트를 조립하고 Gemini 또는 Claude로 실행해보세요</p>
+            </div>
+            <button
+              onClick={() => setActiveTab('builder')}
+              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg transition-all"
+            >
+              프롬프트 조립하러 가기
+            </button>
+          </div>
+        )}
+
+        {activeTab === 'result' && aiResult && (
+          <div className="p-6 space-y-5">
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <div className="flex items-center gap-2">
+                <span className={`px-3 py-1 rounded-full text-xs font-bold text-white ${lastProvider === 'claude' ? 'bg-violet-600' : lastProvider === 'groq' ? 'bg-orange-500' : 'bg-blue-500'}`}>
+                  {lastProvider === 'claude' ? 'Claude' : lastProvider === 'groq' ? 'Groq' : 'Gemini'}
+                </span>
+                <span className="text-sm font-bold text-gray-700">AI 응답 결과</span>
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => { navigator.clipboard.writeText(aiResult); showToast("AI 응답이 복사되었습니다.", "success"); }}
+                  className="px-3 py-1.5 bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300 font-medium text-xs rounded-lg transition-all"
+                >복사</button>
+                <button
+                  onClick={() => setActiveTab('builder')}
+                  className="px-3 py-1.5 bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300 font-medium text-xs rounded-lg transition-all"
+                >조립으로</button>
+              </div>
+            </div>
+            <div className="prose prose-sm max-w-none p-5 bg-gray-50 border border-gray-100 rounded-xl text-gray-800 leading-relaxed">
+              <ReactMarkdown>{aiResult}</ReactMarkdown>
+            </div>
+          </div>
+        )}
+
       </div>
 
       {showLimitPopup && (
@@ -568,7 +754,7 @@ export default function Home() {
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 animate-fade-in">
           <div className="bg-white rounded-2xl shadow-2xl p-6 mx-4 max-w-sm w-full space-y-4 border border-red-100 transition-all">
             <div className="flex items-center gap-2 text-red-600 font-bold text-sm">
-              <span>⚠️</span> 입력 제한 경고
+              입력 제한
             </div>
             <p className="text-sm text-gray-600 font-medium">{warningMessage}</p>
             <button
