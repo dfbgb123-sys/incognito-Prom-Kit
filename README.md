@@ -1,5 +1,5 @@
 # 📦 Prom-Kit (프롬키트)
-> 머릿속 복잡한 아이디어를 즉시 사용 가능한 구조화된 Markdown 프롬프트로 조립해 주는 AI 질문 자판기
+> 생각은 많은데 AI한테 어떻게 물어볼지 막막할 때! 머릿속 아이디어를 AI가 딱 알아듣는 최적의 질문(프롬프트)으로 뚝딱 조립해 주는 AI 질문 자판기
 
 **🌐 Live Demo:** [incognito-prom-kit.vercel.app](https://incognito-prom-kit.vercel.app)
 
@@ -47,8 +47,8 @@ npm run test
 ---
 
 ## 📅 Roadmap
-- [ ] 핵심 확장 " 더 좋은 생각을 하게 돕는 질문 가이드 "
 - [ ] 프롬프트 2차 재가공 인터페이스 개선
 - [ ] 정적 JSON 데이터를 관계형 DB 스키마로 이관 (MySQL/PostgreSQL)
+- [x] AI 기반 카테고리 중분류칩 자동 추천 기능 (Claude API 연동)
 - [x] Jest 기반 단위 테스트 환경 구축 (완료)
 - [x] GitHub Actions 기반 자동 테스트 및 배포 파이프라인 구축 (완료)
