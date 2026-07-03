@@ -6,7 +6,7 @@ import { ExecuteBodySchema } from '@/app/lib/schemas';
 
 type Provider = 'gemini' | 'claude' | 'groq';
 
-const SYSTEM_PROMPT = "Detect the language of the user's message and respond ONLY in that exact language. Do not mix in Chinese, Japanese, or any other language under any circumstances.";
+const SYSTEM_PROMPT = "사용자가 한국어로 질문하면 반드시 한국어로만 답변하세요. 한자(漢字)나 일본어 가나(仮名)를 절대 사용하지 마세요. 영어로 질문하면 영어로만 답변하세요.";
 
 async function runGemini(prompt: string): Promise<string> {
   const apiKey = process.env.GEMINI_API_KEY;
