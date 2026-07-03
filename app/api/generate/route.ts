@@ -1,10 +1,18 @@
 import { NextResponse } from 'next/server';
 import { Client } from '@notionhq/client';
+import { GenerateBodySchema } from '@/app/lib/schemas';
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { large_name, medium_names, small_names, userInput, length, provider } = body;
+    const parsed = GenerateBodySchema.safeParse(body);
+    if (!parsed.success) {
+      return NextResponse.json(
+        { error: 'invalid_request', issues: parsed.error.flatten().fieldErrors },
+        { status: 400 }
+      );
+    }
+    const { large_name, medium_names, small_names, userInput, length, provider } = parsed.data;
 
     const token = process.env.NOTION_API_TOKEN;
     const databaseId = process.env.NOTION_DATABASE_ID;
@@ -16,7 +24,7 @@ export async function POST(request: Request) {
 
     const notion = new Client({ auth: token });
 
-    const materials = [large_name, ...(medium_names || []), ...(small_names || [])].filter(Boolean);
+    const materials = [large_name, ...medium_names, ...small_names].filter(Boolean);
 
     await notion.pages.create({
       parent: { database_id: databaseId },
@@ -36,7 +44,7 @@ export async function POST(request: Request) {
           date: { start: new Date().toISOString() }
         },
         "사용 재료": {
-          multi_select: materials.map((name: string) => ({ name: name.substring(0, 100) }))
+          multi_select: materials.map((name) => ({ name: name.substring(0, 100) }))
         },
         "사용자 요구사항": {
           rich_text: [

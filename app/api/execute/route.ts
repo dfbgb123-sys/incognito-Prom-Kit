@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { GoogleGenAI } from '@google/genai';
 import Anthropic from '@anthropic-ai/sdk';
 import Groq from 'groq-sdk';
+import { ExecuteBodySchema } from '@/app/lib/schemas';
 
 type Provider = 'gemini' | 'claude' | 'groq';
 
@@ -53,15 +54,14 @@ const providers: Record<Provider, (prompt: string) => Promise<string>> = {
 
 export async function POST(request: Request) {
   const body = await request.json();
-  const { prompt, provider } = body as { prompt: string; provider: string };
-
-  if (!prompt || typeof prompt !== 'string') {
-    return NextResponse.json({ error: 'prompt is required' }, { status: 400 });
+  const parsed = ExecuteBodySchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: 'invalid_request', issues: parsed.error.flatten().fieldErrors },
+      { status: 400 }
+    );
   }
-
-  if (!provider || !(provider in providers)) {
-    return NextResponse.json({ error: 'invalid provider' }, { status: 400 });
-  }
+  const { prompt, provider } = parsed.data;
 
   try {
     const result = await providers[provider as Provider](prompt);

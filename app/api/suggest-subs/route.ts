@@ -1,12 +1,17 @@
 import { NextResponse } from 'next/server';
 import { GoogleGenAI } from '@google/genai';
+import { SuggestSubsBodySchema } from '@/app/lib/schemas';
 
 export async function POST(request: Request) {
-  const { category } = await request.json();
-
-  if (!category || typeof category !== 'string') {
-    return NextResponse.json({ error: 'category is required' }, { status: 400 });
+  const body = await request.json();
+  const parsed = SuggestSubsBodySchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: 'invalid_request', issues: parsed.error.flatten().fieldErrors },
+      { status: 400 }
+    );
   }
+  const { category } = parsed.data;
 
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
