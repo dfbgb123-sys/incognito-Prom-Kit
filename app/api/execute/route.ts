@@ -6,6 +6,8 @@ import { ExecuteBodySchema } from '@/app/lib/schemas';
 
 type Provider = 'gemini' | 'claude' | 'groq';
 
+const SYSTEM_PROMPT = "Respond in the same language as the user's message.";
+
 async function runGemini(prompt: string): Promise<string> {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) throw new Error('GEMINI_API_KEY not set');
@@ -13,6 +15,7 @@ async function runGemini(prompt: string): Promise<string> {
   const ai = new GoogleGenAI({ apiKey });
   const response = await ai.models.generateContent({
     model: 'gemini-2.0-flash',
+    config: { systemInstruction: SYSTEM_PROMPT },
     contents: prompt,
   });
   return response.text ?? '';
@@ -26,6 +29,7 @@ async function runClaude(prompt: string): Promise<string> {
   const message = await client.messages.create({
     model: 'claude-haiku-4-5',
     max_tokens: 4096,
+    system: SYSTEM_PROMPT,
     messages: [{ role: 'user', content: prompt }],
   });
 
@@ -41,7 +45,10 @@ async function runGroq(prompt: string): Promise<string> {
   const client = new Groq({ apiKey });
   const completion = await client.chat.completions.create({
     model: 'llama-3.3-70b-versatile',
-    messages: [{ role: 'user', content: prompt }],
+    messages: [
+      { role: 'system', content: SYSTEM_PROMPT },
+      { role: 'user', content: prompt },
+    ],
   });
   return completion.choices[0]?.message?.content ?? '';
 }
