@@ -69,6 +69,7 @@ export async function POST(request: Request) {
     );
   }
   const { prompt, provider } = parsed.data;
+  console.log(`[execute] provider: ${provider}`);
 
   try {
     const result = await providers[provider as Provider](prompt);
