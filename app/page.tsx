@@ -481,6 +481,8 @@ export default function Home() {
           length: generatedMarkdown.length,
           provider,
         })
+      }).then(r => r.json()).then(data => {
+        if (data.truncated) showToast("입력 내용이 길어 일부만 로그에 저장되었습니다 (최대 2000자).", "error");
       }).catch(e => console.error("Notion 로깅 실패:", e));
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : String(e);
@@ -504,6 +506,8 @@ export default function Home() {
           length: generatedMarkdown.length,
           provider: 'copy',
         })
+      }).then(r => r.json()).then(data => {
+        if (data.truncated) showToast("입력 내용이 길어 일부만 로그에 저장되었습니다 (최대 2000자).", "error");
       }).catch(e => console.error("Notion 로깅 실패:", e));
     });
   }, [generatedMarkdown, selectedMacro, selectedSubs, selectedSecondaries, userInput, showToast]);

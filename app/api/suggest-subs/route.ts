@@ -1,9 +1,21 @@
 import { NextResponse } from 'next/server';
 import { GoogleGenAI } from '@google/genai';
 import { SuggestSubsBodySchema } from '@/app/lib/schemas';
+import { checkRateLimit, getClientIp } from '@/app/lib/rateLimit';
 
 export async function POST(request: Request) {
-  const body = await request.json();
+  const ip = getClientIp(request);
+  if (!checkRateLimit(`suggest-subs:${ip}`, 15, 60_000)) {
+    return NextResponse.json({ error: '요청이 너무 많습니다. 잠시 후 다시 시도해 주세요.' }, { status: 429 });
+  }
+
+  let body: unknown;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: 'invalid_request' }, { status: 400 });
+  }
+
   const parsed = SuggestSubsBodySchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json(
@@ -15,7 +27,8 @@ export async function POST(request: Request) {
 
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
-    return NextResponse.json({ error: 'GEMINI_API_KEY not set' }, { status: 500 });
+    console.error('GEMINI_API_KEY not set');
+    return NextResponse.json({ error: 'AI 추천 기능을 사용할 수 없습니다.' }, { status: 500 });
   }
 
   const ai = new GoogleGenAI({ apiKey });
@@ -36,17 +49,22 @@ export async function POST(request: Request) {
 - JSON 배열만 반환 (다른 텍스트 없이)
 - 예시: ["키워드1","키워드2","키워드3","키워드4","키워드5","키워드6","키워드7"]`;
 
-  const response = await ai.models.generateContent({
-    model: 'gemini-2.5-flash-lite',
-    contents: prompt,
-  });
+  try {
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash-lite',
+      contents: prompt,
+    });
 
-  const text = response.text ?? '';
-  const match = text.match(/\[[\s\S]*?\]/);
-  if (!match) {
-    return NextResponse.json({ error: 'AI 응답 파싱 실패', raw: text }, { status: 500 });
+    const text = response.text ?? '';
+    const match = text.match(/\[[\s\S]*?\]/);
+    if (!match) {
+      return NextResponse.json({ error: 'AI 응답 파싱 실패' }, { status: 500 });
+    }
+
+    const subs: string[] = JSON.parse(match[0]);
+    return NextResponse.json({ subs });
+  } catch (error: unknown) {
+    console.error('추천 키워드 생성 실패:', error instanceof Error ? error.message : String(error));
+    return NextResponse.json({ error: '추천 키워드 생성 중 오류가 발생했습니다.' }, { status: 500 });
   }
-
-  const subs: string[] = JSON.parse(match[0]);
-  return NextResponse.json({ subs });
 }

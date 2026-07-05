@@ -3,6 +3,7 @@ import { GoogleGenAI } from '@google/genai';
 import Anthropic from '@anthropic-ai/sdk';
 import Groq from 'groq-sdk';
 import { ExecuteBodySchema } from '@/app/lib/schemas';
+import { checkRateLimit, getClientIp } from '@/app/lib/rateLimit';
 
 type Provider = 'gemini' | 'claude' | 'groq';
 
@@ -60,7 +61,18 @@ const providers: Record<Provider, (prompt: string) => Promise<string>> = {
 };
 
 export async function POST(request: Request) {
-  const body = await request.json();
+  const ip = getClientIp(request);
+  if (!checkRateLimit(`execute:${ip}`, 10, 60_000)) {
+    return NextResponse.json({ error: '요청이 너무 많습니다. 잠시 후 다시 시도해 주세요.' }, { status: 429 });
+  }
+
+  let body: unknown;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: 'invalid_request' }, { status: 400 });
+  }
+
   const parsed = ExecuteBodySchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json(

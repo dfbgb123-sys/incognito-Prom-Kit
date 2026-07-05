@@ -1,8 +1,14 @@
 import { NextResponse } from 'next/server';
 import { Client } from '@notionhq/client';
 import { GenerateBodySchema } from '@/app/lib/schemas';
+import { checkRateLimit, getClientIp } from '@/app/lib/rateLimit';
 
 export async function POST(request: Request) {
+  const ip = getClientIp(request);
+  if (!checkRateLimit(`generate:${ip}`, 20, 60_000)) {
+    return NextResponse.json({ error: '요청이 너무 많습니다. 잠시 후 다시 시도해 주세요.' }, { status: 429 });
+  }
+
   try {
     const body = await request.json();
     const parsed = GenerateBodySchema.safeParse(body);
@@ -25,6 +31,7 @@ export async function POST(request: Request) {
     const notion = new Client({ auth: token });
 
     const materials = [large_name, ...medium_names, ...small_names].filter(Boolean);
+    const truncated = (userInput || '').length > 2000 || materials.some((name) => name.length > 100);
 
     await notion.pages.create({
       parent: { database_id: databaseId },
@@ -57,10 +64,9 @@ export async function POST(request: Request) {
       }
     });
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, truncated });
   } catch (error: unknown) {
-    console.error("Notion 로깅 실패:", error);
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    return NextResponse.json({ success: false, error: errorMessage }, { status: 500 });
+    console.error("Notion 로깅 실패:", error instanceof Error ? error.message : String(error));
+    return NextResponse.json({ success: false, error: "로그 저장 중 오류가 발생했습니다." }, { status: 500 });
   }
 }
