@@ -1,0 +1,118 @@
+export type Lang = 'ko' | 'en';
+
+export const i18n = {
+  ko: {
+    tabBuilder: '프롬프트 조립',
+    tabResult: 'AI 응답',
+    helperText: '재료만 고르면 AI 질문이 완성됩니다.',
+    reset: '초기화',
+    loadingSubs: 'AI가 키워드를 추천하고 있어요...',
+    userInputPlaceholder: '지금 상황을 조금 더 알려주세요. (예: 예산, 기간, 목적 등)',
+    recommendPrefix: '추천 추가: ',
+    generateBtn: '프롬프트 생성하기',
+    assembledPrompt: '조립된 프롬프트',
+    copy: '복사',
+    executing: '실행 중...',
+    refineBtn: '원하는 답이 아닌가요? 조건을 추가해 프롬프트를 다듬어보세요',
+    noResultTitle: '아직 AI 응답이 없어요',
+    noResultDesc: '프롬프트를 조립하고 Gemini 또는 Claude로 실행해보세요',
+    goToBuilder: '프롬프트 조립하러 가기',
+    aiResultLabel: 'AI 응답 결과',
+    goToAssemble: '조립으로',
+    limitPopupTitle: '더 이상 불러올 수 없어요',
+    noMoreKeywords: '더 이상 추천 키워드가 없어요. 직접 입력해서 추가해보세요!',
+    inputLimit: '입력 제한',
+    maxChars: '최대 500자까지만 입력 가능합니다.',
+    confirm: '확인',
+    cancel: '취소',
+    promptCopied: '프롬프트가 복사되었습니다.',
+    aiCopied: 'AI 응답이 복사되었습니다.',
+    resetDone: '선택 정보가 초기화되었습니다.',
+    selectMacroFirst: '대분류 주제를 먼저 선택해 주세요.',
+    selectSubFirst: '세부 키워드를 최소 1개 이상 선택해 주세요.',
+    generateFirst: '먼저 프롬프트를 생성해 주세요.',
+    logTruncated: '입력 내용이 길어 일부만 로그에 저장되었습니다 (최대 2000자).',
+    // MacroSection
+    topicLabel: '토픽 선택',
+    topicPlaceholder: '주제 입력',
+    addCustom: '+ 직접 추가',
+    noMore: '더 이상 없음',
+    showMore: '더보기',
+    // SubSection
+    subKeywordLabel: '세부 키워드',
+    subEmptyMsg: '주제를 선택하면 세부 키워드가 나타납니다.',
+    keywordPlaceholder: '키워드 입력',
+    // TuningSection
+    tuningTitle: '프롬프트 정밀 조정',
+    tuningDesc: '조건 칩을 추가하면 프롬프트가 즉시 업데이트됩니다',
+    conditionPlaceholder: '조건 입력',
+    addDirect: '직접 추가',
+    noMoreItems: '더 이상 추가할 항목이 없습니다',
+  },
+  en: {
+    tabBuilder: 'Prompt Builder',
+    tabResult: 'AI Response',
+    helperText: 'Pick your ingredients — the AI prompt assembles itself.',
+    reset: 'Reset',
+    loadingSubs: 'AI is generating keywords...',
+    userInputPlaceholder: 'Tell us more about your situation. (e.g. budget, timeline, goal)',
+    recommendPrefix: 'Suggested: ',
+    generateBtn: 'Generate Prompt',
+    assembledPrompt: 'Generated Prompt',
+    copy: 'Copy',
+    executing: 'Running...',
+    refineBtn: 'Not the answer you wanted? Add conditions to refine your prompt',
+    noResultTitle: 'No AI response yet',
+    noResultDesc: 'Build a prompt and run it with Gemini or Claude',
+    goToBuilder: 'Go to Prompt Builder',
+    aiResultLabel: 'AI Response',
+    goToAssemble: 'Back',
+    limitPopupTitle: 'Nothing more to load',
+    noMoreKeywords: 'No more suggested keywords. Try adding one manually!',
+    inputLimit: 'Input Limit',
+    maxChars: 'Maximum 500 characters allowed.',
+    confirm: 'OK',
+    cancel: 'Cancel',
+    promptCopied: 'Prompt copied.',
+    aiCopied: 'AI response copied.',
+    resetDone: 'Selection has been reset.',
+    selectMacroFirst: 'Please select a topic first.',
+    selectSubFirst: 'Please select at least one keyword.',
+    generateFirst: 'Please generate a prompt first.',
+    logTruncated: 'Input was too long; only part was saved to log (max 2000 chars).',
+    // MacroSection
+    topicLabel: 'Topic',
+    topicPlaceholder: 'Enter topic',
+    addCustom: '+ Add custom',
+    noMore: 'No more',
+    showMore: 'More',
+    // SubSection
+    subKeywordLabel: 'Keywords',
+    subEmptyMsg: 'Select a topic to see keywords.',
+    keywordPlaceholder: 'Enter keyword',
+    // TuningSection
+    tuningTitle: 'Fine-tune Prompt',
+    tuningDesc: 'Adding condition chips updates the prompt instantly',
+    conditionPlaceholder: 'Enter condition',
+    addDirect: 'Add',
+    noMoreItems: 'No more items to add',
+  },
+} as const;
+
+export type I18nKey = keyof typeof i18n.ko;
+
+export function t(lang: Lang, key: I18nKey): string {
+  return i18n[lang][key] as string;
+}
+
+// Display names for the 8 default macro chips in English
+export const macroDisplayNames: Record<string, string> = {
+  '공부': 'Study',
+  '여행': 'Travel',
+  '영어': 'English',
+  '일정': 'Schedule',
+  '준비물': 'Checklist',
+  '레시피': 'Recipe',
+  '맛집': 'Restaurant',
+  '성형': 'Cosmetic Surgery',
+};

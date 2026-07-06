@@ -5,10 +5,12 @@ export const ProviderSchema = z.enum(['gemini', 'claude', 'groq']);
 export const ExecuteBodySchema = z.object({
   prompt:   z.string().min(1).max(20000),
   provider: ProviderSchema,
+  lang:     z.enum(['ko', 'en']).optional().default('ko'),
 });
 
 export const SuggestSubsBodySchema = z.object({
   category: z.string().min(1).max(100),
+  lang: z.enum(['ko', 'en']).optional().default('ko'),
 });
 
 export const GenerateBodySchema = z.object({

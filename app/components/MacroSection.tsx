@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Lang, t, macroDisplayNames } from '@/app/lib/i18n';
 
 interface MacroProps {
   macroCategories: string[];
@@ -10,9 +11,10 @@ interface MacroProps {
   onAddCustomMacro: (value: string) => void;
   isExhausted: boolean;
   onWarning: (msg: string) => void;
+  lang: Lang;
 }
 
-export default function MacroSection({ macroCategories, selectedMacro, onSelectCategory, onAppendMacro, onAddCustomMacro, isExhausted, onWarning }: MacroProps) {
+export default function MacroSection({ macroCategories, selectedMacro, onSelectCategory, onAppendMacro, onAddCustomMacro, isExhausted, onWarning, lang }: MacroProps) {
   const [isAdding, setIsAdding] = useState(false);
   const [inputValue, setInputValue] = useState("");
 
@@ -20,7 +22,7 @@ export default function MacroSection({ macroCategories, selectedMacro, onSelectC
     const sanitized = inputValue.trim();
     if (!sanitized) { setIsAdding(false); return; }
     if (sanitized.length > 500) {
-      onWarning("최대 500자까지만 입력 가능합니다.");
+      onWarning(t(lang, 'maxChars'));
       setInputValue(sanitized.slice(0, 500));
       return;
     }
@@ -32,17 +34,20 @@ export default function MacroSection({ macroCategories, selectedMacro, onSelectC
   const handleChange = (val: string) => {
     if (val.length > 500) {
       setInputValue(val.slice(0, 500));
-      onWarning("최대 500자까지만 입력 가능합니다.");
+      onWarning(t(lang, 'maxChars'));
     } else {
       setInputValue(val);
     }
   };
 
+  const getDisplayName = (cat: string) =>
+    lang === 'en' ? (macroDisplayNames[cat] ?? cat) : cat;
+
   return (
     <div>
       <div className="flex items-center gap-2 mb-2">
         <span className="w-1 h-3.5 rounded-full bg-blue-400" />
-        <span className="text-xs font-semibold text-gray-400 tracking-widest uppercase">토픽 선택</span>
+        <span className="text-xs font-semibold text-gray-400 tracking-widest uppercase">{t(lang, 'topicLabel')}</span>
       </div>
       <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
         <div className="flex flex-wrap gap-2 items-center">
@@ -56,7 +61,7 @@ export default function MacroSection({ macroCategories, selectedMacro, onSelectC
                   : 'bg-white border-gray-200 text-gray-600 hover:border-blue-300 hover:text-blue-600 hover:bg-blue-50'
               }`}
             >
-              {cat}
+              {getDisplayName(cat)}
             </button>
           ))}
 
@@ -67,16 +72,16 @@ export default function MacroSection({ macroCategories, selectedMacro, onSelectC
                 value={inputValue}
                 onChange={(e) => handleChange(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
-                placeholder="주제 입력"
+                placeholder={t(lang, 'topicPlaceholder')}
                 className="px-3 py-1 bg-transparent text-sm w-24 focus:outline-none"
                 autoFocus
               />
-              <button onClick={handleSubmit} className="px-3 py-1 bg-blue-600 text-white text-xs font-bold rounded-full">확인</button>
-              <button onClick={() => setIsAdding(false)} className="px-2 py-1 text-gray-400 text-xs">취소</button>
+              <button onClick={handleSubmit} className="px-3 py-1 bg-blue-600 text-white text-xs font-bold rounded-full">{t(lang, 'confirm')}</button>
+              <button onClick={() => setIsAdding(false)} className="px-2 py-1 text-gray-400 text-xs">{t(lang, 'cancel')}</button>
             </div>
           ) : (
             <button onClick={() => setIsAdding(true)} className="px-3.5 py-1.5 bg-white border border-dashed border-gray-300 text-gray-400 hover:border-gray-400 hover:text-gray-600 font-medium rounded-full text-sm transition-all">
-              + 직접 추가
+              {t(lang, 'addCustom')}
             </button>
           )}
 
@@ -89,7 +94,7 @@ export default function MacroSection({ macroCategories, selectedMacro, onSelectC
                 : 'bg-white border-gray-200 text-gray-500 hover:border-gray-300 hover:text-gray-700'
             }`}
           >
-            {isExhausted ? '더 이상 없음' : '더보기'}
+            {isExhausted ? t(lang, 'noMore') : t(lang, 'showMore')}
           </button>
         </div>
       </div>

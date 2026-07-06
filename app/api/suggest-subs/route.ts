@@ -23,7 +23,7 @@ export async function POST(request: Request) {
       { status: 400 }
     );
   }
-  const { category } = parsed.data;
+  const { category, lang } = parsed.data;
 
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
@@ -33,7 +33,23 @@ export async function POST(request: Request) {
 
   const ai = new GoogleGenAI({ apiKey });
 
-  const prompt = `이 서비스는 사용자가 AI에게 더 정확한 질문을 하도록 돕는 프롬프트 생성기입니다.
+  const prompt = lang === 'en'
+    ? `This service helps users craft more precise AI prompts.
+
+Topic entered by user: "${category}"
+
+Recommend 7 sub-keywords for this topic using the following reasoning:
+
+1. Identify the nature of the topic: is it a person, brand, trend, learning area, or action?
+2. Infer the user's actual intent: what are they likely trying to ask an AI about?
+3. Derive sub-angles that pair well with this topic: specific situations, goals, or question patterns
+4. Exclude clichés: avoid overly generic or textbook-style words
+
+Rules:
+- English, 1–4 words each
+- Return a JSON array only (no other text)
+- Example: ["keyword1","keyword2","keyword3","keyword4","keyword5","keyword6","keyword7"]`
+    : `이 서비스는 사용자가 AI에게 더 정확한 질문을 하도록 돕는 프롬프트 생성기입니다.
 
 사용자가 입력한 주제: "${category}"
 

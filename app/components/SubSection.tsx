@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Lang, t } from '@/app/lib/i18n';
 
 interface SubProps {
   selectedMacro: string;
@@ -9,9 +10,10 @@ interface SubProps {
   isExhausted: boolean;
   onAddCustomSub: (value: string) => void;
   onWarning: (msg: string) => void;
+  lang: Lang;
 }
 
-export default function SubSection({ selectedMacro, subChips, selectedSubs, onToggleSub, onAppendSub, isExhausted, onAddCustomSub, onWarning }: SubProps) {
+export default function SubSection({ selectedMacro, subChips, selectedSubs, onToggleSub, onAppendSub, isExhausted, onAddCustomSub, onWarning, lang }: SubProps) {
   const [isAdding, setIsAdding] = useState(false);
   const [inputValue, setInputValue] = useState("");
 
@@ -19,7 +21,7 @@ export default function SubSection({ selectedMacro, subChips, selectedSubs, onTo
     const sanitized = inputValue.trim();
     if (!sanitized) { setIsAdding(false); return; }
     if (sanitized.length > 500) {
-      onWarning("최대 500자까지만 입력 가능합니다.");
+      onWarning(t(lang, 'maxChars'));
       setInputValue(sanitized.slice(0, 500));
       return;
     }
@@ -31,7 +33,7 @@ export default function SubSection({ selectedMacro, subChips, selectedSubs, onTo
   const handleChange = (val: string) => {
     if (val.length > 500) {
       setInputValue(val.slice(0, 500));
-      onWarning("최대 500자까지만 입력 가능합니다.");
+      onWarning(t(lang, 'maxChars'));
     } else {
       setInputValue(val);
     }
@@ -41,12 +43,12 @@ export default function SubSection({ selectedMacro, subChips, selectedSubs, onTo
     <div>
       <div className="flex items-center gap-2 mb-2">
         <span className="w-1 h-3.5 rounded-full bg-indigo-400" />
-        <span className="text-xs font-semibold text-gray-400 tracking-widest uppercase">세부 키워드</span>
+        <span className="text-xs font-semibold text-gray-400 tracking-widest uppercase">{t(lang, 'subKeywordLabel')}</span>
       </div>
       <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
         <div className="flex flex-wrap gap-2 items-center">
           {subChips.length === 0 ? (
-            <p className="text-sm text-gray-400">주제를 선택하면 세부 키워드가 나타납니다.</p>
+            <p className="text-sm text-gray-400">{t(lang, 'subEmptyMsg')}</p>
           ) : (
             subChips.map((text, index) => (
               <button
@@ -71,16 +73,16 @@ export default function SubSection({ selectedMacro, subChips, selectedSubs, onTo
                   value={inputValue}
                   onChange={(e) => handleChange(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
-                  placeholder="키워드 입력"
+                  placeholder={t(lang, 'keywordPlaceholder')}
                   className="px-2 py-1 bg-transparent text-xs w-24 focus:outline-none"
                   autoFocus
                 />
-                <button onClick={handleSubmit} className="px-2 py-1 bg-blue-600 text-white text-xs font-bold rounded-full">확인</button>
-                <button onClick={() => setIsAdding(false)} className="px-1.5 py-1 text-gray-400 text-xs">취소</button>
+                <button onClick={handleSubmit} className="px-2 py-1 bg-blue-600 text-white text-xs font-bold rounded-full">{t(lang, 'confirm')}</button>
+                <button onClick={() => setIsAdding(false)} className="px-1.5 py-1 text-gray-400 text-xs">{t(lang, 'cancel')}</button>
               </div>
             ) : (
               <button onClick={() => setIsAdding(true)} className="px-3.5 py-1.5 bg-white border border-dashed border-gray-300 text-gray-400 hover:border-gray-400 hover:text-gray-600 font-medium rounded-full text-sm transition-all">
-                + 직접 추가
+                {t(lang, 'addCustom')}
               </button>
             )
           )}
@@ -95,7 +97,7 @@ export default function SubSection({ selectedMacro, subChips, selectedSubs, onTo
                   : 'bg-white border-gray-200 text-gray-500 hover:border-gray-300 hover:text-gray-700'
               }`}
             >
-              {isExhausted ? '더 이상 없음' : '더보기'}
+              {isExhausted ? t(lang, 'noMore') : t(lang, 'showMore')}
             </button>
           )}
         </div>

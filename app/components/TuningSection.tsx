@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { Lang, t } from '@/app/lib/i18n';
 
 interface TuningProps {
   showSecondary: boolean;
@@ -10,9 +11,10 @@ interface TuningProps {
   setSelectedSecondaries: React.Dispatch<React.SetStateAction<string[]>>;
   onExhausted: () => void;
   onWarning: (msg: string) => void;
+  lang: Lang;
 }
 
-export default function TuningSection({ showSecondary, secondaryChips, setSecondaryChips, secondaryPool, selectedSecondaries, setSelectedSecondaries, onExhausted, onWarning }: TuningProps) {
+export default function TuningSection({ showSecondary, secondaryChips, setSecondaryChips, secondaryPool, selectedSecondaries, setSelectedSecondaries, onExhausted, onWarning, lang }: TuningProps) {
   const [isAddingCustom, setIsAddingCustom] = useState(false);
   const [customInput, setCustomInput] = useState("");
 
@@ -46,7 +48,7 @@ export default function TuningSection({ showSecondary, secondaryChips, setSecond
     const sanitized = customInput.trim();
     if (!sanitized) { setIsAddingCustom(false); return; }
     if (sanitized.length > 500) {
-      onWarning("최대 500자까지만 입력 가능합니다.");
+      onWarning(t(lang, 'maxChars'));
       setCustomInput(sanitized.slice(0, 500));
       return;
     }
@@ -59,7 +61,7 @@ export default function TuningSection({ showSecondary, secondaryChips, setSecond
   const handleChange = (val: string) => {
     if (val.length > 500) {
       setCustomInput(val.slice(0, 500));
-      onWarning("최대 500자까지만 입력 가능합니다.");
+      onWarning(t(lang, 'maxChars'));
     } else {
       setCustomInput(val);
     }
@@ -69,8 +71,8 @@ export default function TuningSection({ showSecondary, secondaryChips, setSecond
 
   return (
     <div className="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-3 shadow-sm">
-      <span className="text-md font-bold text-slate-700 block">프롬프트 정밀 조정</span>
-      <p className="text-xs text-slate-500">조건 칩을 추가하면 프롬프트가 즉시 업데이트됩니다</p>
+      <span className="text-md font-bold text-slate-700 block">{t(lang, 'tuningTitle')}</span>
+      <p className="text-xs text-slate-500">{t(lang, 'tuningDesc')}</p>
       <div className="flex flex-wrap gap-2 items-center">
         {secondaryChips.map((fbText) => {
           const isSelected = selectedSecondaries.includes(fbText);
@@ -82,12 +84,12 @@ export default function TuningSection({ showSecondary, secondaryChips, setSecond
         })}
         {isAddingCustom ? (
           <div className="flex items-center gap-1 bg-white p-1 rounded-lg border border-slate-300 shadow-inner">
-            <input type="text" value={customInput} onChange={(e) => handleChange(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && submitCustom()} placeholder="조건 입력" className="px-2 py-1 bg-transparent text-xs w-32 focus:outline-none" autoFocus />
-            <button onClick={submitCustom} className="px-2 py-1 bg-slate-600 text-white text-xs font-bold rounded-md">확인</button>
-            <button onClick={() => setIsAddingCustom(false)} className="px-1 py-1 text-gray-400 text-xs">취소</button>
+            <input type="text" value={customInput} onChange={(e) => handleChange(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && submitCustom()} placeholder={t(lang, 'conditionPlaceholder')} className="px-2 py-1 bg-transparent text-xs w-32 focus:outline-none" autoFocus />
+            <button onClick={submitCustom} className="px-2 py-1 bg-slate-600 text-white text-xs font-bold rounded-md">{t(lang, 'confirm')}</button>
+            <button onClick={() => setIsAddingCustom(false)} className="px-1 py-1 text-gray-400 text-xs">{t(lang, 'cancel')}</button>
           </div>
         ) : (
-          <button onClick={() => setIsAddingCustom(true)} className="px-3 py-1.5 bg-slate-200 text-slate-600 hover:bg-slate-300 font-semibold rounded-lg text-xs transition-all">직접 추가</button>
+          <button onClick={() => setIsAddingCustom(true)} className="px-3 py-1.5 bg-slate-200 text-slate-600 hover:bg-slate-300 font-semibold rounded-lg text-xs transition-all">{t(lang, 'addDirect')}</button>
         )}
         <button
           onClick={appendRow}
@@ -98,7 +100,7 @@ export default function TuningSection({ showSecondary, secondaryChips, setSecond
               : 'bg-gray-200 text-gray-700 hover:bg-gray-300 shadow-sm'
           }`}
         >
-          {isExhausted ? '더 이상 추가할 항목이 없습니다' : '더보기'}
+          {isExhausted ? t(lang, 'noMoreItems') : t(lang, 'showMore')}
         </button>
       </div>
     </div>

@@ -80,7 +80,7 @@ export async function POST(request: Request) {
       { status: 400 }
     );
   }
-  const { prompt, provider } = parsed.data;
+  const { prompt, provider, lang } = parsed.data;
   console.log(`[execute] provider: ${provider}`);
 
   try {
@@ -88,14 +88,28 @@ export async function POST(request: Request) {
     return NextResponse.json({ result });
   } catch (e: unknown) {
     const raw = e instanceof Error ? e.message : String(e);
-    let userMessage = 'AI 실행 중 오류가 발생했습니다.';
+    let userMessage: string;
 
-    if (provider === 'gemini') {
-      userMessage = 'Gemini가 일시적으로 응답하지 않고 있어요.';
-    } else if (raw.includes('credit balance') || raw.includes('billing')) {
-      userMessage = 'Claude API 크레딧이 부족합니다. Anthropic 대시보드에서 충전해 주세요.';
-    } else if (raw.includes('API_KEY') || raw.includes('authentication') || raw.includes('api_key')) {
-      userMessage = 'API 키가 설정되지 않았습니다. .env.local을 확인해 주세요.';
+    if (lang === 'en') {
+      if (provider === 'gemini') {
+        userMessage = 'Gemini is temporarily unavailable. Please try again later.';
+      } else if (raw.includes('credit balance') || raw.includes('billing')) {
+        userMessage = 'Claude API credits are insufficient. Please top up in the Anthropic dashboard.';
+      } else if (raw.includes('API_KEY') || raw.includes('authentication') || raw.includes('api_key')) {
+        userMessage = 'API key is not configured. Please check your .env.local file.';
+      } else {
+        userMessage = 'An error occurred while running the AI.';
+      }
+    } else {
+      if (provider === 'gemini') {
+        userMessage = 'Gemini가 일시적으로 응답하지 않고 있어요.';
+      } else if (raw.includes('credit balance') || raw.includes('billing')) {
+        userMessage = 'Claude API 크레딧이 부족합니다. Anthropic 대시보드에서 충전해 주세요.';
+      } else if (raw.includes('API_KEY') || raw.includes('authentication') || raw.includes('api_key')) {
+        userMessage = 'API 키가 설정되지 않았습니다. .env.local을 확인해 주세요.';
+      } else {
+        userMessage = 'AI 실행 중 오류가 발생했습니다.';
+      }
     }
 
     return NextResponse.json({ error: userMessage }, { status: 500 });

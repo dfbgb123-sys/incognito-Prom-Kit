@@ -11,6 +11,7 @@ import TuningSection from './components/TuningSection';
 import { formatPrompt } from './utils/renderer';
 import ReactMarkdown from 'react-markdown';
 import Image from 'next/image';
+import { Lang, t } from '@/app/lib/i18n';
 
 interface CategoryItem {
   id: string;
@@ -35,6 +36,50 @@ interface PromptTemplate {
 }
 
 const promptTemplatesList = promptTemplatesData as unknown as PromptTemplate[];
+
+const TEMPLATE_EN = `# 🤖 AI Persona
+- You are the world's top [{large_name}] consultant and mentor with 10 years of hands-on experience.
+
+## 🎯 Goal & Situation
+- The user is working on [{large_name}] and has chosen [{medium_name}] as the key focus areas.
+{user_context}
+
+## 📝 Requests
+{requests}
+
+## ⚠️ Constraints & Feedback
+{constraints}`;
+
+const REQUESTS_EN = [
+  "1. Deeply analyze the selected keywords and context, then provide a concrete, step-by-step action plan.",
+  "2. Provide a high-efficiency checklist to proactively prevent potential risks.",
+  "3. Skip introductions, greetings, and vague platitudes. Lead with a concise, direct summary.",
+  "4. Avoid abstract advice like \"it depends on the situation.\" Format your entire answer as actionable steps (verbs) the user can execute today.",
+  "5. Your entire response must be written in English. Do not use any other language.",
+];
+
+const specificSecondaryPoolsEN: Record<string, string[]> = {
+  "공부": ["Focus on routine optimization", "Time-block scheduling", "Include burnout prevention", "Last-minute cramming mode"],
+  "성형": ["Safety-first conservative approach", "Minimize recovery time", "Essential consultation questions"],
+};
+
+const SECONDARY_POOL_EN = [
+  "Avoid overly tight schedules",
+  "Maximize practicality",
+  "Tailor for working professionals",
+  "Minimize costs",
+  "Simplify for beginners",
+  "Provide step-by-step templates",
+  "Include real-world examples",
+  "Add jargon explanations",
+  "Summarize as a checklist",
+  "Focus on key points only",
+  "Expert-level depth",
+  "Quick reference version",
+  "Risk-focused analysis",
+  "Budget-optimized approach",
+  "Include case studies",
+];
 
 export default function Home() {
   const [categories, setCategories] = useState<CategoryItem[]>(categoriesData as unknown as CategoryItem[]);
@@ -70,6 +115,7 @@ export default function Home() {
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const [showWarningModal, setShowWarningModal] = useState(false);
   const [warningMessage, setWarningMessage] = useState("");
+  const [lang, setLang] = useState<Lang>('ko');
 
   const triggerWarning = useCallback((msg: string) => {
     setWarningMessage(msg);
@@ -128,7 +174,7 @@ export default function Home() {
   const handleUserInputChange = (val: string) => {
     if (val.length > 500) {
       setUserInput(val.slice(0, 500));
-      triggerWarning("최대 500자까지만 입력 가능합니다.");
+      triggerWarning(t(lang, 'maxChars'));
     } else {
       setUserInput(val);
     }
@@ -170,7 +216,7 @@ export default function Home() {
       const res = await fetch('/api/suggest-subs', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ category: categoryName }),
+        body: JSON.stringify({ category: categoryName, lang }),
       });
       const data = await res.json();
       if (data.subs && Array.isArray(data.subs) && selectedMacroRef.current === categoryName) {
@@ -205,7 +251,8 @@ export default function Home() {
     setSubBulkStorage([]);
     setAppendSubCount(0);
 
-    const existingSubs = subCategoryData[category] ?? [];
+    // 영어 모드에서는 JSON 칩(한국어)을 무시하고 항상 AI로 영어 칩을 생성
+    const existingSubs = lang === 'en' ? [] : (subCategoryData[category] ?? []);
     const initialSubs = existingSubs.slice(0, 7);
     const bulkSubs = existingSubs.slice(7);
     setSubChips(initialSubs);
@@ -221,7 +268,7 @@ export default function Home() {
 
   const handleAppendMacro = async () => {
     if (macroBulkStorage.length === 0) {
-      setLimitPopupMessage("더 이상 추천 키워드가 없어요. 직접 입력해서 추가해보세요!");
+      setLimitPopupMessage(t(lang, 'noMoreKeywords'));
       setShowLimitPopup(true);
       return;
     }
@@ -246,7 +293,7 @@ export default function Home() {
     if (!selectedMacro) return;
 
     if (appendSubCount >= APPEND_LIMIT) {
-      setLimitPopupMessage("더 이상 추천 키워드가 없어요. 직접 입력해서 추가해보세요!");
+      setLimitPopupMessage(t(lang, 'noMoreKeywords'));
       setShowLimitPopup(true);
       return;
     }
@@ -255,7 +302,7 @@ export default function Home() {
     const cleanBulkStorage = subBulkStorage.filter(item => !subChips.includes(item));
 
     if (cleanBulkStorage.length === 0) {
-      setLimitPopupMessage("더 이상 추천 키워드가 없어요. 직접 입력해서 추가해보세요!");
+      setLimitPopupMessage(t(lang, 'noMoreKeywords'));
       setShowLimitPopup(true);
       return;
     }
@@ -269,14 +316,14 @@ export default function Home() {
     setAppendSubCount(nextCount);
 
     if (nextCount >= APPEND_LIMIT || remaining.length === 0) {
-      setLimitPopupMessage("더 이상 추천 키워드가 없어요. 직접 입력해서 추가해보세요!");
+      setLimitPopupMessage(t(lang, 'noMoreKeywords'));
       setShowLimitPopup(true);
     }
   };
 
   const handleAddCustomMacro = async (sanitized: string) => {
     if (sanitized.length > 500) {
-      triggerWarning("최대 500자까지만 입력 가능합니다.");
+      triggerWarning(t(lang, 'maxChars'));
       return;
     }
 
@@ -320,7 +367,7 @@ export default function Home() {
   const handleAddCustomSub = (sanitized: string) => {
     if (!selectedMacro) return;
     if (sanitized.length > 500) {
-      triggerWarning("최대 500자까지만 입력 가능합니다.");
+      triggerWarning(t(lang, 'maxChars'));
       return;
     }
 
@@ -355,9 +402,9 @@ export default function Home() {
   };
 
   const handleTuningExhausted = useCallback(() => {
-    setLimitPopupMessage("더 이상 추천 키워드가 없어요. 직접 입력해서 추가해보세요!");
+    setLimitPopupMessage(t(lang, 'noMoreKeywords'));
     setShowLimitPopup(true);
-  }, []);
+  }, [lang]);
 
   const handleReset = () => {
     setSelectedMacro("");
@@ -377,17 +424,17 @@ export default function Home() {
     const filteredPool = level1Names.filter(item => !initialCategories.includes(item));
     setMacroBulkStorage(filteredPool);
     
-    showToast("선택 정보가 초기화되었습니다.", "success");
+    showToast(t(lang, 'resetDone'), "success");
   };
 
   // 3번 수정: useCallback으로 감싸서 exhaustive-deps 경고 해소
   const generatePrompt = useCallback(() => {
     if (!selectedMacro) {
-      showToast("대분류 주제를 먼저 선택해 주세요.");
+      showToast(t(lang, 'selectMacroFirst'));
       return;
     }
     if (selectedSubs.length === 0) {
-      showToast("세부 키워드를 최소 1개 이상 선택해 주세요.");
+      showToast(t(lang, 'selectSubFirst'));
       return;
     }
 
@@ -432,15 +479,18 @@ export default function Home() {
 
     // 3. Format Template
     const targetTemplate = promptTemplatesList.find(t => t.id === templateId) || promptTemplatesList.find(t => t.id === 'tpl_default');
-    const templateContent = targetTemplate ? targetTemplate.template_content : "";
+    const templateContent = lang === 'en'
+      ? TEMPLATE_EN
+      : (targetTemplate ? targetTemplate.template_content : "");
 
     try {
       const formattedPrompt = formatPrompt(templateContent, {
         large_name: selectedMacro,
-        medium_name: selectedSubs.join(', ') || '기본 맞춤 전략',
+        medium_name: selectedSubs.join(', ') || (lang === 'en' ? 'general strategy' : '기본 맞춤 전략'),
         small_name: selectedSecondaries.join(', '),
         userInput,
-        activeRequests
+        activeRequests: lang === 'en' ? REQUESTS_EN : activeRequests,
+        lang,
       });
 
       setGeneratedMarkdown(formattedPrompt);
@@ -450,11 +500,11 @@ export default function Home() {
       const errorMessage = e instanceof Error ? e.message : String(e);
       showToast(errorMessage, "error");
     }
-  }, [selectedMacro, selectedSubs, userInput, selectedSecondaries, activeRequests, showToast, categories, combinationMaps]);
+  }, [selectedMacro, selectedSubs, userInput, selectedSecondaries, activeRequests, showToast, categories, combinationMaps, lang]);
 
   const handleExecute = useCallback(async (provider: 'gemini' | 'claude' | 'groq') => {
     if (!generatedMarkdown) {
-      showToast("먼저 프롬프트를 생성해 주세요.");
+      showToast(t(lang, 'generateFirst'));
       return;
     }
     setIsExecuting(provider);
@@ -463,7 +513,7 @@ export default function Home() {
       const res = await fetch('/api/execute', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt: generatedMarkdown, provider }),
+        body: JSON.stringify({ prompt: generatedMarkdown, provider, lang }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? '실행 실패');
@@ -482,7 +532,7 @@ export default function Home() {
           provider,
         })
       }).then(r => r.json()).then(data => {
-        if (data.truncated) showToast("입력 내용이 길어 일부만 로그에 저장되었습니다 (최대 2000자).", "error");
+        if (data.truncated) showToast(t(lang, 'logTruncated'), "error");
       }).catch(e => console.error("Notion 로깅 실패:", e));
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : String(e);
@@ -490,11 +540,11 @@ export default function Home() {
     } finally {
       setIsExecuting(false);
     }
-  }, [generatedMarkdown, showToast, selectedMacro, selectedSubs, selectedSecondaries, userInput]);
+  }, [generatedMarkdown, showToast, selectedMacro, selectedSubs, selectedSecondaries, userInput, lang]);
 
   const handleCopy = useCallback(() => {
     navigator.clipboard.writeText(generatedMarkdown).then(() => {
-      showToast("프롬프트가 복사되었습니다.", "success");
+      showToast(t(lang, 'promptCopied'), "success");
       fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -507,10 +557,10 @@ export default function Home() {
           provider: 'copy',
         })
       }).then(r => r.json()).then(data => {
-        if (data.truncated) showToast("입력 내용이 길어 일부만 로그에 저장되었습니다 (최대 2000자).", "error");
+        if (data.truncated) showToast(t(lang, 'logTruncated'), "error");
       }).catch(e => console.error("Notion 로깅 실패:", e));
     });
-  }, [generatedMarkdown, selectedMacro, selectedSubs, selectedSecondaries, userInput, showToast]);
+  }, [generatedMarkdown, selectedMacro, selectedSubs, selectedSecondaries, userInput, showToast, lang]);
 
   // 2번 수정: analysisChips 중복 제거
   let derivedChips: string[] = [];
@@ -532,7 +582,13 @@ export default function Home() {
     <main className="p-4 md:p-8 text-gray-800 bg-gray-50 min-h-screen">
       <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
 
-        <div className="bg-gradient-to-r from-blue-600 to-emerald-600 text-white p-6 text-center shadow-md">
+        <div className="relative bg-gradient-to-r from-blue-600 to-emerald-600 text-white p-6 text-center shadow-md">
+          <button
+            onClick={() => setLang(l => l === 'ko' ? 'en' : 'ko')}
+            className="absolute top-4 right-4 px-3 py-1.5 bg-white/20 hover:bg-white/30 text-white text-xs font-semibold rounded-full border border-white/30 transition-all"
+          >
+            {lang === 'ko' ? 'English' : '한국어'}
+          </button>
           <Image src="/logo.svg" alt="Prom-Kit" width={480} height={72} className="h-16 w-auto mx-auto" />
           <p className="text-sm text-blue-100 mt-1">AI Prompt Kit Vending Machine</p>
         </div>
@@ -546,7 +602,7 @@ export default function Home() {
                 : 'bg-transparent border-transparent text-gray-400 hover:text-gray-600 hover:bg-gray-200/60'
             }`}
           >
-            프롬프트 조립
+            {t(lang, 'tabBuilder')}
           </button>
           <button
             onClick={() => setActiveTab('result')}
@@ -556,7 +612,7 @@ export default function Home() {
                 : 'bg-transparent border-transparent text-gray-400 hover:text-gray-600 hover:bg-gray-200/60'
             }`}
           >
-            AI 응답
+            {t(lang, 'tabResult')}
             {aiResult && activeTab !== 'result' && (
               <span className="absolute top-2.5 right-2.5 w-1.5 h-1.5 bg-blue-500 rounded-full" />
             )}
@@ -567,12 +623,12 @@ export default function Home() {
         <div className="p-6 space-y-8">
 
           <div className="flex justify-between items-center pb-2 border-b border-gray-100">
-            <span className="text-xs text-gray-400 font-medium">재료만 고르면 AI 질문이 완성됩니다.</span>
+            <span className="text-xs text-gray-400 font-medium">{t(lang, 'helperText')}</span>
             <button
               onClick={handleReset}
               className="text-xs text-gray-400 hover:text-gray-600 transition-all"
             >
-              초기화
+              {t(lang, 'reset')}
             </button>
           </div>
 
@@ -584,12 +640,13 @@ export default function Home() {
             onAddCustomMacro={handleAddCustomMacro}
             isExhausted={macroBulkStorage.length === 0}
             onWarning={triggerWarning}
+            lang={lang}
           />
 
           {isLoadingSubs && (
             <div className="flex items-center gap-2.5 px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl text-sm text-blue-600 font-medium">
               <div className="w-4 h-4 border-2 border-blue-300 border-t-blue-600 rounded-full animate-spin flex-shrink-0" />
-              AI가 키워드를 추천하고 있어요...
+              {t(lang, 'loadingSubs')}
             </div>
           )}
 
@@ -602,6 +659,7 @@ export default function Home() {
             isExhausted={appendSubCount >= APPEND_LIMIT || subBulkStorage.filter(item => !subChips.includes(item)).length === 0}
             onAddCustomSub={handleAddCustomSub}
             onWarning={triggerWarning}
+            lang={lang}
           />
 
           <div>
@@ -609,12 +667,12 @@ export default function Home() {
               value={userInput}
               onChange={(e) => handleUserInputChange(e.target.value)}
               className="w-full h-32 p-4 border border-gray-300 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all text-base placeholder-gray-400 resize-none shadow-inner"
-              placeholder="지금 상황을 조금 더 알려주세요. (예: 예산, 기간, 목적 등)"
+              placeholder={t(lang, 'userInputPlaceholder')}
             />
             <div className="mt-2 flex flex-wrap gap-2">
               {analysisChips.map((text) => (
                 <button key={text} onClick={() => handleUserInputChange(userInput.trim() + " " + text + ", ")} className="px-2.5 py-1 bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 rounded-md text-xs font-medium transition-all shadow-sm">
-                  추천 추가: {text}
+                  {t(lang, 'recommendPrefix')}{text}
                 </button>
               ))}
             </div>
@@ -622,45 +680,52 @@ export default function Home() {
 
           <div className="pt-2">
             <button onClick={generatePrompt} className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-lg transition-all shadow-sm">
-              프롬프트 생성하기
+              {t(lang, 'generateBtn')}
             </button>
           </div>
 
           {showResult && (
             <div className="space-y-3 transition-all">
               <div className="flex items-center justify-between flex-wrap gap-2">
-                <span className="text-md font-bold text-gray-900">조립된 프롬프트</span>
+                <span className="text-md font-bold text-gray-900">{t(lang, 'assembledPrompt')}</span>
                 <div className="flex items-center gap-1.5 flex-wrap">
-                  <button onClick={handleCopy} className="px-3 py-1.5 bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300 font-medium text-xs rounded-lg transition-all">복사</button>
+                  <button onClick={handleCopy} className="px-3 py-1.5 bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300 font-medium text-xs rounded-lg transition-all">{t(lang, 'copy')}</button>
                   <button
                     onClick={() => handleExecute('gemini')}
                     disabled={!!isExecuting}
                     className={`px-3 py-1.5 font-medium text-xs rounded-lg border transition-all ${isExecuting === 'gemini' ? 'bg-gray-50 border-gray-200 text-gray-300 cursor-not-allowed' : 'bg-white border-blue-200 text-blue-600 hover:bg-blue-50'}`}
                   >
-                    {isExecuting === 'gemini' ? '실행 중...' : 'Gemini'}
+                    {isExecuting === 'gemini' ? t(lang, 'executing') : 'Gemini'}
                   </button>
                   <button
                     onClick={() => handleExecute('groq')}
                     disabled={!!isExecuting}
                     className={`px-3 py-1.5 font-medium text-xs rounded-lg border transition-all ${isExecuting === 'groq' ? 'bg-gray-50 border-gray-200 text-gray-300 cursor-not-allowed' : 'bg-white border-orange-200 text-orange-600 hover:bg-orange-50'}`}
                   >
-                    {isExecuting === 'groq' ? '실행 중...' : 'Groq'}
+                    {isExecuting === 'groq' ? t(lang, 'executing') : 'Groq'}
                   </button>
                   <button
                     onClick={() => handleExecute('claude')}
                     disabled={!!isExecuting}
                     className={`px-3 py-1.5 font-medium text-xs rounded-lg border transition-all ${isExecuting === 'claude' ? 'bg-gray-50 border-gray-200 text-gray-300 cursor-not-allowed' : 'bg-white border-violet-200 text-violet-600 hover:bg-violet-50'}`}
                   >
-                    {isExecuting === 'claude' ? '실행 중...' : 'Claude'}
+                    {isExecuting === 'claude' ? t(lang, 'executing') : 'Claude'}
                   </button>
                 </div>
               </div>
               <textarea readOnly value={generatedMarkdown} className="w-full h-64 p-4 bg-gray-900 text-emerald-400 font-mono text-sm rounded-xl border border-gray-800 resize-none shadow-2xl" />
               <button
-                onClick={() => { setShowSecondary(true); setSecondaryChips(specificSecondaryPools[selectedMacro] || secondaryPool.slice(0, 5)); }}
+                onClick={() => {
+                  setShowSecondary(true);
+                  if (lang === 'en') {
+                    setSecondaryChips(specificSecondaryPoolsEN[selectedMacro] || SECONDARY_POOL_EN.slice(0, 5));
+                  } else {
+                    setSecondaryChips(specificSecondaryPools[selectedMacro] || secondaryPool.slice(0, 5));
+                  }
+                }}
                 className="w-full p-3.5 border border-blue-200 bg-blue-50 hover:bg-blue-100 rounded-xl text-sm font-semibold text-blue-700 transition-all flex items-center justify-between"
               >
-                <span>원하는 답이 아닌가요? 조건을 추가해 프롬프트를 다듬어보세요</span>
+                <span>{t(lang, 'refineBtn')}</span>
                 <span className="text-emerald-500">→</span>
               </button>
             </div>
@@ -670,11 +735,12 @@ export default function Home() {
             showSecondary={showSecondary}
             secondaryChips={secondaryChips}
             setSecondaryChips={setSecondaryChips}
-            secondaryPool={secondaryPool}
+            secondaryPool={lang === 'en' ? SECONDARY_POOL_EN : secondaryPool}
             selectedSecondaries={selectedSecondaries}
             setSelectedSecondaries={setSelectedSecondaries}
             onExhausted={handleTuningExhausted}
             onWarning={triggerWarning}
+            lang={lang}
           />
 
         </div>
@@ -688,14 +754,14 @@ export default function Home() {
               <div className="w-6 h-1.5 bg-gray-200 rounded-full" />
             </div>
             <div className="space-y-1.5">
-              <p className="text-sm font-semibold text-gray-500">아직 AI 응답이 없어요</p>
-              <p className="text-xs text-gray-400">프롬프트를 조립하고 Gemini 또는 Claude로 실행해보세요</p>
+              <p className="text-sm font-semibold text-gray-500">{t(lang, 'noResultTitle')}</p>
+              <p className="text-xs text-gray-400">{t(lang, 'noResultDesc')}</p>
             </div>
             <button
               onClick={() => setActiveTab('builder')}
               className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg transition-all"
             >
-              프롬프트 조립하러 가기
+              {t(lang, 'goToBuilder')}
             </button>
           </div>
         )}
@@ -707,17 +773,17 @@ export default function Home() {
                 <span className={`px-3 py-1 rounded-full text-xs font-bold text-white ${lastProvider === 'claude' ? 'bg-violet-600' : lastProvider === 'groq' ? 'bg-orange-500' : 'bg-blue-500'}`}>
                   {lastProvider === 'claude' ? 'Claude' : lastProvider === 'groq' ? 'Groq' : 'Gemini'}
                 </span>
-                <span className="text-sm font-bold text-gray-700">AI 응답 결과</span>
+                <span className="text-sm font-bold text-gray-700">{t(lang, 'aiResultLabel')}</span>
               </div>
               <div className="flex gap-2">
                 <button
-                  onClick={() => { navigator.clipboard.writeText(aiResult); showToast("AI 응답이 복사되었습니다.", "success"); }}
+                  onClick={() => { navigator.clipboard.writeText(aiResult); showToast(t(lang, 'aiCopied'), "success"); }}
                   className="px-3 py-1.5 bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300 font-medium text-xs rounded-lg transition-all"
-                >복사</button>
+                >{t(lang, 'copy')}</button>
                 <button
                   onClick={() => setActiveTab('builder')}
                   className="px-3 py-1.5 bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300 font-medium text-xs rounded-lg transition-all"
-                >조립으로</button>
+                >{t(lang, 'goToAssemble')}</button>
               </div>
             </div>
             <div className="prose prose-sm max-w-none p-5 bg-gray-50 border border-gray-100 rounded-xl text-gray-800 leading-relaxed">
@@ -731,13 +797,13 @@ export default function Home() {
       {showLimitPopup && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl shadow-2xl p-6 mx-4 max-w-sm w-full space-y-4">
-            <p className="text-sm font-bold text-gray-800">더 이상 불러올 수 없어요</p>
+            <p className="text-sm font-bold text-gray-800">{t(lang, 'limitPopupTitle')}</p>
             <p className="text-sm text-gray-600">{limitPopupMessage}</p>
             <button
               onClick={() => setShowLimitPopup(false)}
               className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl text-sm transition-all"
             >
-              확인
+              {t(lang, 'confirm')}
             </button>
           </div>
         </div>
@@ -758,18 +824,19 @@ export default function Home() {
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 animate-fade-in">
           <div className="bg-white rounded-2xl shadow-2xl p-6 mx-4 max-w-sm w-full space-y-4 border border-red-100 transition-all">
             <div className="flex items-center gap-2 text-red-600 font-bold text-sm">
-              입력 제한
+              {t(lang, 'inputLimit')}
             </div>
             <p className="text-sm text-gray-600 font-medium">{warningMessage}</p>
             <button
               onClick={() => setShowWarningModal(false)}
               className="w-full py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl text-sm transition-all active:scale-98"
             >
-              확인
+              {t(lang, 'confirm')}
             </button>
           </div>
         </div>
       )}
+
     </main>
   );
 }
