@@ -1,7 +1,7 @@
 # 📦 Prom-Kit (프롬키트)
 > 생각은 많은데 AI한테 어떻게 물어볼지 막막할 때! 머릿속 아이디어를 AI가 딱 알아듣는 최적의 질문(프롬프트)으로 뚝딱 조립해 주는 AI 질문 자판기
 
-**🌐 Live Demo:** [incognito-prom-kit.vercel.app](https://incognito-prom-kit.vercel.app)
+**🌐 Live Demo:** [incognito-prom-kit.vercel.app](https://incognito-prom-kit.vercel.app)  
 **🌐 Descriptions:**  https://podo88.tistory.com/
 ---
 
@@ -20,7 +20,7 @@
 <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white"/> <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white"/> <img src="https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white"/> <img src="https://img.shields.io/badge/Jest-C21325?style=for-the-badge&logo=jest&logoColor=white"/> <img src="https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white"/> <img src="https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white"/>
 
 * **Core:** Next.js 16 (App Router), TypeScript, Tailwind CSS
-* **AI Providers:** Google Gemini(`@google/genai`), Anthropic Claude(`@anthropic-ai/sdk`), Groq(`groq-sdk`) — 멀티 프로바이더 실행 및 프로바이더별 응답 실패 메시지 분기 (Groq 우선 구현 상태)
+* **AI Providers:** Google Gemini, Anthropic Claude, Groq : 멀티 프로바이더 실행 및 각 응답 실패 메시지 분기 (Groq 우선 구현 상태)
 * **Validation:** Zod (`execute` · `generate` · `suggest-subs` 3개 API 라우트 전체 페이로드 유효성 검증)
 * **Testing:** Jest, ts-jest (단위 테스트 최적화)
 * **CI/CD:** GitHub Actions (Lint ➡️ Test ➡️ Build 자동화), Vercel
