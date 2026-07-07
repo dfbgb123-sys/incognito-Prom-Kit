@@ -71,7 +71,7 @@ const SECONDARY_POOL_EN = [
   "Simplify for beginners",
   "Provide step-by-step templates",
   "Include real-world examples",
-  "Add jargon explanations",
+  "Explain technical terms",
   "Summarize as a checklist",
   "Focus on key points only",
   "Expert-level depth",
@@ -199,27 +199,66 @@ export default function Home() {
     selectedMacroRef.current = selectedMacro;
   }, [selectedMacro]);
 
+  // 언어 전환 시 "전환 직전" 선택값을 읽기 위한 ref
+  const selectedSubsRef = useRef(selectedSubs);
   useEffect(() => {
-    const updateChipsPerAppend = () => {
-      setChipsPerAppend(window.innerWidth < 768 ? 3 : 5);
-    };
-    updateChipsPerAppend();
-    window.addEventListener('resize', updateChipsPerAppend);
-    return () => window.removeEventListener('resize', updateChipsPerAppend);
-  }, []);
+    selectedSubsRef.current = selectedSubs;
+  }, [selectedSubs]);
 
+  // "lang:category" 별 AI 추천 결과 캐시 — 언어 토글 반복 시 재요청/레이트리밋 방지
+  const aiSubsCacheRef = useRef<Map<string, string[]>>(new Map());
+  // 동일 카테고리+언어에 대한 중복 요청(경쟁) 방지
+  const pendingAISubsRef = useRef<Set<string>>(new Set());
 
+  // 이미 선택된 세부 키워드를 새 언어로 번역해 선택 상태를 유지
+  const translateAndApplySelectedSubs = async (items: string[], targetLang: Lang, categoryName: string) => {
+    const cacheKey = `tr:${targetLang}:${items.join('|')}`;
+    const cached = aiSubsCacheRef.current.get(cacheKey);
+    if (cached) {
+      setSelectedSubs(cached);
+      setSubChips(prev => [...new Set([...cached, ...prev])]);
+      return;
+    }
+    try {
+      const res = await fetch('/api/suggest-subs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ category: categoryName, lang: targetLang, translateFrom: items }),
+      });
+      const data = await res.json();
+      if (data.subs && Array.isArray(data.subs) && data.subs.length === items.length && selectedMacroRef.current === categoryName) {
+        aiSubsCacheRef.current.set(cacheKey, data.subs);
+        setSelectedSubs(data.subs);
+        setSubChips(prev => [...new Set([...data.subs, ...prev])]);
+      }
+    } catch (e) {
+      console.error('[suggest-subs] 번역 실패:', e);
+    }
+  };
 
-  const fetchAndSetAISubs = async (categoryName: string, parentId: string | null) => {
+  const fetchAndSetAISubs = async (categoryName: string, parentId: string | null, requestLang: Lang) => {
+    const cacheKey = `${requestLang}:${categoryName}`;
+    const cached = aiSubsCacheRef.current.get(cacheKey);
+    if (cached) {
+      setSubChips(cached.slice(0, 7));
+      setSubBulkStorage(cached.slice(7));
+      return;
+    }
+
+    // 동일 카테고리+언어에 대한 요청이 이미 진행 중이면 중복 호출 방지
+    if (pendingAISubsRef.current.has(cacheKey)) return;
+    pendingAISubsRef.current.add(cacheKey);
+
     setIsLoadingSubs(true);
     try {
       const res = await fetch('/api/suggest-subs', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ category: categoryName, lang }),
+        body: JSON.stringify({ category: categoryName, lang: requestLang }),
       });
       const data = await res.json();
-      if (data.subs && Array.isArray(data.subs) && selectedMacroRef.current === categoryName) {
+      if (data.subs && Array.isArray(data.subs)) {
+        aiSubsCacheRef.current.set(cacheKey, data.subs);
         const storedCats = localStorage.getItem('custom_categories');
         const existingCustomCats = storedCats ? JSON.parse(storedCats) : [];
         const newSubCats: CategoryItem[] = data.subs.map((name: string, i: number) => ({
@@ -231,15 +270,60 @@ export default function Home() {
         }));
         localStorage.setItem('custom_categories', JSON.stringify([...existingCustomCats, ...newSubCats]));
         setCategories(prev => [...prev, ...newSubCats]);
-        setSubChips(data.subs.slice(0, 7));
-        setSubBulkStorage(data.subs.slice(7));
+        if (selectedMacroRef.current === categoryName) {
+          setSubChips(data.subs.slice(0, 7));
+          setSubBulkStorage(data.subs.slice(7));
+        }
+      } else {
+        console.error('[suggest-subs] 응답 실패:', data.error ?? res.status);
+        if (selectedMacroRef.current === categoryName) {
+          triggerWarning(res.status === 429 ? t(requestLang, 'subsRateLimited') : t(requestLang, 'subsFetchFailed'));
+        }
       }
-    } catch {
-      // silently fail
+    } catch (e) {
+      console.error('[suggest-subs] 네트워크 오류:', e);
     } finally {
+      pendingAISubsRef.current.delete(cacheKey);
       setIsLoadingSubs(false);
     }
   };
+
+  // lang 전환 시 세부 키워드 재초기화 (대카테고리가 선택된 상태라면)
+  useEffect(() => {
+    if (!selectedMacro) return;
+    setSubBulkStorage([]);
+    setAppendSubCount(0);
+    setShowSecondary(false);
+    setSecondaryChips([]);
+    setSelectedSecondaries([]);
+
+    const existingSubs = lang === 'en' ? [] : (subCategoryData[selectedMacro] ?? []);
+    const initialSubs = existingSubs.slice(0, 7);
+    setSubChips(initialSubs);
+    setSubBulkStorage(existingSubs.slice(7));
+
+    // 이미 선택해둔 세부 키워드가 있으면 새 언어로 번역해서 유지, 없으면 그대로 비움
+    const prevSelected = selectedSubsRef.current;
+    if (prevSelected.length > 0) {
+      void translateAndApplySelectedSubs(prevSelected, lang, selectedMacro);
+    } else {
+      setSelectedSubs([]);
+    }
+
+    if (initialSubs.length === 0) {
+      const parentCat = categories.find(c => c.level === 1 && c.name === selectedMacro);
+      void fetchAndSetAISubs(selectedMacro, parentCat?.id ?? null, lang);
+    }
+  }, [lang]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    const updateChipsPerAppend = () => {
+      setChipsPerAppend(window.innerWidth < 768 ? 3 : 5);
+    };
+    updateChipsPerAppend();
+    window.addEventListener('resize', updateChipsPerAppend);
+    return () => window.removeEventListener('resize', updateChipsPerAppend);
+  }, []);
 
   const handleSelectMacro = (category: string, skipAI = false) => {
     setSelectedMacro(category);
@@ -260,7 +344,7 @@ export default function Home() {
 
     if (initialSubs.length === 0 && !skipAI) {
       const parentCat = categories.find(c => c.level === 1 && c.name === category);
-      void fetchAndSetAISubs(category, parentCat?.id ?? null);
+      void fetchAndSetAISubs(category, parentCat?.id ?? null, lang);
     }
 
     setActiveRequests(promptTemplates.requests);
@@ -361,7 +445,7 @@ export default function Home() {
 
     // skipAI=true: handleSelectMacro이 AI를 재호출하지 않도록 방지 (newId로 직접 호출)
     handleSelectMacro(sanitized, true);
-    void fetchAndSetAISubs(sanitized, newId);
+    void fetchAndSetAISubs(sanitized, newId, lang);
   };
 
   const handleAddCustomSub = (sanitized: string) => {

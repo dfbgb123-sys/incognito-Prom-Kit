@@ -11,6 +11,7 @@ export const ExecuteBodySchema = z.object({
 export const SuggestSubsBodySchema = z.object({
   category: z.string().min(1).max(100),
   lang: z.enum(['ko', 'en']).optional().default('ko'),
+  translateFrom: z.array(z.string().max(500)).max(20).optional(),
 });
 
 export const GenerateBodySchema = z.object({

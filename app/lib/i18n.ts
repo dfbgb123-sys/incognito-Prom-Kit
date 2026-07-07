@@ -32,6 +32,8 @@ export const i18n = {
     selectSubFirst: '세부 키워드를 최소 1개 이상 선택해 주세요.',
     generateFirst: '먼저 프롬프트를 생성해 주세요.',
     logTruncated: '입력 내용이 길어 일부만 로그에 저장되었습니다 (최대 2000자).',
+    subsFetchFailed: '키워드를 불러오지 못했어요. 잠시 후 다시 시도해 주세요.',
+    subsRateLimited: '요청이 너무 많아요. 잠시 후 다시 시도해 주세요.',
     // MacroSection
     topicLabel: '토픽 선택',
     topicPlaceholder: '주제 입력',
@@ -80,6 +82,8 @@ export const i18n = {
     selectSubFirst: 'Please select at least one keyword.',
     generateFirst: 'Please generate a prompt first.',
     logTruncated: 'Input was too long; only part was saved to log (max 2000 chars).',
+    subsFetchFailed: 'Could not load keywords. Please try again shortly.',
+    subsRateLimited: 'Too many requests. Please try again shortly.',
     // MacroSection
     topicLabel: 'Topic',
     topicPlaceholder: 'Enter topic',

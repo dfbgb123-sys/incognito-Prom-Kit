@@ -23,7 +23,7 @@ export async function POST(request: Request) {
       { status: 400 }
     );
   }
-  const { category, lang } = parsed.data;
+  const { category, lang, translateFrom } = parsed.data;
 
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
@@ -33,7 +33,21 @@ export async function POST(request: Request) {
 
   const ai = new GoogleGenAI({ apiKey });
 
-  const prompt = lang === 'en'
+  const prompt = translateFrom && translateFrom.length > 0
+    ? (lang === 'en'
+        ? `Translate the following Korean keyword list into concise, natural English (1-4 words each).
+Return a JSON array with the EXACT SAME NUMBER of items, in the EXACT SAME ORDER as the input. Do not add or remove items.
+
+Input: ${JSON.stringify(translateFrom)}
+
+Return a JSON array only (no other text).`
+        : `다음 영어 키워드 목록을 자연스러운 한국어로 번역하세요 (각 2~10자).
+입력과 정확히 같은 개수, 같은 순서로 JSON 배열만 반환하세요. 항목을 추가하거나 빼지 마세요.
+
+입력: ${JSON.stringify(translateFrom)}
+
+JSON 배열만 반환하세요 (다른 텍스트 없이).`)
+    : lang === 'en'
     ? `This service helps users craft more precise AI prompts.
 
 Topic entered by user: "${category}"
