@@ -34,6 +34,7 @@ export const i18n = {
     logTruncated: '입력 내용이 길어 일부만 로그에 저장되었습니다 (최대 2000자).',
     subsFetchFailed: '키워드를 불러오지 못했어요. 잠시 후 다시 시도해 주세요.',
     subsRateLimited: '요청이 너무 많아요. 잠시 후 다시 시도해 주세요.',
+    languageIssueWarning: '응답에 외국어 문자가 감지되었습니다. 다시 시도해 보세요.',
     // MacroSection
     topicLabel: '토픽 선택',
     topicPlaceholder: '주제 입력',
@@ -84,6 +85,7 @@ export const i18n = {
     logTruncated: 'Input was too long; only part was saved to log (max 2000 chars).',
     subsFetchFailed: 'Could not load keywords. Please try again shortly.',
     subsRateLimited: 'Too many requests. Please try again shortly.',
+    languageIssueWarning: 'Foreign characters detected in response. Please try again.',
     // MacroSection
     topicLabel: 'Topic',
     topicPlaceholder: 'Enter topic',

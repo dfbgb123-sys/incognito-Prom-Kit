@@ -604,6 +604,8 @@ export default function Home() {
       setAiResult(data.result);
       setLastProvider(provider);
       setActiveTab('result');
+      // Part A: 서버가 재시도 후에도 언어 오염을 감지했으면 경고 토스트
+      if (data.languageIssue) showToast(t(lang, 'languageIssueWarning'), 'error');
       fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
